@@ -1,0 +1,10 @@
+ultralytics
+opencv-python
+pandas
+numpy
+scikit-learn
+matplotlib
+fastapi
+uvicorn
+redis
+paho-mqtt
