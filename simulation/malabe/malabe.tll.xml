@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additional>
+    <tlLogic id="malabe_center" type="static" programID="fixed_baseline" offset="0">
+        <phase duration="60" state="GGrrrrGGrrrr"/>
+        <phase duration="4"  state="yyrrrryyrrrr"/>
+        <phase duration="60" state="rrGGrrrrGGrr"/>
+        <phase duration="4"  state="rryyrrrryyrr"/>
+        <phase duration="60" state="rrrrGGrrrrGG"/>
+        <phase duration="4"  state="rrrryyrrrryy"/>
+    </tlLogic>
+</additional>
