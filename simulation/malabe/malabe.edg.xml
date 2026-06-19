@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges>
+    <edge id="kaduwela_in"       from="kaduwela"     to="malabe_center" numLanes="2" speed="13.89"/>
+    <edge id="kaduwela_out"      from="malabe_center" to="kaduwela"     numLanes="2" speed="13.89"/>
+    <edge id="athurugiriya_in"   from="athurugiriya"  to="malabe_center" numLanes="2" speed="13.89"/>
+    <edge id="athurugiriya_out"  from="malabe_center" to="athurugiriya"  numLanes="2" speed="13.89"/>
+    <edge id="battaramulla_in"   from="battaramulla"  to="malabe_center" numLanes="2" speed="13.89"/>
+    <edge id="battaramulla_out"  from="malabe_center" to="battaramulla"  numLanes="2" speed="13.89"/>
+</edges>

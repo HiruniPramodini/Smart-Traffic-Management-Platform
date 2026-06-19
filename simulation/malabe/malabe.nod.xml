@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes>
+    <node id="malabe_center" x="0.0"   y="0.0"   type="traffic_light"/>
+    <node id="kaduwela"      x="500.0" y="0.0"   type="priority"/>
+    <node id="athurugiriya"  x="0.0"   y="-500.0" type="priority"/>
+    <node id="battaramulla"  x="-500.0" y="0.0"  type="priority"/>
+</nodes>
