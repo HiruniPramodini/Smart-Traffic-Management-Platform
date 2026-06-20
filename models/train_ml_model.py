@@ -29,3 +29,31 @@ df['battaramulla_congestion'] = df.apply(
 )
 
 print(df[['kaduwela_wait_sec', 'kaduwela_queue', 'kaduwela_congestion']].head(10))
+
+# Encode time_period (ONCE, not per road)
+df['time_period_encoded'] = df['time_period'].map({
+    'morning_peak': 0,
+    'afternoon_peak': 1,
+    'evening_peak': 2,
+    'off_peak': 3,
+    'night': 4
+})
+
+# Encode each road's congestion level
+df['kaduwela_congestion_encoded'] = df['kaduwela_congestion'].map({
+    'LOW': 0,
+    'MEDIUM': 1,
+    'HIGH': 2
+})
+
+df['athurugiriya_congestion_encoded'] = df['athurugiriya_congestion'].map({
+    'LOW': 0,
+    'MEDIUM': 1,
+    'HIGH': 2
+})
+
+df['battaramulla_congestion_encoded'] = df['battaramulla_congestion'].map({
+    'LOW': 0,
+    'MEDIUM': 1,
+    'HIGH': 2
+})
