@@ -57,3 +57,29 @@ df['battaramulla_congestion_encoded'] = df['battaramulla_congestion'].map({
     'MEDIUM': 1,
     'HIGH': 2
 })
+
+
+# Verify it worked
+print(df[['time_period', 'time_period_encoded', 'kaduwela_congestion', 'kaduwela_congestion_encoded']].head(15))
+
+#Labled the data 
+# Features (X) for Kaduwela
+X = df[['time_period_encoded', 'kaduwela_total', 'kaduwela_wait_sec', 'kaduwela_queue']]
+
+# Label (y) for Kaduwela
+y = df['kaduwela_congestion_encoded']
+
+print("X shape:", X.shape)
+print("y shape:", y.shape)
+print("\nFirst 5 rows of X:")
+print(X.head(5))
+print("\nFirst 5 rows of y:")
+print(y.head(5))
+
+#Split data 
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+print(f"Training set: {X_train.shape[0]} samples")
+print(f"Testing set: {X_test.shape[0]} samples")
