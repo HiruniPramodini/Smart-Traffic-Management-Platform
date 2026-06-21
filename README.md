@@ -246,6 +246,88 @@ import pickle
 with open('models/kaduwela_congestion_model.pkl', 'rb') as f:
     ml_model = pickle.load(f)
 
+
+
+## Testing the Agent
+
+**Test with Phase 2 data:**
+```python
+# Load test data
+X_test, y_test = load_test_data()
+
+# Run agent on each sample
+for i in range(len(X_test)):
+    vehicle_count = X_test.iloc[i]['kaduwela_total']
+    wait_time = X_test.iloc[i]['kaduwela_wait_sec']
+    queue = X_test.iloc[i]['kaduwela_queue']
+    time_period = X_test.iloc[i]['time_period']
+    
+    # Agent decides
+    green_time = agent.decide_green_time()
+    
+    # Measure: did it reduce waiting time vs fixed timer?
+```
+
+---
+
+## Performance Metrics
+
+**Evaluate agent using:**
+- **Average Wait Time** — lower is better
+- **Throughput** — vehicles processed per hour
+- **Queue Length** — shorter queues = better
+- **Fairness** — all roads get fair green time
+
+**Baseline comparison:**
+- Fixed timer (60s all roads) = baseline
+- Agent green time = should be better
+
+---
+
+## Future Enhancements
+
+1. **Phase 3B:** Add Q-Learning (agent learns optimal timings)
+2. **Phase 4:** Coordinator agent (multi-junction green wave)
+3. **Phase 5:** Real-time communication (agents talk to coordinator)
+4. **Phase 6:** Integration with dashboard (show decisions live)
+
+---
+
+## File Structure
+
+```
+agents/
+├── README.md                      ← You are here
+├── junction_agent.py              ← Phase 3A: Agent class (to be built)
+├── coordinator_agent.py           ← Phase 4: Multi-junction (future)
+└── test_agent.py                  ← Testing script (to be built)
+```
+
+---
+
+## Key Concepts
+
+**Agent:** Autonomous program that observes, thinks, and acts
+**State:** Current situation (vehicle count, time of day, etc.)
+**Action:** Decision made by agent (green time in seconds)
+**Reward:** Feedback on how good the action was (Phase 3B)
+**Q-Table:** Agent's memory of what works best (Phase 3B)
+
+---
+
+## References
+
+- Phase 1: SUMO simulation generates traffic data
+- Phase 2: ML model predicts congestion from vehicle data
+- Phase 3A: Agent uses predictions to decide signals
+- Phase 3B: Agent learns optimal decisions over time
+
+---
+
+**Status:** Phase 3A (Option B decision logic) — Ready to build
+
+
+
 # Agent uses it to predict
 prediction = ml_model.predict([[time_period_encoded, vehicle_count, wait_time, queue_length]])
 # Returns: 0 (LOW), 1 (MEDIUM), or 2 (HIGH)
