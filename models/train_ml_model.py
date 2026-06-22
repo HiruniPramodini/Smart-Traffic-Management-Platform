@@ -1,4 +1,5 @@
 import pandas as pd 
+
 df = pd.read_csv("data/processed/malabe_traffic_data.csv")
 
 print(df.head(5))
@@ -83,3 +84,25 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 print(f"Training set: {X_train.shape[0]} samples")
 print(f"Testing set: {X_test.shape[0]} samples")
+
+#Train the Model
+from xgboost import XGBClassifier
+
+# Create XGBoost model
+model = XGBClassifier(random_state=42, verbosity=0)
+
+# Train on training data
+model.fit(X_train, y_train)
+
+print("Model training complete!")
+# Predict on test data
+y_pred = model.predict(X_test)
+
+print("First 10 predictions:", y_pred[:10])
+print("First 10 actual values:", y_test.head(10).values)
+from sklearn.metrics import accuracy_score, classification_report
+
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nModel Accuracy: {accuracy * 100:.2f}%")
+print("\nDetailed Report:")
+print(classification_report(y_test, y_pred, target_names=['LOW', 'MEDIUM', 'HIGH']))
