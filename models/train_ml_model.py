@@ -1,4 +1,5 @@
 import pandas as pd 
+import pickle
 
 df = pd.read_csv("data/processed/malabe_traffic_data.csv")
 
@@ -106,3 +107,9 @@ accuracy = accuracy_score(y_test, y_pred)
 print(f"\nModel Accuracy: {accuracy * 100:.2f}%")
 print("\nDetailed Report:")
 print(classification_report(y_test, y_pred, target_names=['LOW', 'MEDIUM', 'HIGH']))
+
+# Save the model
+with open('models/kaduwela_congestion_model.pkl', 'wb') as f:
+    pickle.dump(model, f)
+
+print("Model saved to: models/kaduwela_congestion_model.pkl")
