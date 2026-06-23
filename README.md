@@ -1,7 +1,5 @@
 ## Smart-Traffic-Management-Platform ##
 
-# Collecting Data 
-Using SUMO
 
 # Agents — Junction AI System (Phase 3)
 
