@@ -156,38 +156,10 @@ Output: GREEN for 105 seconds
 
 ---
 
-## Phase 3A — Option B (Proportional Logic)
-
-**File:** `junction_agent.py`
-
-**Class:** `JunctionAgent`
-
-**Methods:**
-- `__init__(road_name, model_path)` — initialize agent
-- `observe(vehicle_count, wait_time, queue_length, time_period)` — read state
-- `predict_congestion()` — use ML model
-- `decide_green_time()` — convert to signal timing
-- `execute()` — return decision
-
-**Usage:**
-```python
-# Create agent for Kaduwela road
-agent = JunctionAgent("kaduwela", "models/kaduwela_congestion_model.pkl")
-
-# Observe current state
-agent.observe(vehicle_count=85, wait_time=55, queue_length=40, time_period="morning_peak")
-
-# Get prediction
-congestion = agent.predict_congestion()  # Returns: HIGH
-
-# Decide green time
-green_time = agent.decide_green_time()  # Returns: 105 seconds
-
-# Execute (in real system, would send to traffic controller)
-signal = agent.execute()  # Outputs signal timing
-```
-
----
+## Phase 3 - Get decitions using the ML predictions
+ use 2 kind of statments , 
+ 1. for the normal colour light
+ 2. in the special time 
 
 ## Phase 3B — Reinforcement Learning Enhancement (Future)
 
