@@ -1,58 +1,5 @@
 ## Smart-Traffic-Management-Platform ##
 
-# Collecting Data 
-
- ** YouTube footages **
-pip install yt-dlp
-yt-dlp "https://youtu.be/ANhIuoJcSm4" -o "srilanka_traffic.mp4"
-
-
- ** Run YOLO on it **
-from ultralytics import YOLO
-import cv2
-import csv
-
-model = YOLO("yolov8n.pt")  # downloads automatically first time
-
-cap = cv2.VideoCapture("srilanka_traffic.mp4")
-fps = cap.get(cv2.CAP_PROP_FPS)
-frame_interval = int(fps * 2)  # one reading every 2 seconds
-
-records = []
-frame_count = 0
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
-
-    if frame_count % frame_interval == 0:
-        results = model(frame, classes=[2, 3, 5, 7])
-        # 2=car, 3=motorcycle, 5=bus, 7=truck
-
-        counts = {"car": 0, "motorcycle": 0, "bus": 0, "truck": 0}
-        for box in results[0].boxes:
-            label = model.names[int(box.cls)]
-            if label in counts:
-                counts[label] += 1
-
-        records.append({
-            "frame": frame_count,
-            "time_sec": round(frame_count / fps, 1),
-            **counts,
-            "total": sum(counts.values())
-        })
-
-    frame_count += 1
-
-cap.release()
-
-with open("srilanka_traffic_data.csv", "w", newline="") as f:
-    writer = csv.DictWriter(f, fieldnames=records[0].keys())
-    writer.writeheader()
-    writer.writerows(records)
-
-print(f"Done — {len(records)} records saved")
 
 # Agents — Junction AI System (Phase 3)
 
@@ -156,38 +103,10 @@ Output: GREEN for 105 seconds
 
 ---
 
-## Phase 3A — Option B (Proportional Logic)
-
-**File:** `junction_agent.py`
-
-**Class:** `JunctionAgent`
-
-**Methods:**
-- `__init__(road_name, model_path)` — initialize agent
-- `observe(vehicle_count, wait_time, queue_length, time_period)` — read state
-- `predict_congestion()` — use ML model
-- `decide_green_time()` — convert to signal timing
-- `execute()` — return decision
-
-**Usage:**
-```python
-# Create agent for Kaduwela road
-agent = JunctionAgent("kaduwela", "models/kaduwela_congestion_model.pkl")
-
-# Observe current state
-agent.observe(vehicle_count=85, wait_time=55, queue_length=40, time_period="morning_peak")
-
-# Get prediction
-congestion = agent.predict_congestion()  # Returns: HIGH
-
-# Decide green time
-green_time = agent.decide_green_time()  # Returns: 105 seconds
-
-# Execute (in real system, would send to traffic controller)
-signal = agent.execute()  # Outputs signal timing
-```
-
----
+## Phase 3 - Get decitions using the ML predictions
+ use 2 kind of statments , 
+ 1. for the normal colour light
+ 2. in the special time 
 
 ## Phase 3B — Reinforcement Learning Enhancement (Future)
 
