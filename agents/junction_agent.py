@@ -19,13 +19,29 @@ class JunctionAgent:
         self.queue_length = None
         self.time_period = None
         self.congestion_level = None
+        
+        # NEW: Direction-aware features (Phase 4B)
+        self.direction_breakdown = {}  # {direction: vehicle_count}
+        self.direction_demand = {}     # {direction: percentage}
+        self.per_direction_green_time = {}  # {direction: green_time}
 
-    def observe(self, vehicle_count, wait_time, queue_length, time_period):
+    def observe(self, vehicle_count, wait_time, queue_length, time_period, direction_breakdown=None):
         # Store the current state
         self.vehicle_count = vehicle_count
         self.wait_time = wait_time
         self.queue_length = queue_length
         self.time_period = time_period
+        
+        # NEW: Store direction breakdown (Phase 4B)
+        if direction_breakdown:
+            self.direction_breakdown = direction_breakdown
+            # Calculate demand percentage for each direction
+            for direction, count in direction_breakdown.items():
+                self.direction_demand[direction] = count / vehicle_count if vehicle_count > 0 else 0
+        else:
+            # If no direction data, treat all as one
+            self.direction_breakdown = {"all_directions": vehicle_count}
+            self.direction_demand = {"all_directions": 1.0}
 
     def predict_congestion(self):
         # Encode time period
@@ -82,6 +98,40 @@ class JunctionAgent:
         # Phase 3A: Fall back to rule-based logic
         return self.rule_based_decision()
 
+    def decide_green_time_per_direction(self):
+        """
+        NEW (Phase 4B): Decide green time for EACH direction
+        
+        Strategy:
+        1. Get base green time for entire junction
+        2. Allocate proportional to demand
+        3. Ensure fairness minimum for all directions
+        """
+        
+        # Get base green time
+        base_green = self.decide_green_time()
+        
+        # Allocate per direction
+        MIN_GREEN_TIME = 30  # Everyone gets minimum
+        allocated_time = {}
+        
+        for direction, demand in self.direction_demand.items():
+            # Proportional allocation
+            proportional_time = base_green * demand
+            
+            # Apply fairness constraint
+            allocated_time[direction] = max(proportional_time, MIN_GREEN_TIME)
+        
+        # Ensure total doesn't exceed reasonable limit
+        # Normalize if sum exceeds threshold
+        total_allocated = sum(allocated_time.values())
+        if total_allocated > (base_green * 1.5):  # Allow 50% overage for fairness
+            scale_factor = (base_green * 1.5) / total_allocated
+            allocated_time = {d: t * scale_factor for d, t in allocated_time.items()}
+        
+        self.per_direction_green_time = allocated_time
+        return allocated_time
+
     def learn(self, actual_wait_time):
         # Update Q-Table based on actual results
         if self.congestion_level not in self.q_table:
@@ -99,9 +149,17 @@ class JunctionAgent:
         # Step 1: Predict congestion
         self.predict_congestion()
 
-        # Step 2: Decide green time
+        # Step 2: Decide green time (total)
         green_time = self.decide_green_time()
-        self.last_green_time = green_time  # Track for learning
+        self.last_green_time = green_time
         
-        # Step 3: Return result
-        return green_time
+        # NEW (Phase 4B): Decide per-direction green times
+        per_direction_times = self.decide_green_time_per_direction()
+        
+        # Step 3: Return both total and per-direction
+        return {
+            "total_green_time": green_time,
+            "per_direction_green_time": per_direction_times,
+            "congestion_level": self.congestion_level,
+            "direction_demand": self.direction_demand
+        }
