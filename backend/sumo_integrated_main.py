@@ -137,3 +137,40 @@ class PredictionEngine:
         Rule: If wait > 5 seconds, optimize signal
         """
         return predicted_wait_time > 5
+
+# ═══════════════════════════════════════════════════════════════
+# PART 4: QUEUE THEORY (Real-World Traffic Math)
+# ═══════════════════════════════════════════════════════════════
+
+class QueueTheory:
+    """
+    M/M/1 Queue Model (standard traffic theory)
+    Calculates realistic queue lengths and delays
+    """
+    
+    @staticmethod
+    def calculate_queue_length(arrival_rate, service_rate, time_in_cycle):
+        """
+        INPUT:
+        ├─ arrival_rate: vehicles arriving per second
+        ├─ service_rate: vehicles passing per second
+        └─ time_in_cycle: how long red light is
+        
+        OUTPUT:
+        └─ vehicles: average vehicles waiting
+        
+        Formula: Queue = arrival_rate × service_rate × red_time
+        """
+        if service_rate == 0:
+            return 0
+        
+        utilization = arrival_rate / service_rate
+        if utilization >= 1:
+            # Overloaded
+            queue = (arrival_rate * time_in_cycle)
+        else:
+            # Normal
+            queue = (utilization ** 2) / (2 * (1 - utilization))
+        
+        return round(queue, 0)
+
