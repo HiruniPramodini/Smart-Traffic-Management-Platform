@@ -37,3 +37,24 @@ SIGNAL_TIMING = {
     }
 }
 
+
+# ═══════════════════════════════════════════════════════════════
+# PART 2: SIMULATED SUMO DATA (In real system, read from SUMO)
+# ═══════════════════════════════════════════════════════════════
+
+class SUMOVehicle:
+    """Represents a vehicle from SUMO simulation"""
+    def __init__(self, vehicle_id, origin, destination):
+        self.id = vehicle_id
+        self.origin = origin
+        self.destination = destination
+        
+        # SUMO OUTPUT: Position and speed
+        self.distance_to_junction = random.uniform(100, 2000)  # meters
+        self.speed_kmh = random.uniform(30, 50)  # km/h (SUMO realistic)
+        
+        # Vehicle state
+        self.status = "approaching"
+        self.wait_time = 0
+        self.arrival_time = None  # Will be predicted
+
