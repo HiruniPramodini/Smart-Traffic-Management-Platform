@@ -45,3 +45,78 @@ input[type=range]{accent-color:#00d4ff;width:80px;cursor:pointer}
 .timing-row{display:flex;justify-content:space-between;font-size:.68em;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .timing-row:last-child{border-bottom:none}
 .tk{color:#4a6080}.tv{color:#c8d8f0;font-family:'Orbitron',monospace;font-size:.85em}
+
+/* ── Canvas area ── */
+#cvwrap{flex:1;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center, #060e20 0%, #04080f 100%);position:relative}
+canvas{border-radius:12px;box-shadow:0 0 40px rgba(0,212,255,.08),0 0 80px rgba(0,0,0,.5);border:1px solid rgba(0,212,255,.15)}
+#phasebar{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(6,14,32,.92);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:6px 20px;font-size:.72em;color:#00d4ff;font-family:'Orbitron',monospace;letter-spacing:1px;backdrop-filter:blur(4px)}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <h1>🚦 KADUWELA JUNCTION<br><span style="font-size:.75em;color:#4a8090;letter-spacing:0">Smart Traffic Management System</span></h1>
+  <div style="margin-left:auto"></div>
+  <div style="text-align:center">
+    <div class="hclk-lbl">SIMULATION TIME</div>
+    <div class="hclock" id="clockEl">07:00</div>
+  </div>
+  <div id="peakEl" class="peak-badge pm">MORNING PEAK</div>
+  <div style="width:1px;height:36px;background:rgba(0,212,255,.2)"></div>
+  <div class="hrow"><span class="hlbl">Set Time:</span><input type="time" id="timeInput" value="07:00"><button class="btn bb" onclick="applyTime()">Apply</button></div>
+  <div class="hrow"><span class="hlbl">Sim Speed:</span><input type="range" id="speedSlider" min="1" max="20" value="5" oninput="document.getElementById('spv').textContent=this.value+'x'"><span class="vval" id="spv">5x</span></div>
+  <div class="hrow"><span class="hlbl">Traffic:</span><input type="range" id="spawnSlider" min="1" max="5" value="2"><span class="vval" id="spwnv" style="color:#00ff88"></span></div>
+  <div class="hrow" style="gap:6px">
+    <button class="btn bg" id="startBtn" onclick="startSim()">▶ Start</button>
+    <button class="btn br" id="stopBtn" onclick="stopSim()" style="display:none">⏸ Pause</button>
+    <button class="btn bb" onclick="resetSim()">↺ Reset</button>
+  </div>
+</div>
+<div id="main">
+  <div id="sidebar">
+    <div class="card">
+      <div class="ctitle">Traffic Signals</div>
+      <div class="sig-row"><div class="sigdot" id="sd-malabe"></div><div class="signame">Malabe ↓</div><div class="sigtimer" id="st-malabe"></div></div>
+      <div class="sig-row"><div class="sigdot" id="sd-biyagama"></div><div class="signame">Biyagama ↑</div><div class="sigtimer" id="st-biyagama"></div></div>
+      <div class="sig-row"><div class="sigdot" id="sd-awissawella"></div><div class="signame">Awissawella →</div><div class="sigtimer" id="st-awissawella"></div></div>
+      <div class="sig-row"><div class="sigdot" id="sd-angoda"></div><div class="signame">Angoda ←</div><div class="sigtimer" id="st-angoda"></div></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Live Stats</div>
+      <div class="stat-row"><span class="sk">Active Vehicles</span><span class="sv" id="svActive">0</span></div>
+      <div class="stat-row"><span class="sk">Waiting at Red</span><span class="sv" id="svWait" style="color:#ff4466">0</span></div>
+      <div class="stat-row"><span class="sk">Passed Through</span><span class="sv" id="svPassed" style="color:#00ff88">0</span></div>
+      <div class="stat-row"><span class="sk">Current Phase</span><span class="sv" id="svPhase">--</span></div>
+      <div class="stat-row"><span class="sk">Phase Time Left</span><span class="sv" id="svRem" style="color:#ffaa00">--s</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Legend</div>
+      <div class="leg-item"><div class="leg-box" style="background:#00ff88"></div>Biyagama vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#00d4ff"></div>Awissawella vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#ff6688"></div>Malabe vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#ffaa00"></div>Angoda vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#111;border:1px solid #f00"></div>Stopped at red</div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Signal Timing</div>
+      <div style="font-size:.65em;color:#4a6080;margin-bottom:5px">Adaptive by time period:</div>
+      <div class="timing-row"><span class="tk">🌅 Morning 6-9AM</span><span class="tv">NS:35 EW:25</span></div>
+      <div class="timing-row"><span class="tk">☀️ Off-Peak</span><span class="tv">NS:30 EW:30</span></div>
+      <div class="timing-row"><span class="tk">🌆 Evening 4-7PM</span><span class="tv">NS:25 EW:35</span></div>
+      <div class="timing-row"><span class="tk">🌙 Night 10PM-5AM</span><span class="tv">NS:20 EW:20</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">How It Works</div>
+      <div style="font-size:.65em;color:#6a7a9a;line-height:1.6">
+        Phase 0 → <span style="color:#00ff88">Biyagama + Malabe</span> get <b style="color:#00ff44">GREEN</b><br>
+        Phase 1 → <span style="color:#00d4ff">Awissawella + Angoda</span> get <b style="color:#00ff44">GREEN</b><br><br>
+        Vehicles stop at the white line when their signal is <b style="color:#ff3344">RED</b>.<br><br>
+        Peak hours change how long each phase lasts.
+      </div>
+    </div>
+  </div>
+  <div id="cvwrap">
+    <canvas id="sim"></canvas>
+    <div id="phasebar">Initializing…</div>
+  </div>
+</div>
+<script>
