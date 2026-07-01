@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🚦 Kaduwela Junction — Live Traffic Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',Arial,sans-serif;background:#04080f;color:#c8d8f0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Header ── */
+#hdr{background:linear-gradient(135deg,#080f1e,#0d0520);border-bottom:1px solid rgba(0,212,255,.25);padding:10px 20px;display:flex;align-items:center;gap:20px;flex-shrink:0}
+#hdr h1{font-family:'Orbitron',monospace;font-size:.95em;color:#00d4ff;text-shadow:0 0 12px #00d4ff88;letter-spacing:1px;white-space:nowrap}
+.hclock{font-family:'Orbitron',monospace;font-size:1.9em;color:#00ff88;text-shadow:0 0 16px #00ff8899;letter-spacing:4px;line-height:1}
+.hclk-lbl{font-size:.55em;color:#4a6080;letter-spacing:2px;text-transform:uppercase;text-align:center}
+.peak-badge{padding:4px 12px;border-radius:20px;font-size:.65em;font-weight:700;letter-spacing:1px;border:1px solid;white-space:nowrap}
+.pm{color:#ff8c00;border-color:#ff8c00;background:#ff8c0018}
+.pe{color:#ff4466;border-color:#ff4466;background:#ff446618}
+.pn{color:#8899ff;border-color:#8899ff;background:#8899ff18}
+.po{color:#00d4ff;border-color:#00d4ff;background:#00d4ff18}
+.hrow{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hlbl{font-size:.68em;color:#4a6080;white-space:nowrap}
+input[type=time]{background:#060d1a;border:1px solid rgba(0,212,255,.35);border-radius:6px;color:#00d4ff;padding:5px 8px;font-family:'Orbitron',monospace;font-size:.8em;width:100px}
+input[type=range]{accent-color:#00d4ff;width:80px;cursor:pointer}
+.vval{font-family:'Orbitron',monospace;font-size:.75em;color:#00d4ff;min-width:28px}
+.btn{padding:6px 16px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:.75em;transition:all .2s;white-space:nowrap}
+.bg{background:linear-gradient(135deg,#008833,#00bb44);color:#fff}.bg:hover{filter:brightness(1.2)}
+.br{background:linear-gradient(135deg,#881122,#cc2233);color:#fff}.br:hover{filter:brightness(1.2)}
+.bb{background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.4);color:#00d4ff}.bb:hover{background:rgba(0,180,255,.25)}
+
+/* ── Main ── */
+#main{display:flex;flex:1;overflow:hidden;gap:0}
+#sidebar{width:210px;flex-shrink:0;background:#060c18;border-right:1px solid rgba(0,212,255,.12);padding:10px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:10px}
+.ctitle{font-family:'Orbitron',monospace;font-size:.6em;color:#00d4ff88;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(0,212,255,.1)}
+.sig-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sig-row:last-child{border-bottom:none}
+.sigdot{width:14px;height:14px;border-radius:50%;flex-shrink:0;transition:background .3s,box-shadow .3s}
+.signame{font-size:.72em;flex:1;color:#b0c0e0}
+.sigtimer{font-family:'Orbitron',monospace;font-size:.65em;min-width:50px;text-align:right}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0}
+.sk{font-size:.68em;color:#4a6080}.sv{font-family:'Orbitron',monospace;font-size:.85em;color:#00d4ff}
+.leg-item{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:.7em;color:#8899bb}
+.leg-box{width:16px;height:9px;border-radius:2px;flex-shrink:0}
+.timing-row{display:flex;justify-content:space-between;font-size:.68em;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.timing-row:last-child{border-bottom:none}
+.tk{color:#4a6080}.tv{color:#c8d8f0;font-family:'Orbitron',monospace;font-size:.85em}
