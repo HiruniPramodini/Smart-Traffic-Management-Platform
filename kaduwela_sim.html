@@ -236,3 +236,225 @@ class Vehicle{
     ctx.restore();
   }
 }
+
+// ── Draw road ──
+function drawRoad(){
+  // Sky
+  ctx.fillStyle='#050b18'; ctx.fillRect(0,0,W,H);
+
+  // Road asphalt
+  const rd='#111b30';
+  ctx.fillStyle=rd;
+  ctx.fillRect(CX-RW,0,RW*2,H);
+  ctx.fillRect(0,CY-RW,W,RW*2);
+
+  // Junction box fill
+  const jg=ctx.createRadialGradient(CX,CY,0,CX,CY,90);
+  jg.addColorStop(0,'#161e38'); jg.addColorStop(1,'#111b30');
+  ctx.fillStyle=jg;
+  ctx.fillRect(CX-RW,CY-RW,RW*2,RW*2);
+
+  // Road edge lines
+  ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.lineWidth=1;
+  ctx.strokeRect(CX-RW,0,RW*2,H);
+  ctx.strokeRect(0,CY-RW,W,RW*2);
+
+  // Junction border glow
+  ctx.strokeStyle='rgba(0,212,255,.3)'; ctx.lineWidth=2;
+  ctx.strokeRect(CX-RW,CY-RW,RW*2,RW*2);
+
+  // Centre dashed lines
+  ctx.setLineDash([14,16]); ctx.strokeStyle='rgba(255,220,0,.2)'; ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(CX,0);ctx.lineTo(CX,CY-RW);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX,CY+RW);ctx.lineTo(CX,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,CY);ctx.lineTo(CX-RW,CY);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX+RW,CY);ctx.lineTo(W,CY);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Stop lines (white)
+  ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(CX-RW,CY+JR+10);ctx.lineTo(CX+RW,CY+JR+10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX-RW,CY-JR-10);ctx.lineTo(CX+RW,CY-JR-10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX-JR-10,CY-RW);ctx.lineTo(CX-JR-10,CY+RW);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX+JR+10,CY-RW);ctx.lineTo(CX+JR+10,CY+RW);ctx.stroke();
+
+  // Road name labels
+  ctx.font='bold 13px Inter,Arial'; ctx.fillStyle='#5a7090';
+  ctx.textAlign='center'; ctx.fillText('MALABE',CX,22);
+  ctx.fillText('BIYAGAMA',CX,H-8);
+  ctx.textAlign='left'; ctx.fillText('AWISSAWELLA',10,CY-44);
+  ctx.textAlign='right'; ctx.fillText('ANGODA',W-10,CY-44);
+
+  // Directional arrows
+  ctx.fillStyle='rgba(255,255,255,.15)'; ctx.font='20px Arial';
+  ctx.textAlign='center';
+  ctx.fillText('↑',CX,H-48);
+  ctx.fillText('↓',CX,46);
+  ctx.textAlign='left';ctx.fillText('→',16,CY+6);
+  ctx.textAlign='right';ctx.fillText('←',W-16,CY+6);
+
+  // Kaduwela label
+  ctx.textAlign='center'; ctx.font='bold 16px "Orbitron",Arial';
+  const kgr=ctx.createLinearGradient(CX-40,CY,CX+40,CY);
+  kgr.addColorStop(0,'#00d4ff'); kgr.addColorStop(1,'#0099cc');
+  ctx.fillStyle=kgr;
+  ctx.fillText('KADUWELA',CX,CY+7);
+}
+
+// ── Draw one traffic light ──
+function drawTL(x,y,state){
+  const bw=28,bh=78,r=10;
+  // Housing
+  const bg=ctx.createLinearGradient(x-bw/2,y,x+bw/2,y);
+  bg.addColorStop(0,'#1a1a2a');bg.addColorStop(1,'#0d0d1a');
+  ctx.fillStyle=bg;
+  ctx.beginPath();ctx.roundRect(x-bw/2,y-bh/2,bw,bh,6);ctx.fill();
+  ctx.strokeStyle='#2a2a4a';ctx.lineWidth=1;ctx.stroke();
+
+  const isG=state==='green', isR=state==='red';
+
+  // Red bulb
+  ctx.beginPath();ctx.arc(x,y-24,r,0,Math.PI*2);
+  ctx.fillStyle=isR?'#ff1122':'#2a0005';
+  if(isR){ctx.shadowColor='#ff0000';ctx.shadowBlur=25;}
+  ctx.fill();ctx.shadowBlur=0;
+
+  // Yellow bulb (off)
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fillStyle='#1a1005';ctx.fill();
+
+  // Green bulb
+  ctx.beginPath();ctx.arc(x,y+24,r,0,Math.PI*2);
+  ctx.fillStyle=isG?'#00ff44':'#003310';
+  if(isG){ctx.shadowColor='#00ff00';ctx.shadowBlur=25;}
+  ctx.fill();ctx.shadowBlur=0;
+
+  // State text below
+  ctx.fillStyle=isG?'#00ff88':isR?'#ff4466':'#888';
+  ctx.font='bold 9px Arial';ctx.textAlign='center';
+  ctx.fillText(state.toUpperCase(),x,y+bh/2+12);
+}
+
+// ── Draw all 4 signals ──
+function drawSignals(){
+  // Malabe (top road) — pole to left of road entry
+  drawTL(CX-RW-28,CY-JR-44,'malabe',getSig('malabe'));
+  // Biyagama (bottom road) — pole to right
+  drawTL(CX+RW+28,CY+JR+44,'biyagama',getSig('biyagama'));
+  // Awissawella (left road) — pole above road entry
+  drawTL(CX-JR-44,CY-RW-28,'awissawella',getSig('awissawella'));
+  // Angoda (right road) — pole above road entry
+  drawTL(CX+JR+44,CY-RW-28,'angoda',getSig('angoda'));
+}
+
+// ── Update sidebar UI ──
+function updateUI(){
+  const h=Math.floor(simTime/60)%24, m=Math.floor(simTime%60);
+  document.getElementById('clockEl').textContent=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+
+  const p=getPeriod(simTime);
+  const el=document.getElementById('peakEl');
+  const MAP={morning:['🌅 MORNING PEAK','pm'],evening:['🌆 EVENING PEAK','pe'],night:['🌙 NIGHT','pn'],off:['☀️ OFF-PEAK','po']};
+  el.textContent=MAP[p][0]; el.className='peak-badge '+MAP[p][1];
+
+  const durs=getDurations();
+  const rem=Math.max(0,Math.ceil((durs[phase]-phaseMs)/1000));
+
+  ['malabe','biyagama','awissawella','angoda'].forEach(d=>{
+    const s=getSig(d);
+    const dot=document.getElementById('sd-'+d);
+    const tim=document.getElementById('st-'+d);
+    if(s==='green'){dot.style.background='#00ff44';dot.style.boxShadow='0 0 10px #00ff00,0 0 20px #00ff0044';}
+    else{dot.style.background='#ff2233';dot.style.boxShadow='0 0 10px #ff0000,0 0 20px #ff000044';}
+    tim.textContent=(s==='green'?'🟢':'🔴')+` ${rem}s`;
+    tim.style.color=s==='green'?'#00ff88':'#ff4466';
+  });
+
+  document.getElementById('svActive').textContent=vehicles.filter(v=>!v.passed).length;
+  document.getElementById('svWait').textContent=vehicles.filter(v=>v.waiting&&!v.passed).length;
+  document.getElementById('svPassed').textContent=totalPassed;
+  document.getElementById('svPhase').textContent=phase===0?'NS GREEN':'EW GREEN';
+  document.getElementById('svRem').textContent=rem+'s';
+
+  const pn=phase===0?'Biyagama + Malabe':'Awissawella + Angoda';
+  document.getElementById('phasebar').textContent=`🟢 ${pn} GREEN  |  ⏱ ${rem}s remaining`;
+}
+
+// ── Simulation update ──
+function update(dt){
+  const durs=getDurations();
+  phaseMs+=dt;
+  if(phaseMs>=durs[phase]){phase=1-phase; phaseMs=0;}
+
+  vehicles=vehicles.filter(v=>!v.passed||v.pos<1.7);
+  vehicles.forEach(v=>v.update(dt));
+
+  spawnMs+=dt;
+  const spv=parseInt(document.getElementById('spawnSlider').value);
+  const rate=3000-spv*400;
+  if(spawnMs>rate && vehicles.filter(v=>!v.passed).length<22){
+    spawnMs=0;
+    const r=Math.random();
+    // Weight toward Biyagama + Awissawella per user request
+    let o;
+    if(r<0.38) o='biyagama';
+    else if(r<0.72) o='awissawella';
+    else if(r<0.86) o='malabe';
+    else o='angoda';
+    const hasNear=vehicles.some(v=>v.o===o&&!v.passed&&v.pos<0.08);
+    if(!hasNear) vehicles.push(new Vehicle(o));
+  }
+
+  const spd=parseInt(document.getElementById('speedSlider').value);
+  simTime+=(dt/1000)*(spd*0.5);
+  if(simTime>=1440) simTime-=1440;
+}
+
+// ── Render loop ──
+let last=0;
+function loop(ts){
+  if(!running){last=0;return;}
+  const dt=last?Math.min(ts-last,80):16;
+  last=ts;
+  update(dt);
+  drawRoad();
+  drawSignals();
+  vehicles.forEach(v=>v.draw());
+  updateUI();
+  requestAnimationFrame(loop);
+}
+
+// ── Controls ──
+function startSim(){
+  running=true;
+  document.getElementById('startBtn').style.display='none';
+  document.getElementById('stopBtn').style.display='';
+  requestAnimationFrame(loop);
+}
+function stopSim(){
+  running=false;
+  document.getElementById('startBtn').style.display='';
+  document.getElementById('stopBtn').style.display='none';
+}
+function resetSim(){
+  stopSim(); vehicles=[]; phase=0; phaseMs=0; spawnMs=0; totalPassed=0;
+  applyTime();
+}
+function applyTime(){
+  const t=document.getElementById('timeInput').value.split(':');
+  simTime=parseInt(t[0])*60+parseInt(t[1]);
+  drawRoad(); drawSignals(); updateUI();
+}
+
+// ── Spawn slider label ──
+const spwnSl=document.getElementById('spawnSlider');
+const spwnLbl=document.getElementById('spwnv');
+const SPWNL=['','Low','Medium','High','Very High','Max'];
+spwnSl.oninput=()=>spwnLbl.textContent=SPWNL[spwnSl.value]||'';
+spwnLbl.textContent=SPWNL[spwnSl.value];
+
+// ── Initial render ──
+drawRoad(); drawSignals(); updateUI();
+</script>
+</body>
+</html>
