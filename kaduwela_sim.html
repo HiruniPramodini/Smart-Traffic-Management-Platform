@@ -128,3 +128,111 @@ cv.width=W; cv.height=H;
 const CX=W/2, CY=H/2;
 const JR=58; // junction half-size
 const RW=38; // road half-width
+// ── Simulation state ──
+let simTime=420,running=false,phase=0,phaseMs=0,spawnMs=0,totalPassed=0;
+let vehicles=[];
+
+// ── Peak & timing ──
+function getPeriod(m){
+  if(m>=360&&m<540) return 'morning';
+  if(m>=960&&m<1140) return 'evening';
+  if(m>=1320||m<300) return 'night';
+  return 'off';
+}
+function getDurations(){
+  const p=getPeriod(simTime);
+  if(p==='morning') return [35000,25000];
+  if(p==='evening') return [25000,35000];
+  if(p==='night')   return [20000,20000];
+  return [30000,30000];
+}
+// phase0=NS(Biyagama+Malabe)GREEN  phase1=EW(Awissawella+Angoda)GREEN
+function getSig(d){
+  return phase===0
+    ?(d==='biyagama'||d==='malabe'?'green':'red')
+    :(d==='awissawella'||d==='angoda'?'green':'red');
+}
+
+// ── Vehicle colours ──
+const VCOL={biyagama:'#00ff88',awissawella:'#00d4ff',malabe:'#ff6688',angoda:'#ffaa00'};
+
+// ── Vehicle class ──
+class Vehicle{
+  constructor(o){
+    this.o=o; this.pos=0;
+    this.speed=0.00065+Math.random()*0.0003;
+    this.waiting=false; this.passed=false; this.waitMs=0;
+    this.col=VCOL[o]; this.id=Math.random();
+    // Slight lane offset so vehicles don't overlap perfectly
+    this.laneOff=(Math.random()-.5)*6;
+  }
+  update(dt){
+    if(this.passed) return;
+    const STOP=0.84;
+    if(this.pos<STOP){
+      this.pos+=this.speed*dt; this.waiting=false;
+    } else if(getSig(this.o)==='green'){
+      this.pos+=this.speed*dt; this.waiting=false;
+    } else {
+      this.pos=STOP; this.waiting=true; this.waitMs+=dt;
+    }
+    if(this.pos>=1.6){this.passed=true; totalPassed++;}
+  }
+  // Returns {x,y,w,h,angle}
+  geom(){
+    const p=this.pos, lo=this.laneOff;
+    const jTop=CY-JR, jBot=CY+JR, jLeft=CX-JR, jRight=CX+JR;
+    if(this.o==='biyagama'){
+      // travels bottom→top
+      const full=H+JR+40;
+      const y=H-p*full+JR;
+      return {x:CX-9+lo,y,w:18,h:26,a:Math.PI*1.5};
+    }
+    if(this.o==='malabe'){
+      // travels top→bottom
+      const full=H+JR+40;
+      const y=-JR+p*full-JR;
+      return {x:CX-9+lo,y,w:18,h:26,a:Math.PI*.5};
+    }
+    if(this.o==='awissawella'){
+      // travels left→right
+      const full=W+JR+40;
+      const x=-JR+p*full-JR;
+      return {x,y:CY-9+lo,w:26,h:18,a:0};
+    }
+    // angoda: travels right→left
+    const full=W+JR+40;
+    const x=W+JR-p*full+JR;
+    return {x,y:CY-9+lo,w:26,h:18,a:Math.PI};
+  }
+  draw(){
+    if(this.passed) return;
+    const g=this.geom(); if(!g) return;
+    const {x,y,w,h}=g;
+    ctx.save();
+    // Red border if waiting
+    if(this.waiting){
+      ctx.shadowColor='#ff0000'; ctx.shadowBlur=14;
+      ctx.strokeStyle='#ff2200'; ctx.lineWidth=2.5;
+      ctx.strokeRect(x-2,y-2,w+4,h+4);
+    }
+    // Body glow
+    ctx.shadowColor=this.col; ctx.shadowBlur=10;
+    ctx.fillStyle=this.col;
+    ctx.fillRect(x,y,w,h);
+    ctx.shadowBlur=0;
+    // Windshield (darker strip)
+    ctx.fillStyle='rgba(0,0,0,.4)';
+    if(this.o==='biyagama')   ctx.fillRect(x+3,y+3,w-6,7);
+    if(this.o==='malabe')     ctx.fillRect(x+3,y+h-10,w-6,7);
+    if(this.o==='awissawella')ctx.fillRect(x+3,y+3,8,h-6);
+    if(this.o==='angoda')     ctx.fillRect(x+w-11,y+3,8,h-6);
+    // Headlights
+    ctx.fillStyle='rgba(255,255,200,.8)';
+    if(this.o==='biyagama'){ctx.fillRect(x+2,y+h-5,4,3);ctx.fillRect(x+w-6,y+h-5,4,3);}
+    if(this.o==='malabe'){ctx.fillRect(x+2,y+2,4,3);ctx.fillRect(x+w-6,y+2,4,3);}
+    if(this.o==='awissawella'){ctx.fillRect(x+w-5,y+2,3,4);ctx.fillRect(x+w-5,y+h-6,3,4);}
+    if(this.o==='angoda'){ctx.fillRect(x+2,y+2,3,4);ctx.fillRect(x+2,y+h-6,3,4);}
+    ctx.restore();
+  }
+}
