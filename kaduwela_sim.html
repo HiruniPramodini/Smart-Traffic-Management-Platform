@@ -120,3 +120,11 @@ canvas{border-radius:12px;box-shadow:0 0 40px rgba(0,212,255,.08),0 0 80px rgba(
   </div>
 </div>
 <script>
+// ── Canvas setup ──
+const cv=document.getElementById('sim');
+const ctx=cv.getContext('2d');
+const W=820,H=600;
+cv.width=W; cv.height=H;
+const CX=W/2, CY=H/2;
+const JR=58; // junction half-size
+const RW=38; // road half-width
