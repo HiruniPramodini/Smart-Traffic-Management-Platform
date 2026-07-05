@@ -25,3 +25,55 @@ documented design:
   Agent explores nearby green-time actions and gradually prefers the one
   with the best (least negative) reward for that congestion level.
 """
+
+import pickle
+import random
+
+
+class JunctionAgent:
+    CONGESTION_NAMES = ["LOW", "MEDIUM", "HIGH"]
+
+    # Phase 3A base green times
+    BASE_GREEN = {0: 60, 1: 70, 2: 90}
+
+    # Phase 3A time-period caps (None = no cap)
+    PERIOD_CAP = {
+        "morning_peak": None,
+        "evening_peak": None,
+        "afternoon_peak": 85,
+        "off_peak": 80,
+        "night": 75,
+    }
+
+    # Candidate actions Q-learning is allowed to explore around the base
+    CANDIDATE_GREEN_TIMES = [50, 60, 70, 80, 90, 100]
+
+    FAIRNESS_MIN_GREEN = 30  # Phase 4B fairness minimum
+
+    def __init__(self, road_name, model_path=None, epsilon=0.15):
+        self.road_name = road_name
+        self.model = None
+        self.epsilon = epsilon  # exploration rate for Q-learning
+
+        if model_path:
+            try:
+                with open(model_path, "rb") as f:
+                    self.model = pickle.load(f)
+            except Exception:
+                # Model file missing / xgboost not installed / version mismatch.
+                # Fall back to the rule-based classifier below so the agent
+                # still works end-to-end.
+                self.model = None
+
+        # Latest observation
+        self.vehicle_count = 0
+        self.wait_time = 0
+        self.queue_length = 0
+        self.time_period = "off_peak"
+        self.direction_demand = {}
+
+        # Latest prediction
+        self.congestion_level = 0  # 0=LOW,1=MEDIUM,2=HIGH
+
+        # Q-table: {congestion_level: {green_time: reward}}
+        self.q_table = {0: {}, 1: {}, 2: {}}
