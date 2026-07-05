@@ -226,3 +226,47 @@ class KaduwelaSimulator:
             ],
         }
 
+
+simulator = None
+
+
+@app.get("/")
+def root():
+    return {"system": "Kaduwela Junction (fixed)", "version": "4.0", "status": "ready"}
+
+
+@app.post("/api/simulation/start")
+def start_simulation(request: StartRequest):
+    global simulator
+    simulator = KaduwelaSimulator()
+    simulator.initialize(request.start_time, request.time_period)
+    return {"status": "started", "total_vehicles": len(simulator.vehicles), "time_period": request.time_period}
+
+
+@app.post("/api/simulation/step")
+def step_simulation(request: StepRequest = None):
+    if simulator is None:
+        return {"error": "Start simulation first"}
+    steps = request.steps if request else 1
+    for _ in range(steps):
+        simulator.step()
+    return simulator.get_state()
+
+
+@app.get("/api/simulation/state")
+def get_state():
+    if simulator is None:
+        return {"error": "Start simulation first"}
+    return simulator.get_state()
+
+
+@app.post("/api/simulation/reset")
+def reset():
+    global simulator
+    simulator = None
+    return {"status": "reset"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "healthy", "version": "4.0"}
