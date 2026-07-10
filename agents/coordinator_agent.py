@@ -1,5 +1,5 @@
 import pickle
-from junction_agent import JunctionAgent
+from backend.junction_agent import JunctionAgent
 
 class CoordinatorAgent:
     def __init__(self):
