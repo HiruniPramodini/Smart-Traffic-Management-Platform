@@ -1,5 +1,5 @@
 import pickle
-from junction_agent import JunctionAgent
+from backend.junction_agent import JunctionAgent
 
 class CoordinatorAgentV2:
     """Phase 4B: Demand-Responsive Coordinator with Directional Awareness"""
