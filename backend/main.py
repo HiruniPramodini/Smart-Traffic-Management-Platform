@@ -30,3 +30,31 @@ class SimulationRequest(BaseModel):
 
 class StepRequest(BaseModel):
     steps: int = 1
+
+
+# ---------------- Simulation Entities ----------------
+class Vehicle:
+    def __init__(self, vehicle_id, vehicle_type, route, route_name):
+        self.id = vehicle_id
+        self.type = vehicle_type
+        self.route = route  # list of link names
+        self.route_name = route_name  # name descriptor
+        self.current_route_index = 0
+        self.position_meters = 0.0
+        self.speed_mps = 13.8  # default ~50 km/h
+        self.wait_time = 0.0
+        self.status = "moving"  # moving | waiting | arrived
+        self.color = random.choice(["#38bdf8", "#34d399", "#fb923c", "#f472b6", "#a78bfa"])
+
+    def current_link(self):
+        if self.current_route_index < len(self.route):
+            return self.route[self.current_route_index]
+        return None
+
+    def next_junction(self):
+        # Determine which junction this vehicle is heading towards on its route
+        for i in range(self.current_route_index, len(self.route)):
+            link = self.route[i]
+            if link in ["Ranala", "Kaduwela", "Kotikawatta", "Malabe", "Biyagama"]:
+                return link
+        return None
