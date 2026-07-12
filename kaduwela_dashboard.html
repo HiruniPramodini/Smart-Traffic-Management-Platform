@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>🚦 Kaduwela Junction — Live Traffic Simulation</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',Arial,sans-serif;background:#04080f;color:#c8d8f0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Header ── */
+#hdr{background:linear-gradient(135deg,#080f1e,#0d0520);border-bottom:1px solid rgba(0,212,255,.25);padding:10px 20px;display:flex;align-items:center;gap:20px;flex-shrink:0}
+#hdr h1{font-family:'Orbitron',monospace;font-size:.95em;color:#00d4ff;text-shadow:0 0 12px #00d4ff88;letter-spacing:1px;white-space:nowrap}
+.hclock{font-family:'Orbitron',monospace;font-size:1.9em;color:#00ff88;text-shadow:0 0 16px #00ff8899;letter-spacing:4px;line-height:1}
+.hclk-lbl{font-size:.55em;color:#4a6080;letter-spacing:2px;text-transform:uppercase;text-align:center}
+.peak-badge{padding:4px 12px;border-radius:20px;font-size:.65em;font-weight:700;letter-spacing:1px;border:1px solid;white-space:nowrap}
+.pm{color:#ff8c00;border-color:#ff8c00;background:#ff8c0018}
+.pe{color:#ff4466;border-color:#ff4466;background:#ff446618}
+.pn{color:#8899ff;border-color:#8899ff;background:#8899ff18}
+.po{color:#00d4ff;border-color:#00d4ff;background:#00d4ff18}
+.hrow{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hlbl{font-size:.68em;color:#4a6080;white-space:nowrap}
+input[type=time]{background:#060d1a;border:1px solid rgba(0,212,255,.35);border-radius:6px;color:#00d4ff;padding:5px 8px;font-family:'Orbitron',monospace;font-size:.8em;width:100px}
+input[type=range]{accent-color:#00d4ff;width:80px;cursor:pointer}
+.vval{font-family:'Orbitron',monospace;font-size:.75em;color:#00d4ff;min-width:28px}
+.btn{padding:6px 16px;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:.75em;transition:all .2s;white-space:nowrap}
+.bg{background:linear-gradient(135deg,#008833,#00bb44);color:#fff}.bg:hover{filter:brightness(1.2)}
+.br{background:linear-gradient(135deg,#881122,#cc2233);color:#fff}.br:hover{filter:brightness(1.2)}
+.bb{background:rgba(0,180,255,.15);border:1px solid rgba(0,180,255,.4);color:#00d4ff}.bb:hover{background:rgba(0,180,255,.25)}
+
+/* ── Main ── */
+#main{display:flex;flex:1;overflow:hidden;gap:0}
+#sidebar{width:210px;flex-shrink:0;background:#060c18;border-right:1px solid rgba(0,212,255,.12);padding:10px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.card{background:rgba(255,255,255,.03);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:10px}
+.ctitle{font-family:'Orbitron',monospace;font-size:.6em;color:#00d4ff88;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(0,212,255,.1)}
+.sig-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sig-row:last-child{border-bottom:none}
+.sigdot{width:14px;height:14px;border-radius:50%;flex-shrink:0;transition:background .3s,box-shadow .3s}
+.signame{font-size:.72em;flex:1;color:#b0c0e0}
+.sigtimer{font-family:'Orbitron',monospace;font-size:.65em;min-width:50px;text-align:right}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0}
+.sk{font-size:.68em;color:#4a6080}.sv{font-family:'Orbitron',monospace;font-size:.85em;color:#00d4ff}
+.leg-item{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:.7em;color:#8899bb}
+.leg-box{width:16px;height:9px;border-radius:2px;flex-shrink:0}
+.timing-row{display:flex;justify-content:space-between;font-size:.68em;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.timing-row:last-child{border-bottom:none}
+.tk{color:#4a6080}.tv{color:#c8d8f0;font-family:'Orbitron',monospace;font-size:.85em}
+
+/* ── Canvas area ── */
+#cvwrap{flex:1;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center, #060e20 0%, #04080f 100%);position:relative}
+canvas{border-radius:12px;box-shadow:0 0 40px rgba(0,212,255,.08),0 0 80px rgba(0,0,0,.5);border:1px solid rgba(0,212,255,.15)}
+#phasebar{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(6,14,32,.92);border:1px solid rgba(0,212,255,.3);border-radius:8px;padding:6px 20px;font-size:.72em;color:#00d4ff;font-family:'Orbitron',monospace;letter-spacing:1px;backdrop-filter:blur(4px)}
+</style>
+</head>
+<body>
+<div id="hdr">
+  <h1>🚦 KADUWELA JUNCTION<br><span style="font-size:.75em;color:#4a8090;letter-spacing:0">Smart Traffic Management System</span></h1>
+  <div style="margin-left:auto"></div>
+  <div style="text-align:center">
+    <div class="hclk-lbl">SIMULATION TIME</div>
+    <div class="hclock" id="clockEl">07:00</div>
+  </div>
+  <div id="peakEl" class="peak-badge pm">MORNING PEAK</div>
+  <div style="width:1px;height:36px;background:rgba(0,212,255,.2)"></div>
+  <div class="hrow"><span class="hlbl">Set Time:</span><input type="time" id="timeInput" value="07:00"><button class="btn bb" onclick="applyTime()">Apply</button></div>
+  <div class="hrow"><span class="hlbl">Sim Speed:</span><input type="range" id="speedSlider" min="1" max="20" value="5" oninput="document.getElementById('spv').textContent=this.value+'x'"><span class="vval" id="spv">5x</span></div>
+  <div class="hrow"><span class="hlbl">Traffic:</span><input type="range" id="spawnSlider" min="1" max="5" value="2"><span class="vval" id="spwnv" style="color:#00ff88"></span></div>
+  <div class="hrow" style="gap:6px">
+    <button class="btn bg" id="startBtn" onclick="startSim()">▶ Start</button>
+    <button class="btn br" id="stopBtn" onclick="stopSim()" style="display:none">⏸ Pause</button>
+    <button class="btn bb" onclick="resetSim()">↺ Reset</button>
+  </div>
+</div>
+<div id="main">
+  <div id="sidebar">
+    <div class="card">
+      <div class="ctitle">Traffic Signals</div>
+      <div class="sig-row"><div class="sigdot" id="sd-malabe"></div><div class="signame">Malabe ↓</div><div class="sigtimer" id="st-malabe"></div></div>
+      <div class="sig-row"><div class="sigdot" id="sd-biyagama"></div><div class="signame">Biyagama ↑</div><div class="sigtimer" id="st-biyagama"></div></div>
+      <div class="sig-row"><div class="sigdot" id="sd-awissawella"></div><div class="signame">Awissawella →</div><div class="sigtimer" id="st-awissawella"></div></div>
+      <div class="sig-row"><div class="sigdot" id="sd-angoda"></div><div class="signame">Angoda ←</div><div class="sigtimer" id="st-angoda"></div></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Live Stats</div>
+      <div class="stat-row"><span class="sk">Active Vehicles</span><span class="sv" id="svActive">0</span></div>
+      <div class="stat-row"><span class="sk">Waiting at Red</span><span class="sv" id="svWait" style="color:#ff4466">0</span></div>
+      <div class="stat-row"><span class="sk">Passed Through</span><span class="sv" id="svPassed" style="color:#00ff88">0</span></div>
+      <div class="stat-row"><span class="sk">Current Phase</span><span class="sv" id="svPhase">--</span></div>
+      <div class="stat-row"><span class="sk">Phase Time Left</span><span class="sv" id="svRem" style="color:#ffaa00">--s</span></div>
+      <div class="stat-row"><span class="sk">ML Congestion</span><span class="sv" id="svCongestion">--</span></div>
+      <div class="stat-row"><span class="sk">Agent Green Time</span><span class="sv" id="svGreenTime" style="color:#00d4ff">--</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Legend</div>
+      <div class="leg-item"><div class="leg-box" style="background:#00ff88"></div>Biyagama vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#00d4ff"></div>Awissawella vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#ff6688"></div>Malabe vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#ffaa00"></div>Angoda vehicles</div>
+      <div class="leg-item"><div class="leg-box" style="background:#111;border:1px solid #f00"></div>Stopped at red</div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Signal Timing (live, agent-decided)</div>
+      <div style="font-size:.65em;color:#4a6080;margin-bottom:5px">backend/junction_agent.py: congestion → green time, capped by time period. Recalculated every phase.</div>
+      <div class="timing-row"><span class="tk">LOW congestion</span><span class="tv">14s</span></div>
+      <div class="timing-row"><span class="tk">MEDIUM congestion</span><span class="tv">20s</span></div>
+      <div class="timing-row"><span class="tk">HIGH congestion</span><span class="tv">28s</span></div>
+      <div class="timing-row"><span class="tk">Off-peak / night cap</span><span class="tv">26s / 20s</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Green Wave Offset (corridor)</div>
+      <div style="font-size:.65em;color:#4a6080;margin-bottom:5px">agents/coordinator_agent_4b.py: next junction's green starts after this one's green+yellow</div>
+      <div id="gwOffsets"></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">How It Works</div>
+      <div style="font-size:.65em;color:#6a7a9a;line-height:1.6">
+        Phase A → <span style="color:#00ff88">Biyagama + Malabe</span> GREEN together (same road, no conflict)<br>
+        Phase B → <span style="color:#00d4ff">Awissawella + Angoda</span> GREEN together<br>
+        Only one phase runs at a time — the other is always <b style="color:#ff3344">RED</b>, with a <b style="color:#ffcc00">YELLOW</b> clearance between switches.<br><br>
+        Green duration isn't fixed: it's decided each phase from live queue length + wait time (LOW/MEDIUM/HIGH), same rule your ML model was trained on.
+      </div>
+    </div>
+  </div>
+  <div id="cvwrap">
+    <canvas id="sim"></canvas>
+    <div id="phasebar">Initializing…</div>
+  </div>
+</div>
+<script>
+// ── Canvas setup ──
+const cv=document.getElementById('sim');
+const ctx=cv.getContext('2d');
+const W=820,H=600;
+cv.width=W; cv.height=H;
+const CX=W/2, CY=H/2;
+const JR=58; // junction half-size
+const RW=38; // road half-width
+
+// ── Simulation state ──
+let simTime=420,running=false,phase=0,phaseMs=0,spawnMs=0,totalPassed=0;
+let vehicles=[];
+let inYellow=false, yellowMs=0;
+const YELLOW_MS=2500;
+
+// Two non-conflicting phase groups — same pairing used in backend/sumo_integrated_main_FIXED.py
+const PHASE_DIRS=[['biyagama','malabe'],['awissawella','angoda']];
+
+// ── Peak & timing ──
+function getPeriod(m){
+  if(m>=360&&m<540) return 'morning';
+  if(m>=960&&m<1140) return 'evening';
+  if(m>=1320||m<300) return 'night';
+  return 'off';
+}
+// Period caps in ms — mirrors backend JunctionAgent.PERIOD_CAP (60/70/90s base, scaled ~1:2.5 for this compressed sim clock)
+const PERIOD_CAP_MS={morning:null,evening:null,off:26000,night:20000};
+
+// ── Port of backend/junction_agent.py: congestion classification + Q-learning ──
+// Same thresholds as models/train_ml_model.py (HIGH: wait>60s|queue>50, MEDIUM: wait 30-60|queue 25-50)
+// scaled down to this sim's realistic vehicle counts.
+const BASE_GREEN_MS={0:14000,1:20000,2:28000};     // LOW / MEDIUM / HIGH  (scaled from 60/70/90s)
+const FAIRNESS_MIN_MS=8000;
+const qTable=[{}, {}, {}]; // qTable[congestionLevel][durationBucket] = reward
+
+function phaseDemand(dirs){
+  const active=vehicles.filter(v=>dirs.includes(v.o)&&!v.passed);
+  const waiting=active.filter(v=>v.waiting);
+  const avgWaitMs=waiting.length? waiting.reduce((s,v)=>s+v.waitMs,0)/waiting.length : 0;
+  return {count:active.length, queue:waiting.length, avgWaitS:avgWaitMs/1000};
+}
+function classifyCongestion(d){
+  if(d.avgWaitS>9 || d.queue>=6) return 2;      // HIGH
+  if(d.avgWaitS>=4 || d.queue>=3) return 1;     // MEDIUM
+  return 0;                                      // LOW
+}
+function decideGreenMs(congestion){
+  let base=BASE_GREEN_MS[congestion];
+  const cap=PERIOD_CAP_MS[getPeriod(simTime)];
+  if(cap) base=Math.min(base,cap);
+  // Q-learning: prefer the best-known duration bucket for this congestion level once learned
+  const table=qTable[congestion];
+  const keys=Object.keys(table);
+  if(keys.length && Math.random()>0.2){
+    const best=keys.reduce((a,b)=>table[a]>table[b]?a:b);
+    base=Math.max(FAIRNESS_MIN_MS, parseInt(best));
+  }
+  return Math.max(FAIRNESS_MIN_MS, base);
+}
+function learnFromPhase(dirs, congestion, actualDurationMs){
+  const d=phaseDemand(dirs);
+  const reward=-d.avgWaitS; // lower wait = better reward, same sign convention as agent.learn()
+  const bucket=Math.round(actualDurationMs/2000)*2000;
+  const table=qTable[congestion];
+  if(!(bucket in table) || reward>table[bucket]) table[bucket]=reward;
+}
+
+let currentCongestion=0, phaseDurationMs=BASE_GREEN_MS[0], lastDecision=null;
+
+function recomputePhase(){
+  const dirs=PHASE_DIRS[phase];
+  const d=phaseDemand(dirs);
+  currentCongestion=classifyCongestion(d);
+  phaseDurationMs=decideGreenMs(currentCongestion);
+  lastDecision={dirs,demand:d,congestion:currentCongestion,durationMs:phaseDurationMs};
+}
+
+// phase0=Group A(Biyagama+Malabe)  phase1=Group B(Awissawella+Angoda)
+function getSig(d){
+  const groupIdx=PHASE_DIRS[0].includes(d)?0:1;
+  if(inYellow) return groupIdx===phase?'yellow':'red';
+  return groupIdx===phase?'green':'red';
+}
+
+// ── Vehicle colours ──
+const VCOL={biyagama:'#00ff88',awissawella:'#00d4ff',malabe:'#ff6688',angoda:'#ffaa00'};
+
+// ── Vehicle class ──
+class Vehicle{
+  constructor(o){
+    this.o=o; this.pos=0;
+    this.speed=0.00065+Math.random()*0.0003;
+    this.waiting=false; this.passed=false; this.waitMs=0;
+    this.col=VCOL[o]; this.id=Math.random();
+    // Slight lane offset so vehicles don't overlap perfectly
+    this.laneOff=(Math.random()-.5)*6;
+  }
+  update(dt){
+    if(this.passed) return;
+    const STOP=0.84;
+    if(this.pos<STOP){
+      this.pos+=this.speed*dt; this.waiting=false;
+    } else if(getSig(this.o)==='green'){
+      this.pos+=this.speed*dt; this.waiting=false;
+    } else {
+      this.pos=STOP; this.waiting=true; this.waitMs+=dt;
+    }
+    if(this.pos>=1.6){this.passed=true; totalPassed++;}
+  }
+  // Returns {x,y,w,h,angle}
+  geom(){
+    const p=this.pos, lo=this.laneOff;
+    const jTop=CY-JR, jBot=CY+JR, jLeft=CX-JR, jRight=CX+JR;
+    if(this.o==='biyagama'){
+      // travels bottom→top
+      const full=H+JR+40;
+      const y=H-p*full+JR;
+      return {x:CX-9+lo,y,w:18,h:26,a:Math.PI*1.5};
+    }
+    if(this.o==='malabe'){
+      // travels top→bottom
+      const full=H+JR+40;
+      const y=-JR+p*full-JR;
+      return {x:CX-9+lo,y,w:18,h:26,a:Math.PI*.5};
+    }
+    if(this.o==='awissawella'){
+      // travels left→right
+      const full=W+JR+40;
+      const x=-JR+p*full-JR;
+      return {x,y:CY-9+lo,w:26,h:18,a:0};
+    }
+    // angoda: travels right→left
+    const full=W+JR+40;
+    const x=W+JR-p*full+JR;
+    return {x,y:CY-9+lo,w:26,h:18,a:Math.PI};
+  }
+  draw(){
+    if(this.passed) return;
+    const g=this.geom(); if(!g) return;
+    const {x,y,w,h}=g;
+    ctx.save();
+    // Red border if waiting
+    if(this.waiting){
+      ctx.shadowColor='#ff0000'; ctx.shadowBlur=14;
+      ctx.strokeStyle='#ff2200'; ctx.lineWidth=2.5;
+      ctx.strokeRect(x-2,y-2,w+4,h+4);
+    }
+    // Body glow
+    ctx.shadowColor=this.col; ctx.shadowBlur=10;
+    ctx.fillStyle=this.col;
+    ctx.fillRect(x,y,w,h);
+    ctx.shadowBlur=0;
+    // Windshield (darker strip)
+    ctx.fillStyle='rgba(0,0,0,.4)';
+    if(this.o==='biyagama')   ctx.fillRect(x+3,y+3,w-6,7);
+    if(this.o==='malabe')     ctx.fillRect(x+3,y+h-10,w-6,7);
+    if(this.o==='awissawella')ctx.fillRect(x+3,y+3,8,h-6);
+    if(this.o==='angoda')     ctx.fillRect(x+w-11,y+3,8,h-6);
+    // Headlights
+    ctx.fillStyle='rgba(255,255,200,.8)';
+    if(this.o==='biyagama'){ctx.fillRect(x+2,y+h-5,4,3);ctx.fillRect(x+w-6,y+h-5,4,3);}
+    if(this.o==='malabe'){ctx.fillRect(x+2,y+2,4,3);ctx.fillRect(x+w-6,y+2,4,3);}
+    if(this.o==='awissawella'){ctx.fillRect(x+w-5,y+2,3,4);ctx.fillRect(x+w-5,y+h-6,3,4);}
+    if(this.o==='angoda'){ctx.fillRect(x+2,y+2,3,4);ctx.fillRect(x+2,y+h-6,3,4);}
+    ctx.restore();
+  }
+}
+
+// ── Draw road ──
+function drawRoad(){
+  // Sky
+  ctx.fillStyle='#050b18'; ctx.fillRect(0,0,W,H);
+
+  // Road asphalt
+  const rd='#111b30';
+  ctx.fillStyle=rd;
+  ctx.fillRect(CX-RW,0,RW*2,H);
+  ctx.fillRect(0,CY-RW,W,RW*2);
+
+  // Junction box fill
+  const jg=ctx.createRadialGradient(CX,CY,0,CX,CY,90);
+  jg.addColorStop(0,'#161e38'); jg.addColorStop(1,'#111b30');
+  ctx.fillStyle=jg;
+  ctx.fillRect(CX-RW,CY-RW,RW*2,RW*2);
+
+  // Road edge lines
+  ctx.strokeStyle='rgba(255,255,255,.06)'; ctx.lineWidth=1;
+  ctx.strokeRect(CX-RW,0,RW*2,H);
+  ctx.strokeRect(0,CY-RW,W,RW*2);
+
+  // Junction border glow
+  ctx.strokeStyle='rgba(0,212,255,.3)'; ctx.lineWidth=2;
+  ctx.strokeRect(CX-RW,CY-RW,RW*2,RW*2);
+
+  // Centre dashed lines
+  ctx.setLineDash([14,16]); ctx.strokeStyle='rgba(255,220,0,.2)'; ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(CX,0);ctx.lineTo(CX,CY-RW);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX,CY+RW);ctx.lineTo(CX,H);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,CY);ctx.lineTo(CX-RW,CY);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX+RW,CY);ctx.lineTo(W,CY);ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Stop lines (white)
+  ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(CX-RW,CY+JR+10);ctx.lineTo(CX+RW,CY+JR+10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX-RW,CY-JR-10);ctx.lineTo(CX+RW,CY-JR-10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX-JR-10,CY-RW);ctx.lineTo(CX-JR-10,CY+RW);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(CX+JR+10,CY-RW);ctx.lineTo(CX+JR+10,CY+RW);ctx.stroke();
+
+  // Road name labels
+  ctx.font='bold 13px Inter,Arial'; ctx.fillStyle='#5a7090';
+  ctx.textAlign='center'; ctx.fillText('MALABE',CX,22);
+  ctx.fillText('BIYAGAMA',CX,H-8);
+  ctx.textAlign='left'; ctx.fillText('AWISSAWELLA',10,CY-44);
+  ctx.textAlign='right'; ctx.fillText('ANGODA',W-10,CY-44);
+
+  // Directional arrows
+  ctx.fillStyle='rgba(255,255,255,.15)'; ctx.font='20px Arial';
+  ctx.textAlign='center';
+  ctx.fillText('↑',CX,H-48);
+  ctx.fillText('↓',CX,46);
+  ctx.textAlign='left';ctx.fillText('→',16,CY+6);
+  ctx.textAlign='right';ctx.fillText('←',W-16,CY+6);
+
+  // Kaduwela label
+  ctx.textAlign='center'; ctx.font='bold 16px "Orbitron",Arial';
+  const kgr=ctx.createLinearGradient(CX-40,CY,CX+40,CY);
+  kgr.addColorStop(0,'#00d4ff'); kgr.addColorStop(1,'#0099cc');
+  ctx.fillStyle=kgr;
+  ctx.fillText('KADUWELA',CX,CY+7);
+}
+
+// ── Draw one traffic light ──
+function drawTL(x,y,state){
+  const bw=28,bh=78,r=10;
+  // Housing
+  const bg=ctx.createLinearGradient(x-bw/2,y,x+bw/2,y);
+  bg.addColorStop(0,'#1a1a2a');bg.addColorStop(1,'#0d0d1a');
+  ctx.fillStyle=bg;
+  ctx.beginPath();ctx.roundRect(x-bw/2,y-bh/2,bw,bh,6);ctx.fill();
+  ctx.strokeStyle='#2a2a4a';ctx.lineWidth=1;ctx.stroke();
+
+  const isG=state==='green', isR=state==='red', isY=state==='yellow';
+
+  // Red bulb
+  ctx.beginPath();ctx.arc(x,y-24,r,0,Math.PI*2);
+  ctx.fillStyle=isR?'#ff1122':'#2a0005';
+  if(isR){ctx.shadowColor='#ff0000';ctx.shadowBlur=25;}
+  ctx.fill();ctx.shadowBlur=0;
+
+  // Yellow bulb
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fillStyle=isY?'#ffcc00':'#1a1005';
+  if(isY){ctx.shadowColor='#ffcc00';ctx.shadowBlur=25;}
+  ctx.fill();ctx.shadowBlur=0;
+
+  // Green bulb
+  ctx.beginPath();ctx.arc(x,y+24,r,0,Math.PI*2);
+  ctx.fillStyle=isG?'#00ff44':'#003310';
+  if(isG){ctx.shadowColor='#00ff00';ctx.shadowBlur=25;}
+  ctx.fill();ctx.shadowBlur=0;
+
+  // State text below
+  ctx.fillStyle=isG?'#00ff88':isR?'#ff4466':isY?'#ffcc00':'#888';
+  ctx.font='bold 9px Arial';ctx.textAlign='center';
+  ctx.fillText(state.toUpperCase(),x,y+bh/2+12);
+}
+
+// ── Draw all 4 signals ──
+function drawSignals(){
+  // Malabe (top road) — pole to left of road entry
+  drawTL(CX-RW-28,CY-JR-44,'malabe',getSig('malabe'));
+  // Biyagama (bottom road) — pole to right
+  drawTL(CX+RW+28,CY+JR+44,'biyagama',getSig('biyagama'));
+  // Awissawella (left road) — pole above road entry
+  drawTL(CX-JR-44,CY-RW-28,'awissawella',getSig('awissawella'));
+  // Angoda (right road) — pole above road entry
+  drawTL(CX+JR+44,CY-RW-28,'angoda',getSig('angoda'));
+}
+
+// ── Update sidebar UI ──
+function updateUI(){
+  const h=Math.floor(simTime/60)%24, m=Math.floor(simTime%60);
+  document.getElementById('clockEl').textContent=`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;
+
+  const p=getPeriod(simTime);
+  const el=document.getElementById('peakEl');
+  const MAP={morning:['🌅 MORNING PEAK','pm'],evening:['🌆 EVENING PEAK','pe'],night:['🌙 NIGHT','pn'],off:['☀️ OFF-PEAK','po']};
+  el.textContent=MAP[p][0]; el.className='peak-badge '+MAP[p][1];
+
+  const rem=inYellow?Math.max(0,Math.ceil((YELLOW_MS-yellowMs)/1000)):Math.max(0,Math.ceil((phaseDurationMs-phaseMs)/1000));
+
+  ['malabe','biyagama','awissawella','angoda'].forEach(d=>{
+    const s=getSig(d);
+    const dot=document.getElementById('sd-'+d);
+    const tim=document.getElementById('st-'+d);
+    if(s==='green'){dot.style.background='#00ff44';dot.style.boxShadow='0 0 10px #00ff00,0 0 20px #00ff0044';}
+    else if(s==='yellow'){dot.style.background='#ffcc00';dot.style.boxShadow='0 0 10px #ffcc00,0 0 20px #ffcc0044';}
+    else{dot.style.background='#ff2233';dot.style.boxShadow='0 0 10px #ff0000,0 0 20px #ff000044';}
+    tim.textContent=(s==='green'?'🟢':s==='yellow'?'🟡':'🔴')+` ${rem}s`;
+    tim.style.color=s==='green'?'#00ff88':s==='yellow'?'#ffcc00':'#ff4466';
+  });
+
+  document.getElementById('svActive').textContent=vehicles.filter(v=>!v.passed).length;
+  document.getElementById('svWait').textContent=vehicles.filter(v=>v.waiting&&!v.passed).length;
+  document.getElementById('svPassed').textContent=totalPassed;
+  document.getElementById('svPhase').textContent=(phase===0?'Biyagama+Malabe':'Awissawella+Angoda')+(inYellow?' (clearing)':'');
+  document.getElementById('svRem').textContent=rem+'s';
+
+  const congName=['LOW','MEDIUM','HIGH'][currentCongestion];
+  const congCol=['#00ff88','#ffaa00','#ff4466'][currentCongestion];
+  const cEl=document.getElementById('svCongestion');
+  if(cEl){cEl.textContent=congName; cEl.style.color=congCol;}
+  const gEl=document.getElementById('svGreenTime');
+  if(gEl){gEl.textContent=Math.round(phaseDurationMs/1000)+'s';}
+
+  // Green-wave offset panel: mirrors agents/coordinator_agent_4b.py offset formula
+  // (next junction's phase starts after this one's green + yellow clearance)
+  const gwEl=document.getElementById('gwOffsets');
+  if(gwEl){
+    const thisGreenS=Math.round(phaseDurationMs/1000);
+    const yellowS=Math.round(YELLOW_MS/1000);
+    const offsetKoswatta=thisGreenS+yellowS;
+    const offsetBattaramulla=offsetKoswatta+thisGreenS+yellowS;
+    gwEl.innerHTML=
+      `<div class="timing-row"><span class="tk">Kaduwela (this)</span><span class="tv">+0s</span></div>`+
+      `<div class="timing-row"><span class="tk">→ Koswatta</span><span class="tv">+${offsetKoswatta}s</span></div>`+
+      `<div class="timing-row"><span class="tk">→ Battaramulla</span><span class="tv">+${offsetBattaramulla}s</span></div>`;
+  }
+
+  const pn=phase===0?'Biyagama + Malabe':'Awissawella + Angoda';
+  document.getElementById('phasebar').textContent=inYellow
+    ?`🟡 ${pn} CLEARING  |  ⏱ ${rem}s`
+    :`🟢 ${pn} GREEN (${congName} demand)  |  ⏱ ${rem}s remaining`;
+}
+
+// ── Simulation update ──
+function update(dt){
+  if(inYellow){
+    yellowMs+=dt;
+    if(yellowMs>=YELLOW_MS){
+      inYellow=false; yellowMs=0;
+      phase=1-phase; phaseMs=0;
+      recomputePhase();
+    }
+  } else {
+    phaseMs+=dt;
+    if(phaseMs>=phaseDurationMs){
+      learnFromPhase(PHASE_DIRS[phase], currentCongestion, phaseMs);
+      inYellow=true; yellowMs=0;
+    }
+  }
+
+  vehicles=vehicles.filter(v=>!v.passed||v.pos<1.7);
+  vehicles.forEach(v=>v.update(dt));
+
+  spawnMs+=dt;
+  const spv=parseInt(document.getElementById('spawnSlider').value);
+  const rate=3000-spv*400;
+  if(spawnMs>rate && vehicles.filter(v=>!v.passed).length<22){
+    spawnMs=0;
+    const r=Math.random();
+    // Weight toward Biyagama + Awissawella per user request
+    let o;
+    if(r<0.38) o='biyagama';
+    else if(r<0.72) o='awissawella';
+    else if(r<0.86) o='malabe';
+    else o='angoda';
+    const hasNear=vehicles.some(v=>v.o===o&&!v.passed&&v.pos<0.08);
+    if(!hasNear) vehicles.push(new Vehicle(o));
+  }
+
+  const spd=parseInt(document.getElementById('speedSlider').value);
+  simTime+=(dt/1000)*(spd*0.5);
+  if(simTime>=1440) simTime-=1440;
+}
+
+// ── Render loop ──
+let last=0;
+function loop(ts){
+  if(!running){last=0;return;}
+  const dt=last?Math.min(ts-last,80):16;
+  last=ts;
+  update(dt);
+  drawRoad();
+  drawSignals();
+  vehicles.forEach(v=>v.draw());
+  updateUI();
+  requestAnimationFrame(loop);
+}
+
+// ── Controls ──
+function startSim(){
+  running=true;
+  document.getElementById('startBtn').style.display='none';
+  document.getElementById('stopBtn').style.display='';
+  requestAnimationFrame(loop);
+}
+function stopSim(){
+  running=false;
+  document.getElementById('startBtn').style.display='';
+  document.getElementById('stopBtn').style.display='none';
+}
+function resetSim(){
+  stopSim(); vehicles=[]; phase=0; phaseMs=0; spawnMs=0; totalPassed=0; inYellow=false; yellowMs=0;
+  qTable[0]={}; qTable[1]={}; qTable[2]={};
+  applyTime();
+  recomputePhase();
+}
+function applyTime(){
+  const t=document.getElementById('timeInput').value.split(':');
+  simTime=parseInt(t[0])*60+parseInt(t[1]);
+  recomputePhase();
+  drawRoad(); drawSignals(); updateUI();
+}
+
+// ── Spawn slider label ──
+const spwnSl=document.getElementById('spawnSlider');
+const spwnLbl=document.getElementById('spwnv');
+const SPWNL=['','Low','Medium','High','Very High','Max'];
+spwnSl.oninput=()=>spwnLbl.textContent=SPWNL[spwnSl.value]||'';
+spwnLbl.textContent=SPWNL[spwnSl.value];
+
+// ── Initial render ──
+recomputePhase();
+drawRoad(); drawSignals(); updateUI();
+</script>
+</body>
+</html>

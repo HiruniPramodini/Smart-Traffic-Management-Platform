@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kotikawatta Junction — Traffic Light Logic
+  ============================================
+  EAST of Kaduwela | Green Wave offset = 180 s
+    Travel: ~2 000 m @ 40 km/h = 180 s from Kaduwela
+
+  3-arm junction cycle = 128 s
+  Signal positions (12 chars: 3 arms × 2 lanes × 2 directions):
+    0-1:  kaduwela_in    (West arm, GREEN WAVE arrival direction)
+    2-3:  kolonnawa_in   (East arm)
+    4-5:  mulleriyawa_in (South arm)
+    6-7:  kaduwela_out   (uncontrolled)
+    8-9:  kolonnawa_out
+    10-11: mulleriyawa_out
+-->
+<additional>
+    <tlLogic id="kotikawatta_center" type="static" programID="green_wave_kotikawatta" offset="180">
+        <!-- Phase A: West arm (Kaduwela arrivals) GREEN — aligned to green wave -->
+        <phase duration="60" state="GGrrrrGGrrrr"/>
+        <phase duration="4"  state="yyrrrryyrrrr"/>
+        <!-- Phase B: East (Kolonnawa) + South (Mulleriyawa) cross-traffic GREEN -->
+        <phase duration="60" state="rrGGrrrrGGrr"/>
+        <phase duration="4"  state="rryyrrrryyrr"/>
+    </tlLogic>
+</additional>

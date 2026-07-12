@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kotikawatta Junction — Route & Flow Definitions
+  ==================================================
+  EAST of Kaduwela | 3-arm (W=Kaduwela, E=Kolonnawa, S=Mulleriyawa)
+-->
+<routes>
+    <vType id="car"        accel="2.6" decel="4.5" sigma="0.5" length="4.5"  maxSpeed="13.89" color="0.8,0.8,0.8"/>
+    <vType id="bus"        accel="1.2" decel="3.0" sigma="0.4" length="12.0" maxSpeed="11.0"  color="1,0.5,0"/>
+    <vType id="motorcycle" accel="3.5" decel="5.0" sigma="0.6" length="2.2"  maxSpeed="15.0"  color="0.2,0.2,0.8"/>
+    <vType id="tuk_tuk"    accel="2.0" decel="4.0" sigma="0.7" length="2.8"  maxSpeed="11.0"  color="0,0.8,0.8"/>
+    <vType id="truck"      accel="1.0" decel="3.0" sigma="0.3" length="8.0"  maxSpeed="11.0"  color="0.5,0.3,0.1"/>
+
+    <!-- Routes -->
+    <route id="kaduwela_to_kolonnawa"   edges="kaduwela_in kolonnawa_out"/>
+    <route id="kaduwela_to_mulleriyawa" edges="kaduwela_in mulleriyawa_out"/>
+    <route id="kolonnawa_to_kaduwela"   edges="kolonnawa_in kaduwela_out"/>
+    <route id="kolonnawa_to_mulleriyawa" edges="kolonnawa_in mulleriyawa_out"/>
+    <route id="mulleriyawa_to_kaduwela" edges="mulleriyawa_in kaduwela_out"/>
+    <route id="mulleriyawa_to_kolonnawa" edges="mulleriyawa_in kolonnawa_out"/>
+
+    <!-- Morning Peak 06:00–09:00 -->
+    <flow id="f_kol_kadu_car_morn"    route="kolonnawa_to_kaduwela"    type="car"        begin="21600" end="32400" vehsPerHour="780"/>
+    <flow id="f_kol_kadu_bus_morn"    route="kolonnawa_to_kaduwela"    type="bus"        begin="21600" end="32400" vehsPerHour="160"/>
+    <flow id="f_kol_kadu_moto_morn"   route="kolonnawa_to_kaduwela"    type="motorcycle" begin="21600" end="32400" vehsPerHour="510"/>
+    <flow id="f_kol_kadu_tuk_morn"    route="kolonnawa_to_kaduwela"    type="tuk_tuk"    begin="21600" end="32400" vehsPerHour="260"/>
+    <flow id="f_mul_kadu_car_morn"    route="mulleriyawa_to_kaduwela"  type="car"        begin="21600" end="32400" vehsPerHour="560"/>
+    <flow id="f_mul_kadu_moto_morn"   route="mulleriyawa_to_kaduwela"  type="motorcycle" begin="21600" end="32400" vehsPerHour="370"/>
+    <flow id="f_kadu_kol_car_morn"    route="kaduwela_to_kolonnawa"    type="car"        begin="21600" end="32400" vehsPerHour="490"/>
+
+    <!-- Lunch Peak 12:00–13:30 -->
+    <flow id="f_kadu_kol_car_lunch"   route="kaduwela_to_kolonnawa"    type="car"        begin="43200" end="48600" vehsPerHour="380"/>
+    <flow id="f_kol_kadu_car_lunch"   route="kolonnawa_to_kaduwela"    type="car"        begin="43200" end="48600" vehsPerHour="360"/>
+
+    <!-- Evening Peak 17:00–20:00 -->
+    <flow id="f_kadu_kol_car_eve"     route="kaduwela_to_kolonnawa"    type="car"        begin="61200" end="72000" vehsPerHour="900"/>
+    <flow id="f_kadu_kol_bus_eve"     route="kaduwela_to_kolonnawa"    type="bus"        begin="61200" end="72000" vehsPerHour="190"/>
+    <flow id="f_kadu_kol_moto_eve"    route="kaduwela_to_kolonnawa"    type="motorcycle" begin="61200" end="72000" vehsPerHour="600"/>
+    <flow id="f_kadu_mul_car_eve"     route="kaduwela_to_mulleriyawa"  type="car"        begin="61200" end="72000" vehsPerHour="650"/>
+    <flow id="f_kol_kadu_car_eve"     route="kolonnawa_to_kaduwela"    type="car"        begin="61200" end="72000" vehsPerHour="720"/>
+    <flow id="f_mul_kol_car_eve"      route="mulleriyawa_to_kolonnawa" type="car"        begin="61200" end="72000" vehsPerHour="410"/>
+
+    <!-- Truck daytime -->
+    <flow id="f_truck_kadu_kol"       route="kaduwela_to_kolonnawa"    type="truck"      begin="32400" end="61200" vehsPerHour="55"/>
+
+    <!-- Background/Night -->
+    <flow id="f_bg_kol_kadu"          route="kolonnawa_to_kaduwela"    type="car"        begin="0"     end="21600" vehsPerHour="210"/>
+    <flow id="f_bg_kadu_kol"          route="kaduwela_to_kolonnawa"    type="car"        begin="0"     end="21600" vehsPerHour="200"/>
+    <flow id="f_bg_night_kol_kadu"    route="kolonnawa_to_kaduwela"    type="car"        begin="72000" end="86400" vehsPerHour="95"/>
+</routes>

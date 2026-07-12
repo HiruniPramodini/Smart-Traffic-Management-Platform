@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Biyagama Junction — Traffic Light Logic
+  ==========================================
+  SOUTH of Kaduwela | Green Wave offset = 270 s
+    Travel: ~3 000 m @ 40 km/h = 270 s from Kaduwela
+
+  3-arm junction cycle = 128 s
+  Signal positions (12 chars: 3 arms × 2 lanes × 2 directions):
+    0-1:  kaduwela_in    (North arm, GREEN WAVE arrival direction)
+    2-3:  industrial_in  (East arm)
+    4-5:  kelaniya_in    (West arm)
+    6-7:  kaduwela_out   (uncontrolled)
+    8-9:  industrial_out
+    10-11: kelaniya_out
+-->
+<additional>
+    <tlLogic id="biyagama_center" type="static" programID="green_wave_biyagama" offset="270">
+        <!-- Phase A: North arm (Kaduwela arrivals) GREEN — aligned to green wave -->
+        <phase duration="60" state="GGrrrrGGrrrr"/>
+        <phase duration="4"  state="yyrrrryyrrrr"/>
+        <!-- Phase B: East–West (Industrial ↔ Kelaniya) GREEN -->
+        <phase duration="60" state="rrGGrrrrGGrr"/>
+        <phase duration="4"  state="rryyrrrryyrr"/>
+    </tlLogic>
+</additional>

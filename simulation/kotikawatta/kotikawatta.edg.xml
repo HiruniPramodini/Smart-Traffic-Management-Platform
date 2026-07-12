@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kotikawatta Junction — Edge Definitions
+  EAST of Kaduwela | 3-arm bidirectional | 2 lanes | 50 km/h
+  Green Wave offset = 180 s
+
+  West  → Kaduwela    (GREEN WAVE upstream link)
+  East  → Kolonnawa
+  South → Mulleriyawa
+-->
+<edges>
+    <!-- West arm: Kaduwela (GREEN WAVE link) -->
+    <edge id="kaduwela_in"     from="kaduwela"            to="kotikawatta_center" numLanes="2" speed="13.89"/>
+    <edge id="kaduwela_out"    from="kotikawatta_center"  to="kaduwela"           numLanes="2" speed="13.89"/>
+
+    <!-- East arm: Kolonnawa -->
+    <edge id="kolonnawa_in"    from="kolonnawa"           to="kotikawatta_center" numLanes="2" speed="13.89"/>
+    <edge id="kolonnawa_out"   from="kotikawatta_center"  to="kolonnawa"          numLanes="2" speed="13.89"/>
+
+    <!-- South arm: Mulleriyawa -->
+    <edge id="mulleriyawa_in"  from="mulleriyawa"         to="kotikawatta_center" numLanes="2" speed="13.89"/>
+    <edge id="mulleriyawa_out" from="kotikawatta_center"  to="mulleriyawa"        numLanes="2" speed="13.89"/>
+</edges>

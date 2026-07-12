@@ -1,4 +1,4 @@
-from junction_agent import JunctionAgent
+from backend.junction_agent import JunctionAgent
 
 # Create agent and load the ML model
 agent = JunctionAgent("kaduwela", "models/kaduwela_congestion_model.pkl")

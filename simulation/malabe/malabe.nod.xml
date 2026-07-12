@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Malabe Junction — Node Definitions
+  =====================================
+  Malabe is NORTH of Kaduwela. Green Wave offset = 315 s.
+    Distance from Kaduwela: ~3 500 m  |  Speed: 40 km/h → 315 s travel time
+
+  Compass layout (local to this junction):
+    South  → Kaduwela    (GREEN WAVE link back to origin)
+    East   → Athurugiriya
+    West   → Battaramulla
+-->
 <nodes>
-    <node id="malabe_center" x="0.0"   y="0.0"   type="traffic_light"/>
-    <node id="kaduwela"      x="500.0" y="0.0"   type="priority"/>
-    <node id="athurugiriya"  x="0.0"   y="-500.0" type="priority"/>
-    <node id="battaramulla"  x="-500.0" y="0.0"  type="priority"/>
+    <node id="malabe_center"  x="0.0"    y="0.0"    type="traffic_light"/>
+    <node id="kaduwela"       x="0.0"    y="-500.0" type="priority"/>  <!-- South  -->
+    <node id="athurugiriya"   x="500.0"  y="0.0"    type="priority"/>  <!-- East   -->
+    <node id="battaramulla"   x="-500.0" y="0.0"    type="priority"/>  <!-- West   -->
 </nodes>

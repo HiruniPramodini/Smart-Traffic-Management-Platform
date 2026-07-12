@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Ranala Junction — Node Definitions
+  =====================================
+  Ranala is WEST of Kaduwela. Green Wave offset = 450 s.
+    Distance from Kaduwela: ~5 000 m  |  Speed: 40 km/h → 450 s travel time
+
+  Compass layout (local to this junction):
+    East   → Kaduwela   (GREEN WAVE link back to origin)
+    West   → Hanwella
+    South  → Avissawella road
+-->
+<nodes>
+    <node id="ranala_center" x="0.0"    y="0.0"    type="traffic_light"/>
+    <node id="kaduwela"      x="500.0"  y="0.0"    type="priority"/>  <!-- East   -->
+    <node id="hanwella"      x="-500.0" y="0.0"    type="priority"/>  <!-- West   -->
+    <node id="avissawella"   x="0.0"    y="-500.0" type="priority"/>  <!-- South  -->
+</nodes>

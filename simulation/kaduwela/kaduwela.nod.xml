@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kaduwela Junction — Node Definitions
+  =====================================
+  Kaduwela is the CENTER junction and GREEN WAVE ORIGIN (offset = 0)
+
+  Compass layout:
+    North  → Malabe       (~3 500 m, travel ~315 s @ 40 km/h)
+    South  → Biyagama     (~3 000 m, travel ~270 s @ 40 km/h)
+    East   → Kotikawatta  (~2 000 m, travel ~180 s @ 40 km/h)
+    West   → Ranala       (~5 000 m, travel ~450 s @ 40 km/h)
+-->
+<nodes>
+    <node id="kaduwela_center" x="0.0"    y="0.0"    type="traffic_light"/>
+    <node id="malabe"          x="0.0"    y="600.0"  type="priority"/>  <!-- North  -->
+    <node id="biyagama"        x="0.0"    y="-600.0" type="priority"/>  <!-- South  -->
+    <node id="kotikawatta"     x="600.0"  y="0.0"    type="priority"/>  <!-- East   -->
+    <node id="ranala"          x="-600.0" y="0.0"    type="priority"/>  <!-- West   -->
+</nodes>

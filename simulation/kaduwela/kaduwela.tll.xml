@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kaduwela Junction — Traffic Light Logic
+  =========================================
+  GREEN WAVE ORIGIN — offset = 0 s
+
+  4-arm junction cycle = 128 s
+  Signal string has 16 characters (4 arms × 2 lanes × 2 directions):
+    Positions 0-1:   malabe_in       (North arm, incoming)
+    Positions 2-3:   biyagama_in     (South arm, incoming)
+    Positions 4-5:   kotikawatta_in  (East arm, incoming)
+    Positions 6-7:   ranala_in       (West arm, incoming)
+    Positions 8-9:   malabe_out      (outgoing — uncontrolled, G)
+    Positions 10-11: biyagama_out    (outgoing — uncontrolled, G)
+    Positions 12-13: kotikawatta_out (outgoing — uncontrolled, G)
+    Positions 14-15: ranala_out      (outgoing — uncontrolled, G)
+
+  Phase rotation (clockwise from North):
+    Phase A: North (Malabe) ↔ South (Biyagama)  — main N-S corridor green
+    Phase B: East (Kotikawatta) ↔ West (Ranala) — main E-W corridor green
+-->
+<additional>
+    <tlLogic id="kaduwela_center" type="static" programID="green_wave_origin" offset="0">
+        <!-- Phase A: North–South GREEN (Malabe ↔ Biyagama corridor) -->
+        <phase duration="56" state="GGGGrrrrGGGGrrrr"/>
+        <phase duration="4"  state="yyyyrrrryyyyrrrr"/>
+        <!-- Phase B: East–West GREEN (Kotikawatta ↔ Ranala corridor) -->
+        <phase duration="56" state="rrrrGGGGrrrrGGGG"/>
+        <phase duration="4"  state="rrrryyyyrrrryyyyr"/>
+        <!-- Safety all-red clearance -->
+        <phase duration="8"  state="rrrrrrrrrrrrrrrr"/>
+    </tlLogic>
+</additional>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file    value="biyagama.net.xml"/>
+        <route-files  value="biyagama.rou.xml"/>
+        <additional-files value="biyagama.tll.xml"/>
+    </input>
+    <output>
+        <summary-output value="../../data/processed/biyagama_summary.xml"/>
+        <tripinfo-output value="../../data/processed/biyagama_tripinfo.xml"/>
+        <queue-output    value="../../data/processed/biyagama_queues.xml"/>
+    </output>
+    <time>
+        <begin value="0"/>
+        <end   value="86400"/>
+        <step-length value="1"/>
+    </time>
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="false"/>
+    </report>
+</configuration>

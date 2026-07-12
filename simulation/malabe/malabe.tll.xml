@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Malabe Junction — Traffic Light Logic
+  ========================================
+  NORTH of Kaduwela | Green Wave offset = 315 s
+    Travel: ~3 500 m @ 40 km/h = 315 s from Kaduwela
+
+  The offset=315 means: when SUMO clock reaches 315 s, this TL has
+  already cycled 315 s worth — so Phase A (Kaduwela arm GREEN) is
+  active when the green-wave vehicle arrives from the south.
+
+  3-arm junction cycle = 128 s
+  Signal positions (12 chars: 3 arms × 2 lanes × 2 directions):
+    0-1:  kaduwela_in     (South arm, GREEN WAVE arrival direction)
+    2-3:  athurugiriya_in (East arm)
+    4-5:  battaramulla_in (West arm)
+    6-7:  kaduwela_out    (uncontrolled)
+    8-9:  athurugiriya_out
+    10-11: battaramulla_out
+-->
 <additional>
-    <tlLogic id="malabe_center" type="static" programID="fixed_baseline" offset="0">
+    <tlLogic id="malabe_center" type="static" programID="green_wave_malabe" offset="315">
+        <!-- Phase A: South arm (Kaduwela arrivals) GREEN — aligned to green wave -->
         <phase duration="60" state="GGrrrrGGrrrr"/>
         <phase duration="4"  state="yyrrrryyrrrr"/>
+        <!-- Phase B: East–West (Athurugiriya ↔ Battaramulla) GREEN -->
         <phase duration="60" state="rrGGrrrrGGrr"/>
         <phase duration="4"  state="rryyrrrryyrr"/>
-        <phase duration="60" state="rrrrGGrrrrGG"/>
-        <phase duration="4"  state="rrrryyrrrryy"/>
     </tlLogic>
 </additional>

@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Traffic Corridor Studio</title>
+  <!-- Load Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --panel: rgba(17, 24, 39, 0.7);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --accent: #10b981; /* Emerald green */
+      --accent-blue: #3b82f6; /* Blue */
+      --warning: #f59e0b; /* Yellow */
+      --danger: #ef4444; /* Red */
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --glow-green: rgba(16, 185, 129, 0.15);
+      --glow-blue: rgba(59, 130, 246, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #030712 60%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+
+    .app {
+      max-width: 1500px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    /* Glassmorphism Panel styles */
+    .glass-panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Header styling */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .header-info h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #10b981, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-info p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* Controls Panel */
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    select, input[type="time"], input[type="range"] {
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid var(--panel-border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    select:focus, input[type="time"]:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px var(--glow-blue);
+    }
+
+    .btn {
+      border: 0;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, #10b981, #059669); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+    .btn-secondary { background: linear-gradient(135deg, #374151, #1f2937); }
+    .btn-secondary:hover { transform: translateY(-1px); }
+    .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .btn-danger:hover { transform: translateY(-1px); }
+
+    /* Toggle Mode Switch */
+    .mode-switch {
+      background: rgba(31, 41, 55, 0.6);
+      padding: 4px;
+      border-radius: 999px;
+      display: flex;
+      border: 1px solid var(--panel-border);
+    }
+
+    .mode-btn {
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-blue);
+      color: white;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1100px) {
+      .grid-container { grid-template-columns: 1fr; }
+    }
+
+    /* Simulation Canvas */
+    .canvas-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      min-height: 550px;
+      background: #020617;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .canvas-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    /* Road networks */
+    .road-h {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 370px;
+      height: 60px;
+      background: #1e293b;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .road-h::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 0;
+      border-top: 1px dashed rgba(255, 255, 255, 0.35);
+      transform: translateY(-50%);
+    }
+
+    .road-v {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 370px;
+      width: 60px;
+      background: #1e293b;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .road-v::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      border-left: 1px dashed rgba(255, 255, 255, 0.35);
+      transform: translateX(-50%);
+    }
+
+    /* Cross roads */
+    .cross-road-v-ranala { position: absolute; left: 110px; top: 300px; bottom: 500px; width: 20px; background: #1e293b; border-left: 1px solid rgba(255, 255, 255, 0.05); border-right: 1px solid rgba(255, 255, 255, 0.05); }
+    .cross-road-v-koti { position: absolute; left: 670px; top: 300px; bottom: 500px; width: 20px; background: #1e293b; border-left: 1px solid rgba(255, 255, 255, 0.05); border-right: 1px solid rgba(255, 255, 255, 0.05); }
+    .cross-road-h-malabe { position: absolute; top: 110px; left: 300px; right: 500px; height: 20px; background: #1e293b; border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .cross-road-h-biya { position: absolute; top: 670px; left: 300px; right: 500px; height: 20px; background: #1e293b; border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+    /* Junction nodes overlay styling */
+    .junction-node {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: all 0.25s;
+    }
+
+    .junction-node:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .junction-node strong {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .junction-node .congestion-badge {
+      font-size: 0.58rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 99px;
+      margin-top: 4px;
+      color: #fff;
+    }
+
+    /* Junction Positions */
+    .j-center { left: 400px; top: 400px; transform: translate(-50%, -50%); }
+    .j-north { left: 400px; top: 120px; transform: translate(-50%, -50%); }
+    .j-south { left: 400px; top: 680px; transform: translate(-50%, -50%); }
+    .j-west { left: 120px; top: 400px; transform: translate(-50%, -50%); }
+    .j-east { left: 680px; top: 400px; transform: translate(-50%, -50%); }
+
+    /* Signal lights indicators */
+    .junction-lights {
+      position: absolute;
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .light-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--danger);
+      box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+    }
+    
+    .light-dot.green { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    .light-dot.yellow { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
+    .light-dot.red { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
+    /* Vehicles CSS layer */
+    .vehicle-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .vehicle {
+      position: absolute;
+      width: 16px;
+      height: 10px;
+      border-radius: 3px;
+      transform: translate(-50%, -50%);
+      transition: all 0.1s linear;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5rem;
+      font-weight: 800;
+      color: #000;
+    }
+
+    .vehicle.waiting {
+      border: 1px solid rgba(239, 68, 68, 0.8);
+      box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Right column panels */
+    .side-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Live stats metrics cards */
+    .metrics-panel {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: rgba(31, 41, 55, 0.4);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .metric-card .lbl {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .metric-card .val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* Console logs console */
+    .log-card {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      height: 250px;
+    }
+
+    .log-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-blue);
+      margin-bottom: 10px;
+    }
+
+    .log-console {
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 10px;
+      flex-grow: 1;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: #38bdf8;
+    }
+
+    .log-console::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .log-console::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 99px;
+    }
+
+    .log-item {
+      padding: 4px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 2px solid var(--accent-blue);
+    }
+    
+    .log-item.warn {
+      border-left-color: var(--warning);
+      color: var(--warning);
+    }
+
+    .log-item.green {
+      border-left-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Details Panel */
+    .junction-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .j-detail-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      align-items: center;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .j-detail-row span.name { font-weight: 700; }
+    .j-detail-row span.status { color: var(--muted); }
+    
+    /* Connection Status */
+    .conn-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--danger);
+    }
+    
+    .conn-status.connected {
+      color: var(--accent);
+    }
+    
+    .conn-status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="glass-panel header">
+      <div class="header-info">
+        <h1>🚦 Smart Traffic Corridor Studio</h1>
+        <p>Dynamic 5-Junction Coordinated Green Wave Simulation & XGBoost Look-Ahead Congestion Forecasting</p>
+      </div>
+      
+      <div class="mode-switch">
+        <button id="btnDemo" class="mode-btn active">Demo (Browser)</button>
+        <button id="btnLive" class="mode-btn">Live (XGBoost API)</button>
+      </div>
+    </header>
+
+    <!-- Controls & Status -->
+    <section class="glass-panel control-row">
+      <button id="btnStart" class="btn btn-primary">▶ Start</button>
+      <button id="btnPause" class="btn btn-secondary">⏸ Pause</button>
+      <button id="btnReset" class="btn btn-danger">⟳ Reset</button>
+
+      <div class="control-group">
+        <label for="period">Time Period</label>
+        <select id="period">
+          <option value="morning_peak">Morning Peak</option>
+          <option value="evening_peak">Evening Peak</option>
+          <option value="off_peak">Off Peak</option>
+          <option value="night">Night</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="weather">Weather</label>
+        <select id="weather">
+          <option value="clear">Sunny / Clear</option>
+          <option value="overcast">Overcast</option>
+          <option value="foggy">Foggy</option>
+          <option value="light_rain">Light Monsoon Rain</option>
+          <option value="heavy_rain">Heavy Monsoon Storm</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="speed">Sim Speed</label>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <input id="speed" type="range" min="1" max="10" step="1" value="1" />
+          <span id="speedVal" style="font-size: 0.85rem; font-weight: 700; width: 28px;">1x</span>
+        </div>
+      </div>
+
+      <div style="margin-left: auto;">
+        <div id="connStatus" class="conn-status">
+          <div class="dot"></div>
+          <span id="connText">Local Demo Mode</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simulation Workspace -->
+    <div class="grid-container">
+      
+      <!-- Canvas Block -->
+      <div class="glass-panel canvas-panel">
+        <div class="canvas-container" id="canvas">
+          <div class="canvas-grid"></div>
+          
+          <!-- Interconnecting Roads -->
+          <div class="road-h"></div>
+          <div class="road-v"></div>
+          
+          <!-- Cross Roads -->
+          <div class="cross-road-v-ranala"></div>
+          <div class="cross-road-v-koti"></div>
+          <div class="cross-road-h-malabe"></div>
+          <div class="cross-road-h-biya"></div>
+
+          <!-- Vehicles Container -->
+          <div class="vehicle-layer" id="vehicleLayer"></div>
+
+          <!-- Junction Node Overlays -->
+          <div class="junction-node j-north" id="node-Malabe">
+            <strong>Malabe</strong>
+            <span class="congestion-badge" style="background:var(--accent);">LOW</span>
+            <div class="junction-lights">
+              <div class="light-dot green" title="Main Road"></div>
+              <div class="light-dot red" title="Cross Road"></div>
+            </div>
+          </div>
+
+          <div class="junction-node j-south" id="node-Biyagama">
+            <strong>Biyagama</strong>
+            <span class="congestion-badge" style="background:var(--accent);">LOW</span>
+            <div class="junction-lights">
+              <div class="light-dot green" title="Main Road"></div>
+              <div class="light-dot red" title="Cross Road"></div>
+            </div>
+          </div>
+
+          <div class="junction-node j-west" id="node-Ranala">
+            <strong>Ranala</strong>
+            <span class="congestion-badge" style="background:var(--accent);">LOW</span>
+            <div class="junction-lights">
+              <div class="light-dot green" title="Main Road"></div>
+              <div class="light-dot red" title="Cross Road"></div>
+            </div>
+          </div>
+
+          <div class="junction-node j-east" id="node-Kotikawatta">
+            <strong>Kotikawatta</strong>
+            <span class="congestion-badge" style="background:var(--accent);">LOW</span>
+            <div class="junction-lights">
+              <div class="light-dot green" title="Main Road"></div>
+              <div class="light-dot red" title="Cross Road"></div>
+            </div>
+          </div>
+
+          <div class="junction-node j-center" id="node-Kaduwela">
+            <strong>Kaduwela</strong>
+            <span class="congestion-badge" style="background:var(--accent);">LOW</span>
+            <div class="junction-lights">
+              <div class="light-dot green" title="Main Road"></div>
+              <div class="light-dot red" title="Cross Road"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Info / Messaging Log / Stats -->
+      <div class="side-column">
+        
+        <!-- Live Metrics -->
+        <div class="glass-panel metrics-panel">
+          <div class="metric-card">
+            <div class="lbl">Spawned</div>
+            <div class="val" id="valSpawned">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="lbl">Passed</div>
+            <div class="val" id="valPassed">0</div>
+          </div>
+          <div class="metric-card" style="grid-column: span 2;">
+            <div class="lbl">Average Waiting Time</div>
+            <div class="val" id="valAvgWait" style="color:var(--accent-blue);">0.0s</div>
+          </div>
+        </div>
+
+        <!-- Details Panel -->
+        <div class="glass-panel junction-details">
+          <h3 style="font-size:0.9rem; font-weight:700; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px;">Junction States</h3>
+          
+          <div class="j-detail-row" id="det-Ranala">
+            <span class="name">Ranala</span>
+            <span class="status">Main: Green</span>
+            <span class="cong">LOW</span>
+            <span class="timer">12s</span>
+          </div>
+
+          <div class="j-detail-row" id="det-Malabe">
+            <span class="name">Malabe</span>
+            <span class="status">Main: Green</span>
+            <span class="cong">LOW</span>
+            <span class="timer">12s</span>
+          </div>
+
+          <div class="j-detail-row" id="det-Kaduwela">
+            <span class="name">Kaduwela</span>
+            <span class="status">Main: Green</span>
+            <span class="cong">LOW</span>
+            <span class="timer">12s</span>
+          </div>
+
+          <div class="j-detail-row" id="det-Kotikawatta">
+            <span class="name">Kotikawatta</span>
+            <span class="status">Main: Green</span>
+            <span class="cong">LOW</span>
+            <span class="timer">12s</span>
+          </div>
+
+          <div class="j-detail-row" id="det-Biyagama">
+            <span class="name">Biyagama</span>
+            <span class="status">Main: Green</span>
+            <span class="cong">LOW</span>
+            <span class="timer">12s</span>
+          </div>
+        </div>
+
+        <!-- Coordination Message Log -->
+        <div class="glass-panel log-card">
+          <h3>⚡ Multi-Agent Coordination Log</h3>
+          <div class="log-console" id="logConsole">
+            <div class="log-item">[System] Dashboard initialized. Demo mode active.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Constants
+    const API_BASE = "http://localhost:8000/api";
+    
+    // DOM references
+    const btnDemo = document.getElementById("btnDemo");
+    const btnLive = document.getElementById("btnLive");
+    const btnStart = document.getElementById("btnStart");
+    const btnPause = document.getElementById("btnPause");
+    const btnReset = document.getElementById("btnReset");
+    const selectPeriod = document.getElementById("period");
+    const selectWeather = document.getElementById("weather");
+    const inputSpeed = document.getElementById("speed");
+    const labelSpeedVal = document.getElementById("speedVal");
+    
+    const connStatus = document.getElementById("connStatus");
+    const connText = document.getElementById("connText");
+    const logConsole = document.getElementById("logConsole");
+    const vehicleLayer = document.getElementById("vehicleLayer");
+    
+    const valSpawned = document.getElementById("valSpawned");
+    const valPassed = document.getElementById("valPassed");
+    const valAvgWait = document.getElementById("valAvgWait");
+
+    // Simulation states
+    const simState = {
+      isLive: false,
+      running: false,
+      paused: false,
+      elapsed: 0,
+      speed: 1,
+      vehicles: [],
+      metrics: { spawned: 0, passed: 0, totalWait: 0 },
+      logs: [],
+      weather: "clear",
+      period: "morning_peak",
+      
+      // Junction variables for local demo simulation
+      junctions: {
+        Ranala: { active_phase: "main_road", in_yellow: false, phase_elapsed: 0, phase_duration: 35, congestion: 0, green_wave: false, gapping: false },
+        Malabe: { active_phase: "main_road", in_yellow: false, phase_elapsed: 0, phase_duration: 35, congestion: 0, green_wave: false, gapping: false },
+        Kaduwela: { active_phase: "main_road", in_yellow: false, phase_elapsed: 0, phase_duration: 45, congestion: 0, green_wave: false, gapping: false },
+        Kotikawatta: { active_phase: "main_road", in_yellow: false, phase_elapsed: 0, phase_duration: 35, congestion: 0, green_wave: false, gapping: false },
+        Biyagama: { active_phase: "main_road", in_yellow: false, phase_elapsed: 0, phase_duration: 35, congestion: 0, green_wave: false, gapping: false }
+      }
+    };
+
+    // Sri Lanka Left-hand coordinates mapping for roads overlay
+    // Canvas dimensions: 800x800
+    const routeCoords = {
+      "ranala_to_kotikawatta": (p) => ({ x: 0 + p * 800, y: 415, angle: 0 }),
+      "kotikawatta_to_ranala": (p) => ({ x: 800 - p * 800, y: 385, angle: 180 }),
+      "malabe_to_biyagama": (p) => ({ x: 385, y: 0 + p * 800, angle: 90 }),
+      "biyagama_to_malabe": (p) => ({ x: 415, y: 800 - p * 800, angle: 270 }),
+      
+      // Local background cross-street directions
+      "ranala_local": (p) => ({ x: 110, y: 300 + p * 200, angle: 90 }),
+      "kotikawatta_local": (p) => ({ x: 670, y: 300 + p * 200, angle: 90 }),
+      "malabe_local": (p) => ({ x: 300 + p * 200, y: 110, angle: 0 }),
+      "biyagama_local": (p) => ({ x: 300 + p * 200, y: 670, angle: 0 })
+    };
+
+    // Junction stop checkpoints
+    const checkpoints = {
+      "ranala_to_kotikawatta": [
+        { name: "Ranala", check: 120 / 800, stopMin: 90 / 800, stopMax: 115 / 800, phase: "main_road" },
+        { name: "Kaduwela", check: 400 / 800, stopMin: 370 / 800, stopMax: 395 / 800, phase: "main_road" },
+        { name: "Kotikawatta", check: 680 / 800, stopMin: 650 / 800, stopMax: 675 / 800, phase: "main_road" }
+      ],
+      "kotikawatta_to_ranala": [
+        { name: "Kotikawatta", check: (800 - 680) / 800, stopMin: (800 - 710) / 800, stopMax: (800 - 690) / 800, phase: "main_road" },
+        { name: "Kaduwela", check: (800 - 400) / 800, stopMin: (800 - 430) / 800, stopMax: (800 - 410) / 800, phase: "main_road" },
+        { name: "Ranala", check: (800 - 120) / 800, stopMin: (800 - 150) / 800, stopMax: (800 - 130) / 800, phase: "main_road" }
+      ],
+      "malabe_to_biyagama": [
+        { name: "Malabe", check: 120 / 800, stopMin: 90 / 800, stopMax: 115 / 800, phase: "cross_road" },
+        { name: "Kaduwela", check: 400 / 800, stopMin: 370 / 800, stopMax: 395 / 800, phase: "cross_road" },
+        { name: "Biyagama", check: 680 / 800, stopMin: 650 / 800, stopMax: 675 / 800, phase: "cross_road" }
+      ],
+      "biyagama_to_malabe": [
+        { name: "Biyagama", check: (800 - 680) / 800, stopMin: (800 - 710) / 800, stopMax: (800 - 690) / 800, phase: "cross_road" },
+        { name: "Kaduwela", check: (800 - 400) / 800, stopMin: (800 - 430) / 800, stopMax: (800 - 410) / 800, phase: "cross_road" },
+        { name: "Malabe", check: (800 - 120) / 800, stopMin: (800 - 150) / 800, stopMax: (800 - 130) / 800, phase: "cross_road" }
+      ],
+      "ranala_local": [
+        { name: "Ranala", check: 0.5, stopMin: 0.35, stopMax: 0.48, phase: "cross_road" }
+      ],
+      "kotikawatta_local": [
+        { name: "Kotikawatta", check: 0.5, stopMin: 0.35, stopMax: 0.48, phase: "cross_road" }
+      ],
+      "malabe_local": [
+        { name: "Malabe", check: 0.5, stopMin: 0.35, stopMax: 0.48, phase: "main_road" }
+      ],
+      "biyagama_local": [
+        { name: "Biyagama", check: 0.5, stopMin: 0.35, stopMax: 0.48, phase: "main_road" }
+      ]
+    };
+
+    // Mode Toggle Events
+    btnDemo.addEventListener("click", () => {
+      simState.isLive = false;
+      btnDemo.classList.add("active");
+      btnLive.classList.remove("active");
+      connStatus.className = "conn-status connected";
+      connText.textContent = "Local Demo Mode";
+      resetSimulation();
+      addLog("Switched to Local Demo Simulation mode.");
+    });
+
+    btnLive.addEventListener("click", () => {
+      simState.isLive = true;
+      btnLive.classList.add("active");
+      btnDemo.classList.remove("active");
+      connStatus.className = "conn-status";
+      connText.textContent = "Connecting to FastAPI...";
+      resetSimulation();
+      testLiveConnection();
+    });
+
+    // Control parameters change
+    inputSpeed.addEventListener("input", () => {
+      simState.speed = parseInt(inputSpeed.value);
+      labelSpeedVal.textContent = simState.speed + "x";
+    });
+
+    selectPeriod.addEventListener("change", () => {
+      simState.period = selectPeriod.value;
+      if (simState.isLive) triggerBackendStart();
+    });
+
+    selectWeather.addEventListener("change", () => {
+      simState.weather = selectWeather.value;
+      if (simState.isLive) triggerBackendStart();
+      addLog(`Weather updated to: ${selectWeather.options[selectWeather.selectedIndex].text}`);
+    });
+
+    // Button Events
+    btnStart.addEventListener("click", async () => {
+      if (simState.isLive) {
+        await triggerBackendStart();
+      }
+      simState.running = true;
+      simState.paused = false;
+      addLog("Simulation engine started.");
+    });
+
+    btnPause.addEventListener("click", () => {
+      simState.paused = !simState.paused;
+      addLog(simState.paused ? "Simulation paused." : "Simulation resumed.");
+    });
+
+    btnReset.addEventListener("click", () => {
+      resetSimulation();
+    });
+
+    function addLog(text, type = "info") {
+      const item = document.createElement("div");
+      item.className = `log-item ${type}`;
+      const timeStr = new Date().toLocaleTimeString();
+      item.textContent = `[${timeStr}] ${text}`;
+      logConsole.appendChild(item);
+      logConsole.scrollTop = logConsole.scrollHeight;
+    }
+
+    async function testLiveConnection() {
+      try {
+        const res = await fetch(`${API_BASE}/`);
+        const data = await res.json();
+        connStatus.className = "conn-status connected";
+        connText.textContent = "Connected to Python Agent Server";
+        addLog("Successfully connected to XGBoost FastAPI Backend.");
+      } catch (err) {
+        connStatus.className = "conn-status";
+        connText.textContent = "Backend Offline";
+        addLog("Error connecting to FastAPI backend. Ensure server is running on port 8000.", "warn");
+      }
+    }
+
+    async function triggerBackendStart() {
+      try {
+        const res = await fetch(`${API_BASE}/simulation/start`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            start_time: "08:00",
+            time_period: simState.period,
+            weather: simState.weather
+          })
+        });
+        const data = await res.json();
+        addLog(`FastAPI simulator started: Period=${simState.period}, Weather=${simState.weather}`);
+      } catch (err) {
+        addLog("Failed to send start request to backend.", "warn");
+      }
+    }
+
+    function resetSimulation() {
+      simState.running = false;
+      simState.paused = false;
+      simState.elapsed = 0;
+      simState.vehicles = [];
+      simState.metrics = { spawned: 0, passed: 0, totalWait: 0 };
+      vehicleLayer.innerHTML = "";
+      valSpawned.textContent = "0";
+      valPassed.textContent = "0";
+      valAvgWait.textContent = "0.0s";
+      logConsole.innerHTML = '<div class="log-item">[System] Simulation reset.</div>';
+      
+      if (simState.isLive) {
+        fetch(`${API_BASE}/simulation/reset`, { method: "POST" })
+          .then(() => addLog("Backend simulation reset successful."))
+          .catch(() => {});
+      }
+    }
+
+    // --- Browser-Only Demo Simulation Engine ---
+    function runDemoStep(dt) {
+      simState.elapsed += dt;
+
+      // 1. Spawning vehicles locally
+      const spawnRates = { morning_peak: 2.0, evening_peak: 1.7, off_peak: 1.0, night: 0.3 };
+      const rate = spawnRates[simState.period] || 1.0;
+      const weatherMod = simState.weather === "heavy_rain" ? 0.7 : (simState.weather === "light_rain" ? 0.85 : 1.0);
+      
+      if (Math.random() < 0.05 * rate * weatherMod) {
+        const rKeys = Object.keys(routeCoords);
+        const rName = rKeys[Math.floor(Math.random() * rKeys.length)];
+        
+        simState.metrics.spawned++;
+        
+        let v_speed = 0.06 + Math.random() * 0.04;
+        if (simState.weather === "heavy_rain") v_speed *= 0.65;
+        else if (simState.weather === "light_rain") v_speed *= 0.85;
+
+        simState.vehicles.push({
+          id: `V${simState.metrics.spawned}`,
+          route: rName,
+          progress: 0.0,
+          speed: v_speed,
+          wait: 0.0,
+          color: ["#3b82f6", "#10b981", "#fb923c", "#f472b6", "#a78bfa"][Math.floor(Math.random() * 5)],
+          status: "moving"
+        });
+      }
+
+      // 2. Update local lights and coordination
+      Object.keys(simState.junctions).forEach(jname => {
+        const j = simState.junctions[jname];
+        j.phase_elapsed += dt;
+
+        let activeLimit = j.phase_duration;
+        if (j.in_yellow) activeLimit = 3.0;
+
+        if (j.phase_elapsed >= activeLimit) {
+          j.phase_elapsed = 0;
+          if (j.in_yellow) {
+            j.in_yellow = false;
+            j.active_phase = j.active_phase === "main_road" ? "cross_road" : "main_road";
+            
+            // Recalculate duration based on simulated queue demand
+            const waitingCount = simState.vehicles.filter(v => v.status === "waiting" && checkpoints[v.route]?.some(cp => cp.name === jname)).length;
+            j.congestion = waitingCount > 6 ? 2 : (waitingCount > 3 ? 1 : 0);
+            
+            j.phase_duration = j.congestion === 2 ? 55 : (j.congestion === 1 ? 42 : 30);
+            
+            // Adjust for Green Wave / Gapping
+            if (j.green_wave) {
+              j.phase_duration += 15;
+              j.green_wave = false; // consume
+              addLog(`[${jname}] Green Wave triggered! Extended green time by +15s.`, "green");
+            }
+            if (j.gapping) {
+              j.phase_duration = Math.max(20, j.phase_duration - 10);
+              j.gapping = false; // consume
+              addLog(`[${jname}] Platoon Gapping requested. Reduced green time by -10s to meter queue.`, "warn");
+            }
+          } else {
+            j.in_yellow = true;
+            
+            // Coordination messages trigger
+            if (jname === "Kaduwela" && j.active_phase === "main_road") {
+              // Kaduwela Main road phase finishes. Release platoon downstream
+              simState.junctions["Kotikawatta"].green_wave = true;
+              simState.junctions["Ranala"].green_wave = true;
+              addLog("[Kaduwela → Kotikawatta] Platoon released Eastbound. ETA: 45s. Sending Green Wave trigger.", "green");
+            } else if (jname === "Kaduwela" && j.active_phase === "cross_road") {
+              simState.junctions["Malabe"].green_wave = true;
+              simState.junctions["Biyagama"].green_wave = true;
+              addLog("[Kaduwela → Malabe] Platoon released Northbound. ETA: 55s. Sending Green Wave trigger.", "green");
+            }
+
+            // If downstream queue is high, trigger gapping alert upstream
+            const kotiWaiting = simState.vehicles.filter(v => v.status === "waiting" && checkpoints[v.route]?.some(cp => cp.name === "Kotikawatta")).length;
+            if (kotiWaiting > 5) {
+              simState.junctions["Kaduwela"].gapping = true;
+              addLog("[Kotikawatta → Kaduwela] Downstream congestion HIGH. Warning upstream Kaduwela to activate Platoon Gapping.", "warn");
+            }
+          }
+        }
+      });
+
+      // 3. Move vehicles and stop them at intersections
+      simState.vehicles.forEach(v => {
+        if (v.progress >= 1.0) return;
+
+        const cps = checkpoints[v.route] || [];
+        let canMove = true;
+
+        for (let cp of cps) {
+          // If vehicle is in the stop zone check if signal is green
+          if (v.progress >= cp.stopMin && v.progress <= cp.stopMax) {
+            const j = simState.junctions[cp.name];
+            const signalGreen = j.active_phase === cp.phase && !j.in_yellow;
+            if (!signalGreen) {
+              canMove = false;
+              v.status = "waiting";
+              v.wait += dt;
+              simState.metrics.totalWait += dt;
+              break;
+            }
+          }
+        }
+
+        if (canMove) {
+          v.progress += v.speed * dt;
+          v.status = "moving";
+          if (v.progress >= 1.0) {
+            simState.metrics.passed++;
+          }
+        }
+      });
+
+      // Remove completed vehicles
+      simState.vehicles = simState.vehicles.filter(v => v.progress < 1.0);
+    }
+
+    // --- FastAPI Live Synchronisation Engine ---
+    async function runLiveStep() {
+      try {
+        const res = await fetch(`${API_BASE}/simulation/step`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ steps: simState.speed })
+        });
+        const data = await res.json();
+        
+        // Sync metrics
+        valSpawned.textContent = data.metrics.spawned;
+        valPassed.textContent = data.metrics.passed;
+        valAvgWait.textContent = data.metrics.average_wait.toFixed(1) + "s";
+
+        // Sync coordination logs
+        if (data.coordination_logs) {
+          data.coordination_logs.forEach(log => {
+            if (!simState.logs.includes(log)) {
+              simState.logs.push(log);
+              const isWarning = log.includes("warning") || log.includes("Gapping");
+              addLog(log, isWarning ? "warn" : "green");
+            }
+          });
+        }
+
+        // Sync junctions detail panel & canvas badges
+        Object.keys(data.junctions).forEach(jname => {
+          const j = data.junctions[jname];
+          
+          // Update details list
+          const row = document.getElementById(`det-${jname}`);
+          const isMain = j.active_phase === "main_road";
+          row.querySelector(".status").textContent = `${isMain ? "Main" : "Cross"}: ${j.in_yellow ? "Yellow" : "Green"}`;
+          row.querySelector(".cong").textContent = j.congestion_name;
+          row.querySelector(".timer").textContent = `${j.remaining}s`;
+
+          // Update canvas badge
+          const node = document.getElementById(`node-${jname}`);
+          const badge = node.querySelector(".congestion-badge");
+          badge.textContent = j.congestion_name;
+          
+          const colors = ["#10b981", "#f59e0b", "#ef4444"];
+          badge.style.background = colors[j.congestion_level];
+
+          // Update light indicators
+          const lights = node.querySelectorAll(".light-dot");
+          if (j.in_yellow) {
+            lights[0].className = `light-dot ${isMain ? "yellow" : "red"}`;
+            lights[1].className = `light-dot ${isMain ? "red" : "yellow"}`;
+          } else {
+            lights[0].className = `light-dot ${isMain ? "green" : "red"}`;
+            lights[1].className = `light-dot ${isMain ? "red" : "green"}`;
+          }
+        });
+
+        // Sync vehicles layout
+        renderVehicles(data.vehicles, true);
+        
+      } catch (err) {
+        addLog("Live Sync connection lost with FastAPI server.", "warn");
+        simState.running = false;
+      }
+    }
+
+    // --- Main UI Render Loops ---
+    function renderVehicles(vehiclesList, isLiveFormat = false) {
+      vehicleLayer.innerHTML = "";
+      
+      vehiclesList.forEach(v => {
+        let x, y, angle;
+        
+        if (isLiveFormat) {
+          // If live mode, we get continuous coordinates by checking links
+          const progress = v.progress_percent / 100;
+          const routeName = v.route;
+          const link = v.link;
+          const coords = getLiveLinkCoords(link, progress, routeName);
+          x = coords.x;
+          y = coords.y;
+          angle = coords.angle;
+        } else {
+          // Demo mode coordinates
+          const coords = routeCoords[v.route](v.progress);
+          x = coords.x;
+          y = coords.y;
+          angle = coords.angle;
+        }
+
+        const el = document.createElement("div");
+        el.className = `vehicle ${v.status === "waiting" ? "waiting" : ""}`;
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+        el.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+        el.style.backgroundColor = v.color || "#3b82f6";
+        el.textContent = v.id.replace(/\D/g, ""); // output vehicle number index
+        vehicleLayer.appendChild(el);
+      });
+    }
+
+    function getLiveLinkCoords(link, progress, routeName) {
+      // Coordinate layout for Live Mode links
+      if (link === "Ranala_source") return { x: 0 + 120 * progress, y: 415, angle: 0 };
+      if (link === "Ranala_to_Kaduwela") return { x: 120 + 280 * progress, y: 415, angle: 0 };
+      if (link === "Kaduwela_to_Kotikawatta") return { x: 400 + 280 * progress, y: 415, angle: 0 };
+      if (link === "Kotikawatta_exit") return { x: 680 + 120 * progress, y: 415, angle: 0 };
+      
+      if (link === "Kotikawatta_source") return { x: 800 - 120 * progress, y: 385, angle: 180 };
+      if (link === "Kotikawatta_to_Kaduwela") return { x: 680 - 280 * progress, y: 385, angle: 180 };
+      if (link === "Kaduwela_to_Ranala") return { x: 400 - 280 * progress, y: 385, angle: 180 };
+      if (link === "Ranala_exit") return { x: 120 - 120 * progress, y: 385, angle: 180 };
+      
+      if (link === "Malabe_source") return { x: 385, y: 0 + 120 * progress, angle: 90 };
+      if (link === "Malabe_to_Kaduwela") return { x: 385, y: 120 + 280 * progress, angle: 90 };
+      if (link === "Kaduwela_to_Biyagama") return { x: 385, y: 400 + 280 * progress, angle: 90 };
+      if (link === "Biyagama_exit") return { x: 385, y: 680 + 120 * progress, angle: 90 };
+      
+      if (link === "Biyagama_source") return { x: 415, y: 800 - 120 * progress, angle: 270 };
+      if (link === "Biyagama_to_Kaduwela") return { x: 415, y: 680 - 280 * progress, angle: 270 };
+      if (link === "Kaduwela_to_Malabe") return { x: 415, y: 400 - 280 * progress, angle: 270 };
+      if (link === "Malabe_exit") return { x: 415, y: 120 - 120 * progress, angle: 270 };
+      
+      // Cross streets
+      if (link === "Cross_source_Ranala") return { x: 110, y: 300 + 100 * progress, angle: 90 };
+      if (link === "Cross_source_Kotikawatta") return { x: 670, y: 300 + 100 * progress, angle: 90 };
+      if (link === "Cross_source_Malabe") return { x: 300 + 100 * progress, y: 110, angle: 0 };
+      if (link === "Cross_source_Biyagama") return { x: 300 + 100 * progress, y: 670, angle: 0 };
+      
+      if (link === "Cross_exit") {
+        if (routeName === "ranala_local") return { x: 110, y: 400 + 100 * progress, angle: 90 };
+        if (routeName === "kotikawatta_local") return { x: 670, y: 400 + 100 * progress, angle: 90 };
+        if (routeName === "malabe_local") return { x: 400 + 100 * progress, y: 110, angle: 0 };
+        if (routeName === "biyagama_local") return { x: 400 + 100 * progress, y: 670, angle: 0 };
+      }
+
+      // Junction centroids default fallback
+      if (link === "Ranala") return { x: 120, y: 400, angle: 0 };
+      if (link === "Malabe") return { x: 400, y: 120, angle: 90 };
+      if (link === "Kotikawatta") return { x: 680, y: 400, angle: 180 };
+      if (link === "Biyagama") return { x: 400, y: 680, angle: 270 };
+      
+      return { x: 400, y: 400, angle: 0 };
+    }
+
+    function renderDemoUI() {
+      // Render details stats
+      valSpawned.textContent = simState.metrics.spawned;
+      valPassed.textContent = simState.metrics.passed;
+      const avgWait = simState.metrics.passed ? (simState.metrics.totalWait / simState.metrics.passed).toFixed(1) : "0.0";
+      valAvgWait.textContent = avgWait + "s";
+
+      // Render junctions panel & canvas lights
+      Object.keys(simState.junctions).forEach(jname => {
+        const j = simState.junctions[jname];
+        
+        // details side row
+        const row = document.getElementById(`det-${jname}`);
+        const isMain = j.active_phase === "main_road";
+        row.querySelector(".status").textContent = `${isMain ? "Main" : "Cross"}: ${j.in_yellow ? "Yellow" : "Green"}`;
+        
+        const cNames = ["LOW", "MEDIUM", "HIGH"];
+        row.querySelector(".cong").textContent = cNames[j.congestion];
+        
+        let rem = Math.max(0, Math.round((j.in_yellow ? 3.0 : j.phase_duration) - j.phase_elapsed));
+        row.querySelector(".timer").textContent = `${rem}s`;
+
+        // Canvas Overlays
+        const node = document.getElementById(`node-${jname}`);
+        const badge = node.querySelector(".congestion-badge");
+        badge.textContent = cNames[j.congestion];
+        
+        const colors = ["#10b981", "#f59e0b", "#ef4444"];
+        badge.style.background = colors[j.congestion];
+
+        const lights = node.querySelectorAll(".light-dot");
+        if (j.in_yellow) {
+          lights[0].className = `light-dot ${isMain ? "yellow" : "red"}`;
+          lights[1].className = `light-dot ${isMain ? "red" : "yellow"}`;
+        } else {
+          lights[0].className = `light-dot ${isMain ? "green" : "red"}`;
+          lights[1].className = `light-dot ${isMain ? "red" : "green"}`;
+        }
+      });
+
+      renderVehicles(simState.vehicles, false);
+    }
+
+    // Animation frames update loop
+    let lastTime = 0;
+    function loop(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const dt = Math.min(0.03, (timestamp - lastTime) / 1000) * simState.speed;
+      lastTime = timestamp;
+
+      if (simState.running && !simState.paused) {
+        if (simState.isLive) {
+          // Live FastAPI updates are polled periodically
+        } else {
+          runDemoStep(dt);
+          renderDemoUI();
+        }
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    // Poller loop for backend in Live Mode
+    setInterval(() => {
+      if (simState.isLive && simState.running && !simState.paused) {
+        runLiveStep();
+      }
+    }, 1000);
+
+    // Run tests on start
+    connStatus.className = "conn-status connected";
+    connText.textContent = "Local Demo Mode";
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

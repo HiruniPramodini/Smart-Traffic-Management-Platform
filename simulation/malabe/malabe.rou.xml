@@ -1,54 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Malabe Junction — Route & Flow Definitions
+  ============================================
+  NORTH of Kaduwela | 3-arm (S=Kaduwela, E=Athurugiriya, W=Battaramulla)
+-->
 <routes>
+    <vType id="car"        accel="2.6" decel="4.5" sigma="0.5" length="4.5"  maxSpeed="13.89" color="0.8,0.8,0.8"/>
+    <vType id="bus"        accel="1.2" decel="3.0" sigma="0.4" length="12.0" maxSpeed="11.0"  color="1,0.5,0"/>
+    <vType id="motorcycle" accel="3.5" decel="5.0" sigma="0.6" length="2.2"  maxSpeed="15.0"  color="0.2,0.2,0.8"/>
+    <vType id="tuk_tuk"    accel="2.0" decel="4.0" sigma="0.7" length="2.8"  maxSpeed="11.0"  color="0,0.8,0.8"/>
+    <vType id="truck"      accel="1.0" decel="3.0" sigma="0.3" length="8.0"  maxSpeed="11.0"  color="0.5,0.3,0.1"/>
 
-    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="4.5" maxSpeed="13.89" color="0.8,0.8,0.8"/>
-    <vType id="bus" accel="1.2" decel="3.0" sigma="0.4" length="12.0" maxSpeed="11.0" color="1,0.5,0"/>
-    <vType id="motorcycle" accel="3.5" decel="5.0" sigma="0.6" length="2.2" maxSpeed="15.0" color="0.2,0.2,0.8"/>
-    <vType id="tuk_tuk" accel="2.0" decel="4.0" sigma="0.7" length="2.8" maxSpeed="11.0" color="0,0.8,0.8"/>
-    <vType id="truck" accel="1.0" decel="3.0" sigma="0.3" length="8.0" maxSpeed="11.0" color="0.5,0.3,0.1"/>
-
-    <route id="kaduwela_to_battaramulla" edges="kaduwela_in battaramulla_out"/>
-    <route id="kaduwela_to_athurugiriya" edges="kaduwela_in athurugiriya_out"/>
-    <route id="battaramulla_to_kaduwela" edges="battaramulla_in kaduwela_out"/>
-    <route id="battaramulla_to_athurugiriya" edges="battaramulla_in athurugiriya_out"/>
-    <route id="athurugiriya_to_kaduwela" edges="athurugiriya_in kaduwela_out"/>
+    <!-- Routes -->
+    <route id="kaduwela_to_athurugiriya"  edges="kaduwela_in athurugiriya_out"/>
+    <route id="kaduwela_to_battaramulla"  edges="kaduwela_in battaramulla_out"/>
+    <route id="athurugiriya_to_kaduwela"  edges="athurugiriya_in kaduwela_out"/>
     <route id="athurugiriya_to_battaramulla" edges="athurugiriya_in battaramulla_out"/>
+    <route id="battaramulla_to_kaduwela"  edges="battaramulla_in kaduwela_out"/>
+    <route id="battaramulla_to_athurugiriya" edges="battaramulla_in athurugiriya_out"/>
 
-    <flow id="f_kadu_batta_morning" route="kaduwela_to_battaramulla" type="car" begin="21600" end="28800" vehsPerHour="1200"/>
-    <flow id="f_kadu_batta_bus_morn" route="kaduwela_to_battaramulla" type="bus" begin="21600" end="28800" vehsPerHour="300"/>
-    <flow id="f_kadu_batta_moto_morn" route="kaduwela_to_battaramulla" type="motorcycle" begin="21600" end="28800" vehsPerHour="800"/>
-    <flow id="f_kadu_batta_tuk_morn" route="kaduwela_to_battaramulla" type="tuk_tuk" begin="21600" end="28800" vehsPerHour="400"/>
+    <!-- Morning Peak 06:00–09:00 -->
+    <flow id="f_kadu_batta_car_morn"   route="kaduwela_to_battaramulla"  type="car"        begin="21600" end="32400" vehsPerHour="1100"/>
+    <flow id="f_kadu_batta_bus_morn"   route="kaduwela_to_battaramulla"  type="bus"        begin="21600" end="32400" vehsPerHour="250"/>
+    <flow id="f_kadu_batta_moto_morn"  route="kaduwela_to_battaramulla"  type="motorcycle" begin="21600" end="32400" vehsPerHour="720"/>
+    <flow id="f_kadu_batta_tuk_morn"   route="kaduwela_to_battaramulla"  type="tuk_tuk"    begin="21600" end="32400" vehsPerHour="360"/>
+    <flow id="f_kadu_ath_car_morn"     route="kaduwela_to_athurugiriya"  type="car"        begin="21600" end="32400" vehsPerHour="780"/>
+    <flow id="f_kadu_ath_moto_morn"    route="kaduwela_to_athurugiriya"  type="motorcycle" begin="21600" end="32400" vehsPerHour="480"/>
+    <flow id="f_batta_kadu_car_morn"   route="battaramulla_to_kaduwela"  type="car"        begin="21600" end="32400" vehsPerHour="860"/>
+    <flow id="f_batta_kadu_moto_morn"  route="battaramulla_to_kaduwela"  type="motorcycle" begin="21600" end="32400" vehsPerHour="550"/>
+    <flow id="f_ath_kadu_car_morn"     route="athurugiriya_to_kaduwela"  type="car"        begin="21600" end="32400" vehsPerHour="690"/>
 
-    <flow id="f_batta_kadu_morning" route="battaramulla_to_kaduwela" type="car" begin="21600" end="28800" vehsPerHour="900"/>
-    <flow id="f_batta_kadu_moto_morn" route="battaramulla_to_kaduwela" type="motorcycle" begin="21600" end="28800" vehsPerHour="600"/>
-    <flow id="f_batta_kadu_tuk_morn" route="battaramulla_to_kaduwela" type="tuk_tuk" begin="21600" end="28800" vehsPerHour="300"/>
+    <!-- Lunch Peak 12:00–13:30 -->
+    <flow id="f_kadu_batta_car_lunch"  route="kaduwela_to_battaramulla"  type="car"        begin="43200" end="48600" vehsPerHour="580"/>
+    <flow id="f_batta_kadu_car_lunch"  route="battaramulla_to_kaduwela"  type="car"        begin="43200" end="48600" vehsPerHour="560"/>
 
-    <flow id="f_ath_kadu_morning" route="athurugiriya_to_kaduwela" type="car" begin="21600" end="28800" vehsPerHour="800"/>
-    <flow id="f_ath_kadu_moto_morn" route="athurugiriya_to_kaduwela" type="motorcycle" begin="21600" end="28800" vehsPerHour="500"/>
+    <!-- Evening Peak 17:00–20:00 -->
+    <flow id="f_batta_kadu_car_eve"    route="battaramulla_to_kaduwela"  type="car"        begin="61200" end="72000" vehsPerHour="1250"/>
+    <flow id="f_batta_kadu_bus_eve"    route="battaramulla_to_kaduwela"  type="bus"        begin="61200" end="72000" vehsPerHour="280"/>
+    <flow id="f_batta_kadu_moto_eve"   route="battaramulla_to_kaduwela"  type="motorcycle" begin="61200" end="72000" vehsPerHour="840"/>
+    <flow id="f_batta_kadu_tuk_eve"    route="battaramulla_to_kaduwela"  type="tuk_tuk"    begin="61200" end="72000" vehsPerHour="420"/>
+    <flow id="f_ath_kadu_car_eve"      route="athurugiriya_to_kaduwela"  type="car"        begin="61200" end="72000" vehsPerHour="920"/>
+    <flow id="f_ath_kadu_moto_eve"     route="athurugiriya_to_kaduwela"  type="motorcycle" begin="61200" end="72000" vehsPerHour="610"/>
+    <flow id="f_kadu_batta_car_eve"    route="kaduwela_to_battaramulla"  type="car"        begin="61200" end="72000" vehsPerHour="900"/>
+    <flow id="f_kadu_ath_car_eve"      route="kaduwela_to_athurugiriya"  type="car"        begin="61200" end="72000" vehsPerHour="680"/>
 
-    <flow id="f_kadu_ath_afternoon" route="kaduwela_to_athurugiriya" type="car" begin="46800" end="52200" vehsPerHour="900"/>
-    <flow id="f_kadu_ath_bus_aft" route="kaduwela_to_athurugiriya" type="bus" begin="46800" end="52200" vehsPerHour="400"/>
-    <flow id="f_kadu_ath_tuk_aft" route="kaduwela_to_athurugiriya" type="tuk_tuk" begin="46800" end="52200" vehsPerHour="500"/>
-    <flow id="f_kadu_ath_moto_aft" route="kaduwela_to_athurugiriya" type="motorcycle" begin="46800" end="52200" vehsPerHour="700"/>
+    <!-- Truck daytime -->
+    <flow id="f_truck_kadu_batta"      route="kaduwela_to_battaramulla"  type="truck"      begin="32400" end="61200" vehsPerHour="70"/>
 
-    <flow id="f_batta_ath_afternoon" route="battaramulla_to_athurugiriya" type="car" begin="46800" end="52200" vehsPerHour="700"/>
-    <flow id="f_batta_ath_tuk_aft" route="battaramulla_to_athurugiriya" type="tuk_tuk" begin="46800" end="52200" vehsPerHour="400"/>
-
-    <flow id="f_batta_kadu_evening" route="battaramulla_to_kaduwela" type="car" begin="61200" end="68400" vehsPerHour="1400"/>
-    <flow id="f_batta_kadu_bus_eve" route="battaramulla_to_kaduwela" type="bus" begin="61200" end="68400" vehsPerHour="350"/>
-    <flow id="f_batta_kadu_moto_eve" route="battaramulla_to_kaduwela" type="motorcycle" begin="61200" end="68400" vehsPerHour="900"/>
-    <flow id="f_batta_kadu_tuk_eve" route="battaramulla_to_kaduwela" type="tuk_tuk" begin="61200" end="68400" vehsPerHour="500"/>
-
-    <flow id="f_kadu_batta_evening" route="kaduwela_to_battaramulla" type="car" begin="61200" end="68400" vehsPerHour="1000"/>
-    <flow id="f_kadu_batta_moto_eve" route="kaduwela_to_battaramulla" type="motorcycle" begin="61200" end="68400" vehsPerHour="700"/>
-
-    <flow id="f_ath_batta_evening" route="athurugiriya_to_battaramulla" type="car" begin="61200" end="68400" vehsPerHour="800"/>
-    <flow id="f_ath_batta_tuk_eve" route="athurugiriya_to_battaramulla" type="tuk_tuk" begin="61200" end="68400" vehsPerHour="400"/>
-
-    <flow id="f_off_kadu_batta" route="kaduwela_to_battaramulla" type="car" begin="0" end="21600" vehsPerHour="300"/>
-    <flow id="f_off_batta_kadu" route="battaramulla_to_kaduwela" type="car" begin="0" end="21600" vehsPerHour="300"/>
-    <flow id="f_off_ath_kadu" route="athurugiriya_to_kaduwela" type="car" begin="0" end="21600" vehsPerHour="200"/>
-    <flow id="f_off_kadu_batta2" route="kaduwela_to_battaramulla" type="motorcycle" begin="28800" end="46800" vehsPerHour="200"/>
-    <flow id="f_off_batta_kadu2" route="battaramulla_to_kaduwela" type="motorcycle" begin="52200" end="61200" vehsPerHour="150"/>
-
+    <!-- Background/Night -->
+    <flow id="f_bg_kadu_batta_day"     route="kaduwela_to_battaramulla"  type="car"        begin="0"     end="21600" vehsPerHour="270"/>
+    <flow id="f_bg_batta_kadu_day"     route="battaramulla_to_kaduwela"  type="car"        begin="0"     end="21600" vehsPerHour="260"/>
+    <flow id="f_bg_ath_kadu_day"       route="athurugiriya_to_kaduwela"  type="car"        begin="0"     end="21600" vehsPerHour="190"/>
+    <flow id="f_bg_night_kadu_batta"   route="kaduwela_to_battaramulla"  type="car"        begin="72000" end="86400" vehsPerHour="120"/>
+    <flow id="f_bg_night_batta_kadu"   route="battaramulla_to_kaduwela"  type="car"        begin="72000" end="86400" vehsPerHour="110"/>
 </routes>

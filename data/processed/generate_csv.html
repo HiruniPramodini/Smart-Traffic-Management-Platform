@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Kaduwela Corridor — 7-Day CSV Generator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .card {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 24px;
+    padding: 48px 56px;
+    max-width: 640px; width: 90%;
+    text-align: center;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+  }
+  h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+  .subtitle { color: rgba(255,255,255,0.55); font-size: 0.95rem; margin-bottom: 32px; }
+  .stats {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px; margin-bottom: 36px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat-val { font-size: 1.5rem; font-weight: 700; color: #a78bfa; }
+  .stat-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+  .progress-wrap {
+    background: rgba(255,255,255,0.1);
+    border-radius: 999px; height: 10px;
+    margin-bottom: 12px; overflow: hidden;
+    display: none;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #7c3aed, #a78bfa);
+    border-radius: 999px;
+    width: 0%; transition: width 0.1s;
+  }
+  .status { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 28px; min-height: 20px; }
+  button {
+    background: linear-gradient(135deg, #7c3aed, #a21caf);
+    color: #fff; border: none; border-radius: 14px;
+    padding: 16px 40px; font-size: 1rem; font-weight: 600;
+    cursor: pointer; width: 100%;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 8px 24px rgba(124,58,237,0.4);
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,58,237,0.6); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .layout {
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px; padding: 16px;
+    font-family: monospace; font-size: 0.78rem;
+    color: rgba(255,255,255,0.7); margin-bottom: 28px;
+    line-height: 1.8;
+  }
+  .done { color: #4ade80; font-size: 1.1rem; font-weight: 600; margin-top: 16px; display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🚦 Kaduwela Green Wave Corridor</h1>
+  <p class="subtitle">7-Day Traffic Dataset Generator — 5 Junctions</p>
+
+  <div class="layout">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Malabe (North)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    Ranala (W) ── Kaduwela ── Kotikawatta (E)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Biyagama (South)
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">50,400</div><div class="stat-lbl">Total Rows</div></div>
+    <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Junctions</div></div>
+    <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Weather Types</div></div>
+  </div>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <div class="status" id="status">Click Generate to build the full 7-day dataset</div>
+
+  <button id="btn" onclick="generate()">⬇ Generate & Download CSV</button>
+  <div class="done" id="done">✅ Download started! Check your Downloads folder.</div>
+</div>
+
+<script>
+// ─── Configuration ────────────────────────────────────────────────────────
+const JUNCTIONS = {
+  Kaduwela:    { arms: ["malabe","biyagama","kotikawatta","ranala"],         peak: { malabe:18, biyagama:14, kotikawatta:10, ranala:16 } },
+  Malabe:      { arms: ["kaduwela","athurugiriya","battaramulla"],           peak: { kaduwela:16, athurugiriya:10, battaramulla:13 } },
+  Biyagama:    { arms: ["kaduwela","industrial","kelaniya"],                 peak: { kaduwela:13, industrial:9,  kelaniya:12 } },
+  Kotikawatta: { arms: ["kaduwela","kolonnawa","mulleriyawa"],               peak: { kaduwela:11, kolonnawa:9,  mulleriyawa:7 } },
+  Ranala:      { arms: ["kaduwela","hanwella","avissawella"],                peak: { kaduwela:14, hanwella:11, avissawella:8 } },
+};
+
+const VEHICLE_MIX = { car:0.52, bus:0.08, motorcycle:0.25, tuk_tuk:0.12, truck:0.03 };
+
+const HOUR_SHAPE = [
+  0.05,0.03,0.02,0.02,0.04,0.08,
+  0.22,0.88,1.00,0.75,0.56,0.53,
+  0.70,0.68,0.60,0.58,0.74,0.97,
+  1.00,0.89,0.65,0.42,0.22,0.10
+];
+
+const DOW_MULT = [1.00,0.98,0.97,0.99,1.05,0.70,0.52];
+const DAY_NAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+
+// Weekly weather: [start_hour, end_hour, type]
+const WEEKLY_WEATHER = {
+  0: [[0,12,"clear"],[14,18,"light_rain"],[18,24,"overcast"]],
+  1: [[0,7,"overcast"],[7,13,"clear"],[15,17,"heavy_rain"],[17,24,"overcast"]],
+  2: [[0,24,"clear"]],
+  3: [[5,8,"foggy"],[8,14,"clear"],[14,20,"light_rain"],[20,24,"overcast"]],
+  4: [[0,11,"clear"],[11,14,"overcast"],[16,19,"heavy_rain"],[19,24,"clear"]],
+  5: [[6,10,"light_rain"],[10,17,"clear"],[17,24,"overcast"]],
+  6: [[0,8,"overcast"],[8,24,"clear"]],
+};
+
+const WEATHER_IMPACT = {
+  clear:      { speed:1.00, flow:1.00, wait:1.00 },
+  overcast:   { speed:0.95, flow:0.97, wait:1.05 },
+  foggy:      { speed:0.78, flow:0.88, wait:1.30 },
+  light_rain: { speed:0.85, flow:0.90, wait:1.25 },
+  heavy_rain: { speed:0.65, flow:0.70, wait:1.80 },
+};
+
+// Seeded pseudo-random (Mulberry32)
+function mulberry32(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const rng = mulberry32(42);
+
+function rand(lo, hi) { return lo + rng() * (hi - lo); }
+
+function getWeather(dow, hour) {
+  for (const [h0, h1, w] of (WEEKLY_WEATHER[dow] || [])) {
+    if (hour >= h0 && hour < h1) return w;
+  }
+  return "clear";
+}
+
+function hhmm(sec) {
+  const h = Math.floor(sec / 3600) % 24;
+  const m = Math.floor((sec % 3600) / 60);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
+
+function armMetrics(basePeak, hourMult, dowMult, weather, noise) {
+  const wi = WEATHER_IMPACT[weather];
+  const raw = Math.max(0, basePeak * hourMult * dowMult * wi.flow * noise);
+  const total = Math.round(raw);
+
+  // vehicle counts
+  let rem = total;
+  const counts = {};
+  const vtypes = Object.keys(VEHICLE_MIX);
+  for (let i = 0; i < vtypes.length - 1; i++) {
+    const n = Math.round(total * VEHICLE_MIX[vtypes[i]]);
+    counts[vtypes[i]] = n;
+    rem -= n;
+  }
+  counts["truck"] = Math.max(0, rem);
+
+  const congPen = Math.min(0.60, raw / (basePeak * 1.5 + 1e-6)) * 0.40;
+  const speedKmh = Math.max(5.0, Math.round((50.0 * wi.speed * (1 - congPen) + rand(-1.5, 1.5)) * 10) / 10);
+  const queueFrac = Math.min(0.95, congPen * 2.5 * wi.wait);
+  const queue = Math.round(total * queueFrac);
+  const waitSec = Math.max(0, Math.round((128 * queueFrac * wi.wait * rand(0.85, 1.15)) * 10) / 10);
+
+  return { cars: counts.car||0, buses: counts.bus||0,
+           motorcycles: counts.motorcycle||0, tuk_tuks: counts.tuk_tuk||0,
+           trucks: counts.truck||0, total, queue, speed_kmh: speedKmh, wait_sec: waitSec };
+}
+
+// All unique arms sorted
+const ALL_ARMS = [...new Set(
+  Object.values(JUNCTIONS).flatMap(j => j.arms)
+)].sort();
+
+const ARM_SUFFIXES = ["cars","buses","motorcycles","tuk_tuks","trucks","total","queue","speed_kmh","wait_sec"];
+
+function buildHeader() {
+  const base = ["date","day_of_week","time_seconds","time","hour","weather","junction"];
+  const armCols = ALL_ARMS.flatMap(arm => ARM_SUFFIXES.map(s => `${arm}_${s}`));
+  return [...base, ...armCols, "junction_total_vehicles"];
+}
+
+function rowToCSV(row, header) {
+  return header.map(k => {
+    const v = row[k] ?? 0;
+    return String(v);
+  }).join(",");
+}
+
+// Dates: Mon 7 Jul 2025 onward
+const DATES = [
+  "2025-07-07","2025-07-08","2025-07-09",
+  "2025-07-10","2025-07-11","2025-07-12","2025-07-13"
+];
+
+async function generate() {
+  const btn = document.getElementById("btn");
+  const status = document.getElementById("status");
+  const pw = document.getElementById("progressWrap");
+  const pb = document.getElementById("progressBar");
+  const done = document.getElementById("done");
+
+  btn.disabled = true;
+  pw.style.display = "block";
+
+  const header = buildHeader();
+  const lines = [header.join(",")];
+
+  const totalRows = 5 * 7 * 1440;
+  let processed = 0;
+
+  for (let dow = 0; dow < 7; dow++) {
+    const dateStr = DATES[dow];
+    const dayName = DAY_NAMES[dow];
+    const dm = DOW_MULT[dow];
+
+    for (const [jName, jData] of Object.entries(JUNCTIONS)) {
+      for (let step = 0; step < 1440; step++) {
+        const sec  = step * 60;
+        const hour = Math.floor(step / 60);
+        const minute = step % 60;
+        const weather = getWeather(dow, hour);
+
+        let hMult = HOUR_SHAPE[hour];
+        const nextMult = HOUR_SHAPE[(hour + 1) % 24];
+        hMult = hMult + (nextMult - hMult) * (minute / 60);
+
+        const noise = rand(0.88, 1.12);
+
+        const row = {
+          date: dateStr, day_of_week: dayName,
+          time_seconds: sec, time: hhmm(sec),
+          hour, weather, junction: jName
+        };
+
+        // zero all arm cols first
+        for (const arm of ALL_ARMS) {
+          for (const s of ARM_SUFFIXES) row[`${arm}_${s}`] = 0;
+        }
+
+        let jTotal = 0;
+        for (const arm of jData.arms) {
+          const m = armMetrics(jData.peak[arm], hMult, dm, weather, noise);
+          row[`${arm}_cars`]        = m.cars;
+          row[`${arm}_buses`]       = m.buses;
+          row[`${arm}_motorcycles`] = m.motorcycles;
+          row[`${arm}_tuk_tuks`]    = m.tuk_tuks;
+          row[`${arm}_trucks`]      = m.trucks;
+          row[`${arm}_total`]       = m.total;
+          row[`${arm}_queue`]       = m.queue;
+          row[`${arm}_speed_kmh`]   = m.speed_kmh;
+          row[`${arm}_wait_sec`]    = m.wait_sec;
+          jTotal += m.total;
+        }
+        row.junction_total_vehicles = jTotal;
+
+        lines.push(rowToCSV(row, header));
+        processed++;
+
+        if (step % 120 === 0) {
+          const pct = Math.round(processed / totalRows * 100);
+          pb.style.width = pct + "%";
+          status.textContent = `Generating… Day ${dow+1}/7 — ${jName} — ${hhmm(sec)} (${pct}%)`;
+          await new Promise(r => setTimeout(r, 0)); // yield to browser
+        }
+      }
+    }
+  }
+
+  pb.style.width = "100%";
+  status.textContent = `✅ Generated ${processed.toLocaleString()} rows. Building file…`;
+  await new Promise(r => setTimeout(r, 50));
+
+  const csvContent = lines.join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url  = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "kaduwela_corridor_7day.csv";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  status.textContent = `Done! ${processed.toLocaleString()} rows — 5 junctions × 7 days × 1,440 min`;
+  done.style.display = "block";
+  btn.disabled = false;
+  btn.textContent = "⬇ Download Again";
+}
+</script>
+</body>
+</html>

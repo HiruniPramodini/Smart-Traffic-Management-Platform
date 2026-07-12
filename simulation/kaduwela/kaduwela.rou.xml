@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kaduwela Junction — Route & Flow Definitions
+  ===============================================
+  CENTER junction | 4-arm (N=Malabe, S=Biyagama, E=Kotikawatta, W=Ranala)
+
+  Traffic logic:
+  - Morning peak 06:00-09:00: heavy flows from all arms converging; Malabe/Ranala heavy inbound
+  - Evening peak 17:00-20:00: reverse — vehicles dispersing outward to Malabe, Kotikawatta, Ranala
+  - No time_period label — ML model infers peaks from raw counts/queues/speeds
+-->
+<routes>
+    <vType id="car"        accel="2.6" decel="4.5" sigma="0.5" length="4.5"  maxSpeed="13.89" color="0.8,0.8,0.8"/>
+    <vType id="bus"        accel="1.2" decel="3.0" sigma="0.4" length="12.0" maxSpeed="11.0"  color="1,0.5,0"/>
+    <vType id="motorcycle" accel="3.5" decel="5.0" sigma="0.6" length="2.2"  maxSpeed="15.0"  color="0.2,0.2,0.8"/>
+    <vType id="tuk_tuk"    accel="2.0" decel="4.0" sigma="0.7" length="2.8"  maxSpeed="11.0"  color="0,0.8,0.8"/>
+    <vType id="truck"      accel="1.0" decel="3.0" sigma="0.3" length="8.0"  maxSpeed="11.0"  color="0.5,0.3,0.1"/>
+
+    <!-- Route definitions: all arm pairs -->
+    <route id="malabe_to_biyagama"     edges="malabe_in biyagama_out"/>
+    <route id="malabe_to_kotikawatta"  edges="malabe_in kotikawatta_out"/>
+    <route id="malabe_to_ranala"       edges="malabe_in ranala_out"/>
+    <route id="biyagama_to_malabe"     edges="biyagama_in malabe_out"/>
+    <route id="biyagama_to_kotikawatta" edges="biyagama_in kotikawatta_out"/>
+    <route id="biyagama_to_ranala"     edges="biyagama_in ranala_out"/>
+    <route id="kotikawatta_to_malabe"  edges="kotikawatta_in malabe_out"/>
+    <route id="kotikawatta_to_biyagama" edges="kotikawatta_in biyagama_out"/>
+    <route id="kotikawatta_to_ranala"  edges="kotikawatta_in ranala_out"/>
+    <route id="ranala_to_malabe"       edges="ranala_in malabe_out"/>
+    <route id="ranala_to_biyagama"     edges="ranala_in biyagama_out"/>
+    <route id="ranala_to_kotikawatta"  edges="ranala_in kotikawatta_out"/>
+
+    <!-- ═══ Morning Peak 06:00–09:00 (21600–32400 s) ═══ -->
+    <!-- Ranala (W) → Malabe (N): main commuter corridor inbound -->
+    <flow id="f_ran_mal_car_morn"   route="ranala_to_malabe"      type="car"        begin="21600" end="32400" vehsPerHour="950"/>
+    <flow id="f_ran_mal_bus_morn"   route="ranala_to_malabe"      type="bus"        begin="21600" end="32400" vehsPerHour="200"/>
+    <flow id="f_ran_mal_moto_morn"  route="ranala_to_malabe"      type="motorcycle" begin="21600" end="32400" vehsPerHour="620"/>
+    <flow id="f_ran_mal_tuk_morn"   route="ranala_to_malabe"      type="tuk_tuk"    begin="21600" end="32400" vehsPerHour="310"/>
+
+    <!-- Kotikawatta (E) → Malabe (N) / Ranala (W) -->
+    <flow id="f_kot_mal_car_morn"   route="kotikawatta_to_malabe" type="car"        begin="21600" end="32400" vehsPerHour="680"/>
+    <flow id="f_kot_mal_moto_morn"  route="kotikawatta_to_malabe" type="motorcycle" begin="21600" end="32400" vehsPerHour="450"/>
+    <flow id="f_kot_ran_car_morn"   route="kotikawatta_to_ranala" type="car"        begin="21600" end="32400" vehsPerHour="380"/>
+
+    <!-- Biyagama (S) → Malabe (N) / Kotikawatta (E) -->
+    <flow id="f_biy_mal_car_morn"   route="biyagama_to_malabe"    type="car"        begin="21600" end="32400" vehsPerHour="720"/>
+    <flow id="f_biy_mal_bus_morn"   route="biyagama_to_malabe"    type="bus"        begin="21600" end="32400" vehsPerHour="160"/>
+    <flow id="f_biy_mal_moto_morn"  route="biyagama_to_malabe"    type="motorcycle" begin="21600" end="32400" vehsPerHour="490"/>
+    <flow id="f_biy_kot_car_morn"   route="biyagama_to_kotikawatta" type="car"      begin="21600" end="32400" vehsPerHour="320"/>
+
+    <!-- ═══ Lunch 12:00–13:30 (43200–48600 s) ═══ -->
+    <flow id="f_ran_mal_car_lunch"  route="ranala_to_malabe"      type="car"        begin="43200" end="48600" vehsPerHour="500"/>
+    <flow id="f_mal_ran_car_lunch"  route="malabe_to_ranala"      type="car"        begin="43200" end="48600" vehsPerHour="480"/>
+    <flow id="f_kot_mal_moto_lunch" route="kotikawatta_to_malabe" type="motorcycle" begin="43200" end="48600" vehsPerHour="300"/>
+
+    <!-- ═══ Evening Peak 17:00–20:00 (61200–72000 s) ═══ -->
+    <!-- Malabe (N) → Ranala (W): reverse commuters going home -->
+    <flow id="f_mal_ran_car_eve"    route="malabe_to_ranala"      type="car"        begin="61200" end="72000" vehsPerHour="1050"/>
+    <flow id="f_mal_ran_bus_eve"    route="malabe_to_ranala"      type="bus"        begin="61200" end="72000" vehsPerHour="220"/>
+    <flow id="f_mal_ran_moto_eve"   route="malabe_to_ranala"      type="motorcycle" begin="61200" end="72000" vehsPerHour="700"/>
+    <flow id="f_mal_ran_tuk_eve"    route="malabe_to_ranala"      type="tuk_tuk"    begin="61200" end="72000" vehsPerHour="380"/>
+
+    <!-- Malabe (N) → Kotikawatta (E) / Biyagama (S) -->
+    <flow id="f_mal_kot_car_eve"    route="malabe_to_kotikawatta" type="car"        begin="61200" end="72000" vehsPerHour="780"/>
+    <flow id="f_mal_kot_moto_eve"   route="malabe_to_kotikawatta" type="motorcycle" begin="61200" end="72000" vehsPerHour="520"/>
+    <flow id="f_mal_biy_car_eve"    route="malabe_to_biyagama"    type="car"        begin="61200" end="72000" vehsPerHour="650"/>
+    <flow id="f_mal_biy_bus_eve"    route="malabe_to_biyagama"    type="bus"        begin="61200" end="72000" vehsPerHour="150"/>
+
+    <!-- Ranala (W) → Kotikawatta (E) evening cross -->
+    <flow id="f_ran_kot_car_eve"    route="ranala_to_kotikawatta" type="car"        begin="61200" end="72000" vehsPerHour="420"/>
+
+    <!-- ═══ Trucks (daytime off-peak: 09:00–17:00) ═══ -->
+    <flow id="f_truck_ran_mal"      route="ranala_to_malabe"      type="truck"      begin="32400" end="61200" vehsPerHour="80"/>
+    <flow id="f_truck_biy_mal"      route="biyagama_to_malabe"    type="truck"      begin="32400" end="61200" vehsPerHour="65"/>
+
+    <!-- ═══ Background / Night flows ═══ -->
+    <flow id="f_bg_ran_mal_day"     route="ranala_to_malabe"      type="car"        begin="0"     end="21600" vehsPerHour="250"/>
+    <flow id="f_bg_mal_ran_day"     route="malabe_to_ranala"      type="car"        begin="0"     end="21600" vehsPerHour="240"/>
+    <flow id="f_bg_kot_biy"         route="kotikawatta_to_biyagama" type="car"      begin="0"     end="21600" vehsPerHour="180"/>
+    <flow id="f_bg_night_ran_mal"   route="ranala_to_malabe"      type="car"        begin="72000" end="86400" vehsPerHour="110"/>
+    <flow id="f_bg_night_mal_ran"   route="malabe_to_ranala"      type="car"        begin="72400" end="86400" vehsPerHour="100"/>
+    <flow id="f_bg_moto_off1"       route="kotikawatta_to_malabe" type="motorcycle" begin="32400" end="43200" vehsPerHour="170"/>
+    <flow id="f_bg_moto_off2"       route="malabe_to_kotikawatta" type="motorcycle" begin="48600" end="61200" vehsPerHour="150"/>
+</routes>

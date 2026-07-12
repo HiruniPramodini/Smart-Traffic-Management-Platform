@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Kaduwela Junction — Edge Definitions
+  CENTER junction | 4-arm bidirectional | 2 lanes | 50 km/h
+
+  North → Malabe       (GREEN WAVE downstream, offset 315 s)
+  South → Biyagama     (GREEN WAVE downstream, offset 270 s)
+  East  → Kotikawatta  (GREEN WAVE downstream, offset 180 s)
+  West  → Ranala       (GREEN WAVE downstream, offset 450 s)
+-->
+<edges>
+    <!-- North arm: Malabe -->
+    <edge id="malabe_in"       from="malabe"          to="kaduwela_center" numLanes="2" speed="13.89"/>
+    <edge id="malabe_out"      from="kaduwela_center" to="malabe"          numLanes="2" speed="13.89"/>
+
+    <!-- South arm: Biyagama -->
+    <edge id="biyagama_in"     from="biyagama"        to="kaduwela_center" numLanes="2" speed="13.89"/>
+    <edge id="biyagama_out"    from="kaduwela_center" to="biyagama"        numLanes="2" speed="13.89"/>
+
+    <!-- East arm: Kotikawatta -->
+    <edge id="kotikawatta_in"  from="kotikawatta"     to="kaduwela_center" numLanes="2" speed="13.89"/>
+    <edge id="kotikawatta_out" from="kaduwela_center" to="kotikawatta"     numLanes="2" speed="13.89"/>
+
+    <!-- West arm: Ranala -->
+    <edge id="ranala_in"       from="ranala"           to="kaduwela_center" numLanes="2" speed="13.89"/>
+    <edge id="ranala_out"      from="kaduwela_center"  to="ranala"          numLanes="2" speed="13.89"/>
+</edges>

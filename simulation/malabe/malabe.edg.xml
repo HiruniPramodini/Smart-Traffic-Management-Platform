@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Malabe Junction — Edge Definitions
+  NORTH of Kaduwela | 3-arm bidirectional | 2 lanes | 50 km/h
+  Green Wave offset = 315 s
+
+  South → Kaduwela      (GREEN WAVE upstream link)
+  East  → Athurugiriya
+  West  → Battaramulla
+-->
 <edges>
-    <edge id="kaduwela_in"       from="kaduwela"     to="malabe_center" numLanes="2" speed="13.89"/>
-    <edge id="kaduwela_out"      from="malabe_center" to="kaduwela"     numLanes="2" speed="13.89"/>
-    <edge id="athurugiriya_in"   from="athurugiriya"  to="malabe_center" numLanes="2" speed="13.89"/>
-    <edge id="athurugiriya_out"  from="malabe_center" to="athurugiriya"  numLanes="2" speed="13.89"/>
-    <edge id="battaramulla_in"   from="battaramulla"  to="malabe_center" numLanes="2" speed="13.89"/>
-    <edge id="battaramulla_out"  from="malabe_center" to="battaramulla"  numLanes="2" speed="13.89"/>
+    <!-- South arm: Kaduwela (GREEN WAVE link) -->
+    <edge id="kaduwela_in"     from="kaduwela"      to="malabe_center" numLanes="2" speed="13.89"/>
+    <edge id="kaduwela_out"    from="malabe_center" to="kaduwela"      numLanes="2" speed="13.89"/>
+
+    <!-- East arm: Athurugiriya -->
+    <edge id="athurugiriya_in"  from="athurugiriya" to="malabe_center" numLanes="2" speed="13.89"/>
+    <edge id="athurugiriya_out" from="malabe_center" to="athurugiriya" numLanes="2" speed="13.89"/>
+
+    <!-- West arm: Battaramulla -->
+    <edge id="battaramulla_in"  from="battaramulla" to="malabe_center" numLanes="2" speed="13.89"/>
+    <edge id="battaramulla_out" from="malabe_center" to="battaramulla" numLanes="2" speed="13.89"/>
 </edges>
