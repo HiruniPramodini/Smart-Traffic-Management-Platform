@@ -58,3 +58,35 @@ class Vehicle:
             if link in ["Ranala", "Kaduwela", "Kotikawatta", "Malabe", "Biyagama"]:
                 return link
         return None
+    
+    
+
+class TrafficSimulator:
+    LINK_LENGTHS = {
+        # Outer sources
+        "Ranala_source": 500,
+        "Kotikawatta_source": 500,
+        "Malabe_source": 500,
+        "Biyagama_source": 500,
+        "Cross_source_Ranala": 300,
+        "Cross_source_Malabe": 300,
+        "Cross_source_Biyagama": 300,
+        "Cross_source_Kotikawatta": 300,
+        
+        # Inter-junction links
+        "Ranala_to_Kaduwela": 5000,
+        "Kaduwela_to_Ranala": 5000,
+        "Kotikawatta_to_Kaduwela": 2000,
+        "Kaduwela_to_Kotikawatta": 2000,
+        "Biyagama_to_Kaduwela": 3000,
+        "Kaduwela_to_Biyagama": 3000,
+        "Malabe_to_Kaduwela": 3500,
+        "Kaduwela_to_Malabe": 3500,
+        
+        # Output exits
+        "Ranala_exit": 500,
+        "Kotikawatta_exit": 500,
+        "Malabe_exit": 500,
+        "Biyagama_exit": 500,
+        "Cross_exit": 300
+    }
