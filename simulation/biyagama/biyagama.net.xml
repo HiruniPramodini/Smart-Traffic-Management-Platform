@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-07-14T21:36:47.664908+05:30 by Eclipse SUMO netconvert 1.27.0
+<netconvertConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="..\biyagama\biyagama.nod.xml"/>
+        <edge-files value="..\biyagama\biyagama.edg.xml"/>
+    </input>
+
+    <output>
+        <output-file value="..\biyagama\biyagama.net.xml"/>
+    </output>
+
+    <tls_building>
+        <tls.guess value="true"/>
+    </tls_building>
+
+    <junctions>
+        <no-turnarounds value="false"/>
+    </junctions>
+
+</netconvertConfiguration>
+-->
+
+<net version="1.20" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="500.00,0.00" convBoundary="0.00,0.00,1000.00,500.00" origBoundary="-500.00,0.00,500.00,500.00" projParameter="!"/>
+
+    <edge id=":biyagama_center_0" function="internal">
+        <lane id=":biyagama_center_0_0" index="0" speed="6.51" length="9.03" shape="495.20,10.40 494.85,7.95 493.80,6.20 492.05,5.15 489.60,4.80"/>
+        <lane id=":biyagama_center_0_1" index="1" speed="8.00" length="14.19" shape="498.40,10.40 497.85,6.55 496.20,3.80 493.45,2.15 489.60,1.60"/>
+    </edge>
+    <edge id=":biyagama_center_2" function="internal">
+        <lane id=":biyagama_center_2_0" index="0" speed="9.26" length="19.35" shape="498.40,10.40 499.15,5.15 501.40,1.40 505.15,-0.85 510.40,-1.60"/>
+    </edge>
+    <edge id=":biyagama_center_3" function="internal">
+        <lane id=":biyagama_center_3_0" index="0" speed="3.65" length="2.34" shape="498.40,10.40 499.20,9.20 500.00,8.80"/>
+    </edge>
+    <edge id=":biyagama_center_12" function="internal">
+        <lane id=":biyagama_center_12_0" index="0" speed="3.65" length="2.34" shape="500.00,8.80 500.80,9.20 501.60,10.40"/>
+    </edge>
+    <edge id=":biyagama_center_4" function="internal">
+        <lane id=":biyagama_center_4_0" index="0" speed="6.51" length="9.03" shape="510.40,4.80 507.95,5.15 506.20,6.20 505.15,7.95 504.80,10.40"/>
+    </edge>
+    <edge id=":biyagama_center_5" function="internal">
+        <lane id=":biyagama_center_5_0" index="0" speed="13.89" length="20.80" shape="510.40,4.80 489.60,4.80"/>
+        <lane id=":biyagama_center_5_1" index="1" speed="13.89" length="20.80" shape="510.40,1.60 489.60,1.60"/>
+    </edge>
+    <edge id=":biyagama_center_7" function="internal">
+        <lane id=":biyagama_center_7_0" index="0" speed="3.65" length="1.44" shape="510.40,1.60 509.20,0.80"/>
+    </edge>
+    <edge id=":biyagama_center_13" function="internal">
+        <lane id=":biyagama_center_13_0" index="0" speed="3.65" length="3.23" shape="509.20,0.80 508.80,0.00 509.20,-0.80 510.40,-1.60"/>
+    </edge>
+    <edge id=":biyagama_center_8" function="internal">
+        <lane id=":biyagama_center_8_0" index="0" speed="13.89" length="20.80" shape="489.60,-4.80 510.40,-4.80"/>
+        <lane id=":biyagama_center_8_1" index="1" speed="13.89" length="20.80" shape="489.60,-1.60 510.40,-1.60"/>
+    </edge>
+    <edge id=":biyagama_center_10" function="internal">
+        <lane id=":biyagama_center_10_0" index="0" speed="9.26" length="5.01" shape="489.60,-1.60 494.56,-0.89"/>
+    </edge>
+    <edge id=":biyagama_center_11" function="internal">
+        <lane id=":biyagama_center_11_0" index="0" speed="3.65" length="1.44" shape="489.60,-1.60 490.80,-0.80"/>
+    </edge>
+    <edge id=":biyagama_center_14" function="internal">
+        <lane id=":biyagama_center_14_0" index="0" speed="9.26" length="14.34" shape="494.56,-0.89 494.85,-0.85 498.60,1.40 500.85,5.15 501.60,10.40"/>
+    </edge>
+    <edge id=":biyagama_center_15" function="internal">
+        <lane id=":biyagama_center_15_0" index="0" speed="3.65" length="3.23" shape="490.80,-0.80 491.20,0.00 490.80,0.80 489.60,1.60"/>
+    </edge>
+    <edge id=":industrial_0" function="internal">
+        <lane id=":industrial_0_0" index="0" speed="3.65" length="4.67" shape="1000.00,-1.60 1001.20,-0.80 1001.60,0.00 1001.20,0.80 1000.00,1.60"/>
+    </edge>
+    <edge id=":kaduwela_0" function="internal">
+        <lane id=":kaduwela_0_0" index="0" speed="3.65" length="4.67" shape="501.60,500.00 500.80,501.20 500.00,501.60 499.20,501.20 498.40,500.00"/>
+    </edge>
+    <edge id=":kelaniya_0" function="internal">
+        <lane id=":kelaniya_0_0" index="0" speed="3.65" length="4.67" shape="0.00,1.60 -1.20,0.80 -1.60,0.00 -1.20,-0.80 0.00,-1.60"/>
+    </edge>
+
+    <edge id="industrial_in" from="industrial" to="biyagama_center" priority="-1">
+        <lane id="industrial_in_0" index="0" speed="13.89" length="489.60" shape="1000.00,4.80 510.40,4.80"/>
+        <lane id="industrial_in_1" index="1" speed="13.89" length="489.60" shape="1000.00,1.60 510.40,1.60"/>
+    </edge>
+    <edge id="industrial_out" from="biyagama_center" to="industrial" priority="-1">
+        <lane id="industrial_out_0" index="0" speed="13.89" length="489.60" shape="510.40,-4.80 1000.00,-4.80"/>
+        <lane id="industrial_out_1" index="1" speed="13.89" length="489.60" shape="510.40,-1.60 1000.00,-1.60"/>
+    </edge>
+    <edge id="kaduwela_in" from="kaduwela" to="biyagama_center" priority="-1">
+        <lane id="kaduwela_in_0" index="0" speed="13.89" length="489.60" shape="495.20,500.00 495.20,10.40"/>
+        <lane id="kaduwela_in_1" index="1" speed="13.89" length="489.60" shape="498.40,500.00 498.40,10.40"/>
+    </edge>
+    <edge id="kaduwela_out" from="biyagama_center" to="kaduwela" priority="-1">
+        <lane id="kaduwela_out_0" index="0" speed="13.89" length="489.60" shape="504.80,10.40 504.80,500.00"/>
+        <lane id="kaduwela_out_1" index="1" speed="13.89" length="489.60" shape="501.60,10.40 501.60,500.00"/>
+    </edge>
+    <edge id="kelaniya_in" from="kelaniya" to="biyagama_center" priority="-1">
+        <lane id="kelaniya_in_0" index="0" speed="13.89" length="489.60" shape="0.00,-4.80 489.60,-4.80"/>
+        <lane id="kelaniya_in_1" index="1" speed="13.89" length="489.60" shape="0.00,-1.60 489.60,-1.60"/>
+    </edge>
+    <edge id="kelaniya_out" from="biyagama_center" to="kelaniya" priority="-1">
+        <lane id="kelaniya_out_0" index="0" speed="13.89" length="489.60" shape="489.60,4.80 0.00,4.80"/>
+        <lane id="kelaniya_out_1" index="1" speed="13.89" length="489.60" shape="489.60,1.60 0.00,1.60"/>
+    </edge>
+
+    <tlLogic id="biyagama_center" type="static" programID="0" offset="0">
+        <phase duration="42" state="rrrrGGGgGGgg"/>
+        <phase duration="3"  state="rrrrGyyyyyyy"/>
+        <phase duration="42" state="GGGgGrrrrrrr"/>
+        <phase duration="3"  state="yyyyGrrrrrrr"/>
+    </tlLogic>
+
+    <junction id="biyagama_center" type="traffic_light" x="500.00" y="0.00" incLanes="kaduwela_in_0 kaduwela_in_1 industrial_in_0 industrial_in_1 kelaniya_in_0 kelaniya_in_1" intLanes=":biyagama_center_0_0 :biyagama_center_0_1 :biyagama_center_2_0 :biyagama_center_12_0 :biyagama_center_4_0 :biyagama_center_5_0 :biyagama_center_5_1 :biyagama_center_13_0 :biyagama_center_8_0 :biyagama_center_8_1 :biyagama_center_14_0 :biyagama_center_15_0" shape="493.60,10.40 506.40,10.40 506.84,8.18 507.40,7.40 508.18,6.84 509.18,6.51 510.40,6.40 510.40,-6.40 489.60,-6.40 489.60,6.40 491.82,6.84 492.60,7.40 493.16,8.18 493.49,9.18">
+        <request index="0"  response="000001100000" foes="100001100000" cont="0"/>
+        <request index="1"  response="000001100000" foes="100001100000" cont="0"/>
+        <request index="2"  response="011101100000" foes="011111100000" cont="0"/>
+        <request index="3"  response="010000000000" foes="010000000000" cont="1"/>
+        <request index="4"  response="000000000000" foes="000000000000" cont="0"/>
+        <request index="5"  response="000000000000" foes="110000000111" cont="0"/>
+        <request index="6"  response="000000000000" foes="110000000111" cont="0"/>
+        <request index="7"  response="001100000100" foes="001100000100" cont="1"/>
+        <request index="8"  response="000000000000" foes="000010000100" cont="0"/>
+        <request index="9"  response="000000000000" foes="000010000100" cont="0"/>
+        <request index="10" response="000001100000" foes="000001101100" cont="1"/>
+        <request index="11" response="000001100011" foes="000001100011" cont="1"/>
+    </junction>
+    <junction id="industrial" type="priority" x="1000.00" y="0.00" incLanes="industrial_out_0 industrial_out_1" intLanes=":industrial_0_0" shape="1000.00,0.00 1000.00,-6.40 1000.00,0.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="kaduwela" type="priority" x="500.00" y="500.00" incLanes="kaduwela_out_0 kaduwela_out_1" intLanes=":kaduwela_0_0" shape="500.00,500.00 506.40,500.00 500.00,500.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="kelaniya" type="priority" x="0.00" y="0.00" incLanes="kelaniya_out_0 kelaniya_out_1" intLanes=":kelaniya_0_0" shape="0.00,0.00 0.00,6.40 0.00,0.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+
+    <junction id=":biyagama_center_12_0" type="internal" x="500.00" y="8.80" incLanes=":biyagama_center_3_0 industrial_in_0 kelaniya_in_1" intLanes=":biyagama_center_4_0 :biyagama_center_10_0"/>
+    <junction id=":biyagama_center_13_0" type="internal" x="509.20" y="0.80" incLanes=":biyagama_center_7_0 kaduwela_in_1 kelaniya_in_0 kelaniya_in_1" intLanes=":biyagama_center_2_0 :biyagama_center_8_0 :biyagama_center_8_1"/>
+    <junction id=":biyagama_center_14_0" type="internal" x="494.56" y="-0.89" incLanes=":biyagama_center_10_0 industrial_in_0 industrial_in_1" intLanes=":biyagama_center_2_0 :biyagama_center_3_0 :biyagama_center_4_0 :biyagama_center_5_0 :biyagama_center_5_1"/>
+    <junction id=":biyagama_center_15_0" type="internal" x="490.80" y="-0.80" incLanes=":biyagama_center_11_0 industrial_in_0 industrial_in_1 kaduwela_in_0 kaduwela_in_1" intLanes=":biyagama_center_0_0 :biyagama_center_0_1 :biyagama_center_5_0 :biyagama_center_5_1"/>
+
+    <connection from="industrial_in" to="kaduwela_out" fromLane="0" toLane="0" via=":biyagama_center_4_0" tl="biyagama_center" linkIndex="4" dir="r" state="O"/>
+    <connection from="industrial_in" to="kelaniya_out" fromLane="0" toLane="0" via=":biyagama_center_5_0" tl="biyagama_center" linkIndex="5" dir="s" state="O"/>
+    <connection from="industrial_in" to="kelaniya_out" fromLane="1" toLane="1" via=":biyagama_center_5_1" tl="biyagama_center" linkIndex="6" dir="s" state="O"/>
+    <connection from="industrial_in" to="industrial_out" fromLane="1" toLane="1" via=":biyagama_center_7_0" tl="biyagama_center" linkIndex="7" dir="t" state="o"/>
+    <connection from="industrial_out" to="industrial_in" fromLane="1" toLane="1" via=":industrial_0_0" dir="t" state="M"/>
+    <connection from="kaduwela_in" to="kelaniya_out" fromLane="0" toLane="0" via=":biyagama_center_0_0" tl="biyagama_center" linkIndex="0" dir="r" state="o"/>
+    <connection from="kaduwela_in" to="kelaniya_out" fromLane="1" toLane="1" via=":biyagama_center_0_1" tl="biyagama_center" linkIndex="1" dir="r" state="o"/>
+    <connection from="kaduwela_in" to="industrial_out" fromLane="1" toLane="1" via=":biyagama_center_2_0" tl="biyagama_center" linkIndex="2" dir="l" state="o"/>
+    <connection from="kaduwela_in" to="kaduwela_out" fromLane="1" toLane="1" via=":biyagama_center_3_0" tl="biyagama_center" linkIndex="3" dir="t" state="o"/>
+    <connection from="kaduwela_out" to="kaduwela_in" fromLane="1" toLane="1" via=":kaduwela_0_0" dir="t" state="M"/>
+    <connection from="kelaniya_in" to="industrial_out" fromLane="0" toLane="0" via=":biyagama_center_8_0" tl="biyagama_center" linkIndex="8" dir="s" state="O"/>
+    <connection from="kelaniya_in" to="industrial_out" fromLane="1" toLane="1" via=":biyagama_center_8_1" tl="biyagama_center" linkIndex="9" dir="s" state="O"/>
+    <connection from="kelaniya_in" to="kaduwela_out" fromLane="1" toLane="1" via=":biyagama_center_10_0" tl="biyagama_center" linkIndex="10" dir="l" state="o"/>
+    <connection from="kelaniya_in" to="kelaniya_out" fromLane="1" toLane="1" via=":biyagama_center_11_0" tl="biyagama_center" linkIndex="11" dir="t" state="o"/>
+    <connection from="kelaniya_out" to="kelaniya_in" fromLane="1" toLane="1" via=":kelaniya_0_0" dir="t" state="M"/>
+
+    <connection from=":biyagama_center_0" to="kelaniya_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":biyagama_center_0" to="kelaniya_out" fromLane="1" toLane="1" dir="r" state="M"/>
+    <connection from=":biyagama_center_2" to="industrial_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":biyagama_center_3" to="kaduwela_out" fromLane="0" toLane="1" via=":biyagama_center_12_0" dir="t" state="m"/>
+    <connection from=":biyagama_center_12" to="kaduwela_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":biyagama_center_4" to="kaduwela_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":biyagama_center_5" to="kelaniya_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":biyagama_center_5" to="kelaniya_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":biyagama_center_7" to="industrial_out" fromLane="0" toLane="1" via=":biyagama_center_13_0" dir="t" state="m"/>
+    <connection from=":biyagama_center_13" to="industrial_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":biyagama_center_8" to="industrial_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":biyagama_center_8" to="industrial_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":biyagama_center_10" to="kaduwela_out" fromLane="0" toLane="1" via=":biyagama_center_14_0" dir="l" state="m"/>
+    <connection from=":biyagama_center_14" to="kaduwela_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":biyagama_center_11" to="kelaniya_out" fromLane="0" toLane="1" via=":biyagama_center_15_0" dir="t" state="m"/>
+    <connection from=":biyagama_center_15" to="kelaniya_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":industrial_0" to="industrial_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kaduwela_0" to="kaduwela_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kelaniya_0" to="kelaniya_in" fromLane="0" toLane="1" dir="t" state="M"/>
+
+</net>
