@@ -1,51 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Biyagama Junction — Route & Flow Definitions
-  ===============================================
-  SOUTH of Kaduwela | 3-arm (N=Kaduwela, E=Industrial Zone, W=Kelaniya)
--->
+<?xml version='1.0' encoding='UTF-8'?>
 <routes>
-    <vType id="car"        accel="2.6" decel="4.5" sigma="0.5" length="4.5"  maxSpeed="13.89" color="0.8,0.8,0.8"/>
-    <vType id="bus"        accel="1.2" decel="3.0" sigma="0.4" length="12.0" maxSpeed="11.0"  color="1,0.5,0"/>
-    <vType id="motorcycle" accel="3.5" decel="5.0" sigma="0.6" length="2.2"  maxSpeed="15.0"  color="0.2,0.2,0.8"/>
-    <vType id="tuk_tuk"    accel="2.0" decel="4.0" sigma="0.7" length="2.8"  maxSpeed="11.0"  color="0,0.8,0.8"/>
-    <vType id="truck"      accel="1.0" decel="3.0" sigma="0.3" length="8.0"  maxSpeed="11.0"  color="0.5,0.3,0.1"/>
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="4.5" maxSpeed="13.89" color="0.8,0.8,0.8" />
+    <vType id="bus" accel="1.2" decel="3.0" sigma="0.4" length="12.0" maxSpeed="11.0" color="1,0.5,0" />
+    <vType id="motorcycle" accel="3.5" decel="5.0" sigma="0.6" length="2.2" maxSpeed="15.0" color="0.2,0.2,0.8" />
+    <vType id="tuk_tuk" accel="2.0" decel="4.0" sigma="0.7" length="2.8" maxSpeed="11.0" color="0,0.8,0.8" />
+    <vType id="truck" accel="1.0" decel="3.0" sigma="0.3" length="8.0" maxSpeed="11.0" color="0.5,0.3,0.1" />
 
-    <!-- Routes -->
-    <route id="kaduwela_to_industrial"  edges="kaduwela_in industrial_out"/>
-    <route id="kaduwela_to_kelaniya"    edges="kaduwela_in kelaniya_out"/>
-    <route id="industrial_to_kaduwela"  edges="industrial_in kaduwela_out"/>
-    <route id="industrial_to_kelaniya"  edges="industrial_in kelaniya_out"/>
-    <route id="kelaniya_to_kaduwela"    edges="kelaniya_in kaduwela_out"/>
-    <route id="kelaniya_to_industrial"  edges="kelaniya_in industrial_out"/>
+    
+    <route id="kaduwela_to_industrial" edges="kaduwela_in industrial_out" />
+    <route id="kaduwela_to_kelaniya" edges="kaduwela_in kelaniya_out" />
+    <route id="industrial_to_kaduwela" edges="industrial_in kaduwela_out" />
+    <route id="industrial_to_kelaniya" edges="industrial_in kelaniya_out" />
+    <route id="kelaniya_to_kaduwela" edges="kelaniya_in kaduwela_out" />
+    <route id="kelaniya_to_industrial" edges="kelaniya_in industrial_out" />
 
-    <!-- Morning Peak 06:00–09:00 (industrial workers commuting in) -->
-    <flow id="f_kel_ind_car_morn"   route="kelaniya_to_industrial"  type="car"        begin="21600" end="32400" vehsPerHour="820"/>
-    <flow id="f_kel_ind_bus_morn"   route="kelaniya_to_industrial"  type="bus"        begin="21600" end="32400" vehsPerHour="180"/>
-    <flow id="f_kel_ind_moto_morn"  route="kelaniya_to_industrial"  type="motorcycle" begin="21600" end="32400" vehsPerHour="540"/>
-    <flow id="f_kadu_ind_car_morn"  route="kaduwela_to_industrial"  type="car"        begin="21600" end="32400" vehsPerHour="650"/>
-    <flow id="f_kadu_ind_moto_morn" route="kaduwela_to_industrial"  type="motorcycle" begin="21600" end="32400" vehsPerHour="420"/>
-    <flow id="f_ind_kadu_car_morn"  route="industrial_to_kaduwela"  type="car"        begin="21600" end="32400" vehsPerHour="480"/>
-    <flow id="f_ind_kel_car_morn"   route="industrial_to_kelaniya"  type="car"        begin="21600" end="32400" vehsPerHour="410"/>
+    
+    <flow id="f_bg_kadu_kel" route="kaduwela_to_kelaniya" type="car" begin="0" end="21600" vehsPerHour="200" />
+    <flow id="f_bg_kel_kadu" route="kelaniya_to_kaduwela" type="car" begin="0" end="21600" vehsPerHour="190" />
+    <flow id="f_kel_ind_car_morn" route="kelaniya_to_industrial" type="car" begin="21600" end="32400" vehsPerHour="820" />
+    <flow id="f_kel_ind_bus_morn" route="kelaniya_to_industrial" type="bus" begin="21600" end="32400" vehsPerHour="180" />
+    <flow id="f_kel_ind_moto_morn" route="kelaniya_to_industrial" type="motorcycle" begin="21600" end="32400" vehsPerHour="540" />
+    <flow id="f_kadu_ind_car_morn" route="kaduwela_to_industrial" type="car" begin="21600" end="32400" vehsPerHour="650" />
+    <flow id="f_kadu_ind_moto_morn" route="kaduwela_to_industrial" type="motorcycle" begin="21600" end="32400" vehsPerHour="420" />
+    <flow id="f_ind_kadu_car_morn" route="industrial_to_kaduwela" type="car" begin="21600" end="32400" vehsPerHour="480" />
+    <flow id="f_ind_kel_car_morn" route="industrial_to_kelaniya" type="car" begin="21600" end="32400" vehsPerHour="410" />
 
-    <!-- Lunch Peak 12:00–13:30 -->
-    <flow id="f_kadu_kel_car_lunch" route="kaduwela_to_kelaniya"    type="car"        begin="43200" end="48600" vehsPerHour="420"/>
-    <flow id="f_kel_kadu_car_lunch" route="kelaniya_to_kaduwela"    type="car"        begin="43200" end="48600" vehsPerHour="400"/>
+    
+    <flow id="f_truck_ind_kel" route="industrial_to_kelaniya" type="truck" begin="28800" end="64800" vehsPerHour="120" />
+    <flow id="f_truck_kel_ind" route="kelaniya_to_industrial" type="truck" begin="28800" end="64800" vehsPerHour="100" />
 
-    <!-- Evening Peak 17:00–20:00 (workers going home) -->
-    <flow id="f_ind_kel_car_eve"    route="industrial_to_kelaniya"  type="car"        begin="61200" end="72000" vehsPerHour="900"/>
-    <flow id="f_ind_kel_bus_eve"    route="industrial_to_kelaniya"  type="bus"        begin="61200" end="72000" vehsPerHour="200"/>
-    <flow id="f_ind_kel_moto_eve"   route="industrial_to_kelaniya"  type="motorcycle" begin="61200" end="72000" vehsPerHour="620"/>
-    <flow id="f_ind_kadu_car_eve"   route="industrial_to_kaduwela"  type="car"        begin="61200" end="72000" vehsPerHour="750"/>
-    <flow id="f_kel_kadu_car_eve"   route="kelaniya_to_kaduwela"    type="car"        begin="61200" end="72000" vehsPerHour="580"/>
-    <flow id="f_kadu_ind_car_eve"   route="kaduwela_to_industrial"  type="car"        begin="61200" end="72000" vehsPerHour="490"/>
+    
+    <flow id="f_kadu_kel_car_lunch" route="kaduwela_to_kelaniya" type="car" begin="43200" end="48600" vehsPerHour="420" />
+    <flow id="f_kel_kadu_car_lunch" route="kelaniya_to_kaduwela" type="car" begin="43200" end="48600" vehsPerHour="400" />
 
-    <!-- Trucks: heavy vehicles from industrial zone (daytime) -->
-    <flow id="f_truck_ind_kel"      route="industrial_to_kelaniya"  type="truck"      begin="28800" end="64800" vehsPerHour="120"/>
-    <flow id="f_truck_kel_ind"      route="kelaniya_to_industrial"  type="truck"      begin="28800" end="64800" vehsPerHour="100"/>
+    
+    <flow id="f_ind_kel_car_eve" route="industrial_to_kelaniya" type="car" begin="61200" end="72000" vehsPerHour="900" />
+    <flow id="f_ind_kel_bus_eve" route="industrial_to_kelaniya" type="bus" begin="61200" end="72000" vehsPerHour="200" />
+    <flow id="f_ind_kel_moto_eve" route="industrial_to_kelaniya" type="motorcycle" begin="61200" end="72000" vehsPerHour="620" />
+    <flow id="f_ind_kadu_car_eve" route="industrial_to_kaduwela" type="car" begin="61200" end="72000" vehsPerHour="750" />
+    <flow id="f_kel_kadu_car_eve" route="kelaniya_to_kaduwela" type="car" begin="61200" end="72000" vehsPerHour="580" />
+    <flow id="f_kadu_ind_car_eve" route="kaduwela_to_industrial" type="car" begin="61200" end="72000" vehsPerHour="490" />
 
-    <!-- Background/Night -->
-    <flow id="f_bg_kadu_kel"        route="kaduwela_to_kelaniya"    type="car"        begin="0"     end="21600" vehsPerHour="200"/>
-    <flow id="f_bg_kel_kadu"        route="kelaniya_to_kaduwela"    type="car"        begin="0"     end="21600" vehsPerHour="190"/>
-    <flow id="f_bg_night_kel_ind"   route="kelaniya_to_industrial"  type="car"        begin="72000" end="86400" vehsPerHour="90"/>
+    
+    <flow id="f_bg_night_kel_ind" route="kelaniya_to_industrial" type="car" begin="72000" end="86400" vehsPerHour="90" />
 </routes>
