@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-07-14T21:36:47.950921+05:30 by Eclipse SUMO netconvert 1.27.0
+<netconvertConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="..\ranala\ranala.nod.xml"/>
+        <edge-files value="..\ranala\ranala.edg.xml"/>
+    </input>
+
+    <output>
+        <output-file value="..\ranala\ranala.net.xml"/>
+    </output>
+
+    <tls_building>
+        <tls.guess value="true"/>
+    </tls_building>
+
+    <junctions>
+        <no-turnarounds value="false"/>
+    </junctions>
+
+</netconvertConfiguration>
+-->
+
+<net version="1.20" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="500.00,500.00" convBoundary="0.00,0.00,1000.00,500.00" origBoundary="-500.00,-500.00,500.00,0.00" projParameter="!"/>
+
+    <edge id=":avissawella_0" function="internal">
+        <lane id=":avissawella_0_0" index="0" speed="3.65" length="4.67" shape="498.40,0.00 499.20,-1.20 500.00,-1.60 500.80,-1.20 501.60,0.00"/>
+    </edge>
+    <edge id=":hanwella_0" function="internal">
+        <lane id=":hanwella_0_0" index="0" speed="3.65" length="4.67" shape="0.00,501.60 -1.20,500.80 -1.60,500.00 -1.20,499.20 0.00,498.40"/>
+    </edge>
+    <edge id=":kaduwela_0" function="internal">
+        <lane id=":kaduwela_0_0" index="0" speed="3.65" length="4.67" shape="1000.00,498.40 1001.20,499.20 1001.60,500.00 1001.20,500.80 1000.00,501.60"/>
+    </edge>
+    <edge id=":ranala_center_0" function="internal">
+        <lane id=":ranala_center_0_0" index="0" speed="13.89" length="20.80" shape="510.40,504.80 489.60,504.80"/>
+        <lane id=":ranala_center_0_1" index="1" speed="13.89" length="20.80" shape="510.40,501.60 489.60,501.60"/>
+    </edge>
+    <edge id=":ranala_center_2" function="internal">
+        <lane id=":ranala_center_2_0" index="0" speed="9.26" length="5.01" shape="510.40,501.60 505.44,500.89"/>
+    </edge>
+    <edge id=":ranala_center_3" function="internal">
+        <lane id=":ranala_center_3_0" index="0" speed="3.65" length="1.44" shape="510.40,501.60 509.20,500.80"/>
+    </edge>
+    <edge id=":ranala_center_12" function="internal">
+        <lane id=":ranala_center_12_0" index="0" speed="9.26" length="14.34" shape="505.44,500.89 505.15,500.85 501.40,498.60 499.15,494.85 498.40,489.60"/>
+    </edge>
+    <edge id=":ranala_center_13" function="internal">
+        <lane id=":ranala_center_13_0" index="0" speed="3.65" length="3.23" shape="509.20,500.80 508.80,500.00 509.20,499.20 510.40,498.40"/>
+    </edge>
+    <edge id=":ranala_center_4" function="internal">
+        <lane id=":ranala_center_4_0" index="0" speed="6.51" length="9.03" shape="504.80,489.60 505.15,492.05 506.20,493.80 507.95,494.85 510.40,495.20"/>
+        <lane id=":ranala_center_4_1" index="1" speed="8.00" length="14.19" shape="501.60,489.60 502.15,493.45 503.80,496.20 506.55,497.85 510.40,498.40"/>
+    </edge>
+    <edge id=":ranala_center_6" function="internal">
+        <lane id=":ranala_center_6_0" index="0" speed="9.26" length="19.35" shape="501.60,489.60 500.85,494.85 498.60,498.60 494.85,500.85 489.60,501.60"/>
+    </edge>
+    <edge id=":ranala_center_7" function="internal">
+        <lane id=":ranala_center_7_0" index="0" speed="3.65" length="2.34" shape="501.60,489.60 500.80,490.80 500.00,491.20"/>
+    </edge>
+    <edge id=":ranala_center_14" function="internal">
+        <lane id=":ranala_center_14_0" index="0" speed="3.65" length="2.34" shape="500.00,491.20 499.20,490.80 498.40,489.60"/>
+    </edge>
+    <edge id=":ranala_center_8" function="internal">
+        <lane id=":ranala_center_8_0" index="0" speed="6.51" length="9.03" shape="489.60,495.20 492.05,494.85 493.80,493.80 494.85,492.05 495.20,489.60"/>
+    </edge>
+    <edge id=":ranala_center_9" function="internal">
+        <lane id=":ranala_center_9_0" index="0" speed="13.89" length="20.80" shape="489.60,495.20 510.40,495.20"/>
+        <lane id=":ranala_center_9_1" index="1" speed="13.89" length="20.80" shape="489.60,498.40 510.40,498.40"/>
+    </edge>
+    <edge id=":ranala_center_11" function="internal">
+        <lane id=":ranala_center_11_0" index="0" speed="3.65" length="1.44" shape="489.60,498.40 490.80,499.20"/>
+    </edge>
+    <edge id=":ranala_center_15" function="internal">
+        <lane id=":ranala_center_15_0" index="0" speed="3.65" length="3.23" shape="490.80,499.20 491.20,500.00 490.80,500.80 489.60,501.60"/>
+    </edge>
+
+    <edge id="avissawella_in" from="avissawella" to="ranala_center" priority="-1">
+        <lane id="avissawella_in_0" index="0" speed="13.89" length="489.60" shape="504.80,0.00 504.80,489.60"/>
+        <lane id="avissawella_in_1" index="1" speed="13.89" length="489.60" shape="501.60,0.00 501.60,489.60"/>
+    </edge>
+    <edge id="avissawella_out" from="ranala_center" to="avissawella" priority="-1">
+        <lane id="avissawella_out_0" index="0" speed="13.89" length="489.60" shape="495.20,489.60 495.20,0.00"/>
+        <lane id="avissawella_out_1" index="1" speed="13.89" length="489.60" shape="498.40,489.60 498.40,0.00"/>
+    </edge>
+    <edge id="hanwella_in" from="hanwella" to="ranala_center" priority="-1">
+        <lane id="hanwella_in_0" index="0" speed="13.89" length="489.60" shape="0.00,495.20 489.60,495.20"/>
+        <lane id="hanwella_in_1" index="1" speed="13.89" length="489.60" shape="0.00,498.40 489.60,498.40"/>
+    </edge>
+    <edge id="hanwella_out" from="ranala_center" to="hanwella" priority="-1">
+        <lane id="hanwella_out_0" index="0" speed="13.89" length="489.60" shape="489.60,504.80 0.00,504.80"/>
+        <lane id="hanwella_out_1" index="1" speed="13.89" length="489.60" shape="489.60,501.60 0.00,501.60"/>
+    </edge>
+    <edge id="kaduwela_in" from="kaduwela" to="ranala_center" priority="-1">
+        <lane id="kaduwela_in_0" index="0" speed="13.89" length="489.60" shape="1000.00,504.80 510.40,504.80"/>
+        <lane id="kaduwela_in_1" index="1" speed="13.89" length="489.60" shape="1000.00,501.60 510.40,501.60"/>
+    </edge>
+    <edge id="kaduwela_out" from="ranala_center" to="kaduwela" priority="-1">
+        <lane id="kaduwela_out_0" index="0" speed="13.89" length="489.60" shape="510.40,495.20 1000.00,495.20"/>
+        <lane id="kaduwela_out_1" index="1" speed="13.89" length="489.60" shape="510.40,498.40 1000.00,498.40"/>
+    </edge>
+
+    <tlLogic id="ranala_center" type="static" programID="0" offset="0">
+        <phase duration="42" state="GGggrrrrGGGg"/>
+        <phase duration="3"  state="yyyyrrrrGyyy"/>
+        <phase duration="42" state="rrrrGGGgGrrr"/>
+        <phase duration="3"  state="rrrryyyyGrrr"/>
+    </tlLogic>
+
+    <junction id="avissawella" type="priority" x="500.00" y="0.00" incLanes="avissawella_out_0 avissawella_out_1" intLanes=":avissawella_0_0" shape="500.00,0.00 493.60,0.00 500.00,0.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="hanwella" type="priority" x="0.00" y="500.00" incLanes="hanwella_out_0 hanwella_out_1" intLanes=":hanwella_0_0" shape="0.00,500.00 0.00,506.40 0.00,500.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="kaduwela" type="priority" x="1000.00" y="500.00" incLanes="kaduwela_out_0 kaduwela_out_1" intLanes=":kaduwela_0_0" shape="1000.00,500.00 1000.00,493.60 1000.00,500.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="ranala_center" type="traffic_light" x="500.00" y="500.00" incLanes="kaduwela_in_0 kaduwela_in_1 avissawella_in_0 avissawella_in_1 hanwella_in_0 hanwella_in_1" intLanes=":ranala_center_0_0 :ranala_center_0_1 :ranala_center_12_0 :ranala_center_13_0 :ranala_center_4_0 :ranala_center_4_1 :ranala_center_6_0 :ranala_center_14_0 :ranala_center_8_0 :ranala_center_9_0 :ranala_center_9_1 :ranala_center_15_0" shape="510.40,506.40 510.40,493.60 508.18,493.16 507.40,492.60 506.84,491.82 506.51,490.82 506.40,489.60 493.60,489.60 493.16,491.82 492.60,492.60 491.82,493.16 490.82,493.49 489.60,493.60 489.60,506.40">
+        <request index="0"  response="000000000000" foes="100001000000" cont="0"/>
+        <request index="1"  response="000000000000" foes="100001000000" cont="0"/>
+        <request index="2"  response="011000000000" foes="011011000000" cont="1"/>
+        <request index="3"  response="011000110000" foes="011000110000" cont="1"/>
+        <request index="4"  response="011000000000" foes="011000001000" cont="0"/>
+        <request index="5"  response="011000000000" foes="011000001000" cont="0"/>
+        <request index="6"  response="011000000111" foes="111000000111" cont="0"/>
+        <request index="7"  response="000000000100" foes="000000000100" cont="1"/>
+        <request index="8"  response="000000000000" foes="000000000000" cont="0"/>
+        <request index="9"  response="000000000000" foes="000001111100" cont="0"/>
+        <request index="10" response="000000000000" foes="000001111100" cont="0"/>
+        <request index="11" response="000001000011" foes="000001000011" cont="1"/>
+    </junction>
+
+    <junction id=":ranala_center_12_0" type="internal" x="505.44" y="500.89" incLanes=":ranala_center_2_0 hanwella_in_0 hanwella_in_1" intLanes=":ranala_center_6_0 :ranala_center_7_0 :ranala_center_8_0 :ranala_center_9_0 :ranala_center_9_1"/>
+    <junction id=":ranala_center_13_0" type="internal" x="509.20" y="500.80" incLanes=":ranala_center_3_0 avissawella_in_0 avissawella_in_1 hanwella_in_0 hanwella_in_1" intLanes=":ranala_center_4_0 :ranala_center_4_1 :ranala_center_9_0 :ranala_center_9_1"/>
+    <junction id=":ranala_center_14_0" type="internal" x="500.00" y="491.20" incLanes=":ranala_center_7_0 hanwella_in_0 kaduwela_in_1" intLanes=":ranala_center_2_0 :ranala_center_8_0"/>
+    <junction id=":ranala_center_15_0" type="internal" x="490.80" y="499.20" incLanes=":ranala_center_11_0 avissawella_in_1 kaduwela_in_0 kaduwela_in_1" intLanes=":ranala_center_0_0 :ranala_center_0_1 :ranala_center_6_0"/>
+
+    <connection from="avissawella_in" to="kaduwela_out" fromLane="0" toLane="0" via=":ranala_center_4_0" tl="ranala_center" linkIndex="4" dir="r" state="o"/>
+    <connection from="avissawella_in" to="kaduwela_out" fromLane="1" toLane="1" via=":ranala_center_4_1" tl="ranala_center" linkIndex="5" dir="r" state="o"/>
+    <connection from="avissawella_in" to="hanwella_out" fromLane="1" toLane="1" via=":ranala_center_6_0" tl="ranala_center" linkIndex="6" dir="l" state="o"/>
+    <connection from="avissawella_in" to="avissawella_out" fromLane="1" toLane="1" via=":ranala_center_7_0" tl="ranala_center" linkIndex="7" dir="t" state="o"/>
+    <connection from="avissawella_out" to="avissawella_in" fromLane="1" toLane="1" via=":avissawella_0_0" dir="t" state="M"/>
+    <connection from="hanwella_in" to="avissawella_out" fromLane="0" toLane="0" via=":ranala_center_8_0" tl="ranala_center" linkIndex="8" dir="r" state="O"/>
+    <connection from="hanwella_in" to="kaduwela_out" fromLane="0" toLane="0" via=":ranala_center_9_0" tl="ranala_center" linkIndex="9" dir="s" state="O"/>
+    <connection from="hanwella_in" to="kaduwela_out" fromLane="1" toLane="1" via=":ranala_center_9_1" tl="ranala_center" linkIndex="10" dir="s" state="O"/>
+    <connection from="hanwella_in" to="hanwella_out" fromLane="1" toLane="1" via=":ranala_center_11_0" tl="ranala_center" linkIndex="11" dir="t" state="o"/>
+    <connection from="hanwella_out" to="hanwella_in" fromLane="1" toLane="1" via=":hanwella_0_0" dir="t" state="M"/>
+    <connection from="kaduwela_in" to="hanwella_out" fromLane="0" toLane="0" via=":ranala_center_0_0" tl="ranala_center" linkIndex="0" dir="s" state="O"/>
+    <connection from="kaduwela_in" to="hanwella_out" fromLane="1" toLane="1" via=":ranala_center_0_1" tl="ranala_center" linkIndex="1" dir="s" state="O"/>
+    <connection from="kaduwela_in" to="avissawella_out" fromLane="1" toLane="1" via=":ranala_center_2_0" tl="ranala_center" linkIndex="2" dir="l" state="o"/>
+    <connection from="kaduwela_in" to="kaduwela_out" fromLane="1" toLane="1" via=":ranala_center_3_0" tl="ranala_center" linkIndex="3" dir="t" state="o"/>
+    <connection from="kaduwela_out" to="kaduwela_in" fromLane="1" toLane="1" via=":kaduwela_0_0" dir="t" state="M"/>
+
+    <connection from=":avissawella_0" to="avissawella_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":hanwella_0" to="hanwella_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kaduwela_0" to="kaduwela_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":ranala_center_0" to="hanwella_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":ranala_center_0" to="hanwella_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":ranala_center_2" to="avissawella_out" fromLane="0" toLane="1" via=":ranala_center_12_0" dir="l" state="m"/>
+    <connection from=":ranala_center_12" to="avissawella_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":ranala_center_3" to="kaduwela_out" fromLane="0" toLane="1" via=":ranala_center_13_0" dir="t" state="m"/>
+    <connection from=":ranala_center_13" to="kaduwela_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":ranala_center_4" to="kaduwela_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":ranala_center_4" to="kaduwela_out" fromLane="1" toLane="1" dir="r" state="M"/>
+    <connection from=":ranala_center_6" to="hanwella_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":ranala_center_7" to="avissawella_out" fromLane="0" toLane="1" via=":ranala_center_14_0" dir="t" state="m"/>
+    <connection from=":ranala_center_14" to="avissawella_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":ranala_center_8" to="avissawella_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":ranala_center_9" to="kaduwela_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":ranala_center_9" to="kaduwela_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":ranala_center_11" to="hanwella_out" fromLane="0" toLane="1" via=":ranala_center_15_0" dir="t" state="m"/>
+    <connection from=":ranala_center_15" to="hanwella_out" fromLane="0" toLane="1" dir="t" state="M"/>
+
+</net>
