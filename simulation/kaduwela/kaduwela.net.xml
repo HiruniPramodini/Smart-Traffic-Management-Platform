@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-07-14T21:36:47.368265+05:30 by Eclipse SUMO netconvert 1.27.0
+<netconvertConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="..\kaduwela\kaduwela.nod.xml"/>
+        <edge-files value="..\kaduwela\kaduwela.edg.xml"/>
+    </input>
+
+    <output>
+        <output-file value="..\kaduwela\kaduwela.net.xml"/>
+    </output>
+
+    <tls_building>
+        <tls.guess value="true"/>
+    </tls_building>
+
+    <junctions>
+        <no-turnarounds value="false"/>
+    </junctions>
+
+</netconvertConfiguration>
+-->
+
+<net version="1.20" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="600.00,600.00" convBoundary="0.00,0.00,1200.00,1200.00" origBoundary="-600.00,-600.00,600.00,600.00" projParameter="!"/>
+
+    <edge id=":biyagama_0" function="internal">
+        <lane id=":biyagama_0_0" index="0" speed="3.65" length="4.67" shape="598.40,0.00 599.20,-1.20 600.00,-1.60 600.80,-1.20 601.60,0.00"/>
+    </edge>
+    <edge id=":kaduwela_center_0" function="internal">
+        <lane id=":kaduwela_center_0_0" index="0" speed="6.51" length="9.03" shape="595.20,610.40 594.85,607.95 593.80,606.20 592.05,605.15 589.60,604.80"/>
+    </edge>
+    <edge id=":kaduwela_center_1" function="internal">
+        <lane id=":kaduwela_center_1_0" index="0" speed="13.89" length="20.80" shape="595.20,610.40 595.20,589.60"/>
+        <lane id=":kaduwela_center_1_1" index="1" speed="13.89" length="20.80" shape="598.40,610.40 598.40,589.60"/>
+    </edge>
+    <edge id=":kaduwela_center_3" function="internal">
+        <lane id=":kaduwela_center_3_0" index="0" speed="9.26" length="5.01" shape="598.40,610.40 599.11,605.44"/>
+    </edge>
+    <edge id=":kaduwela_center_4" function="internal">
+        <lane id=":kaduwela_center_4_0" index="0" speed="3.65" length="1.44" shape="598.40,610.40 599.20,609.20"/>
+    </edge>
+    <edge id=":kaduwela_center_20" function="internal">
+        <lane id=":kaduwela_center_20_0" index="0" speed="9.26" length="14.34" shape="599.11,605.44 599.15,605.15 601.40,601.40 605.15,599.15 610.40,598.40"/>
+    </edge>
+    <edge id=":kaduwela_center_21" function="internal">
+        <lane id=":kaduwela_center_21_0" index="0" speed="3.65" length="3.23" shape="599.20,609.20 600.00,608.80 600.80,609.20 601.60,610.40"/>
+    </edge>
+    <edge id=":kaduwela_center_5" function="internal">
+        <lane id=":kaduwela_center_5_0" index="0" speed="6.51" length="9.03" shape="610.40,604.80 607.95,605.15 606.20,606.20 605.15,607.95 604.80,610.40"/>
+    </edge>
+    <edge id=":kaduwela_center_6" function="internal">
+        <lane id=":kaduwela_center_6_0" index="0" speed="13.89" length="20.80" shape="610.40,604.80 589.60,604.80"/>
+        <lane id=":kaduwela_center_6_1" index="1" speed="13.89" length="20.80" shape="610.40,601.60 589.60,601.60"/>
+    </edge>
+    <edge id=":kaduwela_center_8" function="internal">
+        <lane id=":kaduwela_center_8_0" index="0" speed="9.26" length="5.01" shape="610.40,601.60 605.44,600.89"/>
+    </edge>
+    <edge id=":kaduwela_center_9" function="internal">
+        <lane id=":kaduwela_center_9_0" index="0" speed="3.65" length="1.44" shape="610.40,601.60 609.20,600.80"/>
+    </edge>
+    <edge id=":kaduwela_center_22" function="internal">
+        <lane id=":kaduwela_center_22_0" index="0" speed="9.26" length="14.34" shape="605.44,600.89 605.15,600.85 601.40,598.60 599.15,594.85 598.40,589.60"/>
+    </edge>
+    <edge id=":kaduwela_center_23" function="internal">
+        <lane id=":kaduwela_center_23_0" index="0" speed="3.65" length="3.23" shape="609.20,600.80 608.80,600.00 609.20,599.20 610.40,598.40"/>
+    </edge>
+    <edge id=":kaduwela_center_10" function="internal">
+        <lane id=":kaduwela_center_10_0" index="0" speed="6.51" length="9.03" shape="604.80,589.60 605.15,592.05 606.20,593.80 607.95,594.85 610.40,595.20"/>
+    </edge>
+    <edge id=":kaduwela_center_11" function="internal">
+        <lane id=":kaduwela_center_11_0" index="0" speed="13.89" length="20.80" shape="604.80,589.60 604.80,610.40"/>
+        <lane id=":kaduwela_center_11_1" index="1" speed="13.89" length="20.80" shape="601.60,589.60 601.60,610.40"/>
+    </edge>
+    <edge id=":kaduwela_center_13" function="internal">
+        <lane id=":kaduwela_center_13_0" index="0" speed="9.26" length="5.01" shape="601.60,589.60 600.89,594.56"/>
+    </edge>
+    <edge id=":kaduwela_center_14" function="internal">
+        <lane id=":kaduwela_center_14_0" index="0" speed="3.65" length="1.44" shape="601.60,589.60 600.80,590.80"/>
+    </edge>
+    <edge id=":kaduwela_center_24" function="internal">
+        <lane id=":kaduwela_center_24_0" index="0" speed="9.26" length="14.34" shape="600.89,594.56 600.85,594.85 598.60,598.60 594.85,600.85 589.60,601.60"/>
+    </edge>
+    <edge id=":kaduwela_center_25" function="internal">
+        <lane id=":kaduwela_center_25_0" index="0" speed="3.65" length="3.23" shape="600.80,590.80 600.00,591.20 599.20,590.80 598.40,589.60"/>
+    </edge>
+    <edge id=":kaduwela_center_15" function="internal">
+        <lane id=":kaduwela_center_15_0" index="0" speed="6.51" length="9.03" shape="589.60,595.20 592.05,594.85 593.80,593.80 594.85,592.05 595.20,589.60"/>
+    </edge>
+    <edge id=":kaduwela_center_16" function="internal">
+        <lane id=":kaduwela_center_16_0" index="0" speed="13.89" length="20.80" shape="589.60,595.20 610.40,595.20"/>
+        <lane id=":kaduwela_center_16_1" index="1" speed="13.89" length="20.80" shape="589.60,598.40 610.40,598.40"/>
+    </edge>
+    <edge id=":kaduwela_center_18" function="internal">
+        <lane id=":kaduwela_center_18_0" index="0" speed="9.26" length="5.01" shape="589.60,598.40 594.56,599.11"/>
+    </edge>
+    <edge id=":kaduwela_center_19" function="internal">
+        <lane id=":kaduwela_center_19_0" index="0" speed="3.65" length="1.44" shape="589.60,598.40 590.80,599.20"/>
+    </edge>
+    <edge id=":kaduwela_center_26" function="internal">
+        <lane id=":kaduwela_center_26_0" index="0" speed="9.26" length="14.34" shape="594.56,599.11 594.85,599.15 598.60,601.40 600.85,605.15 601.60,610.40"/>
+    </edge>
+    <edge id=":kaduwela_center_27" function="internal">
+        <lane id=":kaduwela_center_27_0" index="0" speed="3.65" length="3.23" shape="590.80,599.20 591.20,600.00 590.80,600.80 589.60,601.60"/>
+    </edge>
+    <edge id=":kotikawatta_0" function="internal">
+        <lane id=":kotikawatta_0_0" index="0" speed="3.65" length="4.67" shape="1200.00,598.40 1201.20,599.20 1201.60,600.00 1201.20,600.80 1200.00,601.60"/>
+    </edge>
+    <edge id=":malabe_0" function="internal">
+        <lane id=":malabe_0_0" index="0" speed="3.65" length="4.67" shape="601.60,1200.00 600.80,1201.20 600.00,1201.60 599.20,1201.20 598.40,1200.00"/>
+    </edge>
+    <edge id=":ranala_0" function="internal">
+        <lane id=":ranala_0_0" index="0" speed="3.65" length="4.67" shape="0.00,601.60 -1.20,600.80 -1.60,600.00 -1.20,599.20 0.00,598.40"/>
+    </edge>
+
+    <edge id="biyagama_in" from="biyagama" to="kaduwela_center" priority="-1">
+        <lane id="biyagama_in_0" index="0" speed="13.89" length="589.60" shape="604.80,0.00 604.80,589.60"/>
+        <lane id="biyagama_in_1" index="1" speed="13.89" length="589.60" shape="601.60,0.00 601.60,589.60"/>
+    </edge>
+    <edge id="biyagama_out" from="kaduwela_center" to="biyagama" priority="-1">
+        <lane id="biyagama_out_0" index="0" speed="13.89" length="589.60" shape="595.20,589.60 595.20,0.00"/>
+        <lane id="biyagama_out_1" index="1" speed="13.89" length="589.60" shape="598.40,589.60 598.40,0.00"/>
+    </edge>
+    <edge id="kotikawatta_in" from="kotikawatta" to="kaduwela_center" priority="-1">
+        <lane id="kotikawatta_in_0" index="0" speed="13.89" length="589.60" shape="1200.00,604.80 610.40,604.80"/>
+        <lane id="kotikawatta_in_1" index="1" speed="13.89" length="589.60" shape="1200.00,601.60 610.40,601.60"/>
+    </edge>
+    <edge id="kotikawatta_out" from="kaduwela_center" to="kotikawatta" priority="-1">
+        <lane id="kotikawatta_out_0" index="0" speed="13.89" length="589.60" shape="610.40,595.20 1200.00,595.20"/>
+        <lane id="kotikawatta_out_1" index="1" speed="13.89" length="589.60" shape="610.40,598.40 1200.00,598.40"/>
+    </edge>
+    <edge id="malabe_in" from="malabe" to="kaduwela_center" priority="-1">
+        <lane id="malabe_in_0" index="0" speed="13.89" length="589.60" shape="595.20,1200.00 595.20,610.40"/>
+        <lane id="malabe_in_1" index="1" speed="13.89" length="589.60" shape="598.40,1200.00 598.40,610.40"/>
+    </edge>
+    <edge id="malabe_out" from="kaduwela_center" to="malabe" priority="-1">
+        <lane id="malabe_out_0" index="0" speed="13.89" length="589.60" shape="604.80,610.40 604.80,1200.00"/>
+        <lane id="malabe_out_1" index="1" speed="13.89" length="589.60" shape="601.60,610.40 601.60,1200.00"/>
+    </edge>
+    <edge id="ranala_in" from="ranala" to="kaduwela_center" priority="-1">
+        <lane id="ranala_in_0" index="0" speed="13.89" length="589.60" shape="0.00,595.20 589.60,595.20"/>
+        <lane id="ranala_in_1" index="1" speed="13.89" length="589.60" shape="0.00,598.40 589.60,598.40"/>
+    </edge>
+    <edge id="ranala_out" from="kaduwela_center" to="ranala" priority="-1">
+        <lane id="ranala_out_0" index="0" speed="13.89" length="589.60" shape="589.60,604.80 0.00,604.80"/>
+        <lane id="ranala_out_1" index="1" speed="13.89" length="589.60" shape="589.60,601.60 0.00,601.60"/>
+    </edge>
+
+    <tlLogic id="kaduwela_center" type="static" programID="0" offset="0">
+        <phase duration="42" state="GGGggrrrrrGGGggrrrrr"/>
+        <phase duration="3"  state="yyyyyrrrrryyyyyrrrrr"/>
+        <phase duration="42" state="rrrrrGGGggrrrrrGGGgg"/>
+        <phase duration="3"  state="rrrrryyyyyrrrrryyyyy"/>
+    </tlLogic>
+
+    <junction id="biyagama" type="priority" x="600.00" y="0.00" incLanes="biyagama_out_0 biyagama_out_1" intLanes=":biyagama_0_0" shape="600.00,0.00 593.60,0.00 600.00,0.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="kaduwela_center" type="traffic_light" x="600.00" y="600.00" incLanes="malabe_in_0 malabe_in_1 kotikawatta_in_0 kotikawatta_in_1 biyagama_in_0 biyagama_in_1 ranala_in_0 ranala_in_1" intLanes=":kaduwela_center_0_0 :kaduwela_center_1_0 :kaduwela_center_1_1 :kaduwela_center_20_0 :kaduwela_center_21_0 :kaduwela_center_5_0 :kaduwela_center_6_0 :kaduwela_center_6_1 :kaduwela_center_22_0 :kaduwela_center_23_0 :kaduwela_center_10_0 :kaduwela_center_11_0 :kaduwela_center_11_1 :kaduwela_center_24_0 :kaduwela_center_25_0 :kaduwela_center_15_0 :kaduwela_center_16_0 :kaduwela_center_16_1 :kaduwela_center_26_0 :kaduwela_center_27_0" shape="593.60,610.40 606.40,610.40 606.84,608.18 607.40,607.40 608.18,606.84 609.18,606.51 610.40,606.40 610.40,593.60 608.18,593.16 607.40,592.60 606.84,591.82 606.51,590.82 606.40,589.60 593.60,589.60 593.16,591.82 592.60,592.60 591.82,593.16 590.82,593.49 589.60,593.60 589.60,606.40 591.82,606.84 592.60,607.40 593.16,608.18 593.49,609.18">
+        <request index="0"  response="00000000000000000000" foes="00000000000011000000" cont="0"/>
+        <request index="1"  response="01000000000000000000" foes="01111110000111000000" cont="0"/>
+        <request index="2"  response="01000000000100000000" foes="01111110000111000000" cont="0"/>
+        <request index="3"  response="01000001100100000000" foes="01110001101111000000" cont="1"/>
+        <request index="4"  response="01000001100000000000" foes="01000001100000000000" cont="1"/>
+        <request index="5"  response="00000001100000000000" foes="00000001100000000000" cont="0"/>
+        <request index="6"  response="00000011100000001111" foes="11000011100000001111" cont="0"/>
+        <request index="7"  response="00000011100000001111" foes="11000011100000001111" cont="0"/>
+        <request index="8"  response="00110011100000001110" foes="00110111100000001110" cont="1"/>
+        <request index="9"  response="00110000000000001000" foes="00110000000000001000" cont="1"/>
+        <request index="10" response="00000000000000000000" foes="00110000000000000000" cont="0"/>
+        <request index="11" response="00000000000100000000" foes="01110000000111111000" cont="0"/>
+        <request index="12" response="01000000000100000000" foes="01110000000111111000" cont="0"/>
+        <request index="13" response="01000000000100000110" foes="11110000000111000110" cont="1"/>
+        <request index="14" response="00000000000100000110" foes="00000000000100000110" cont="1"/>
+        <request index="15" response="00000000000000000110" foes="00000000000000000110" cont="0"/>
+        <request index="16" response="00000011110000001110" foes="00000011111100001110" cont="0"/>
+        <request index="17" response="00000011110000001110" foes="00000011111100001110" cont="0"/>
+        <request index="18" response="00000011100011001110" foes="00000011100011011110" cont="1"/>
+        <request index="19" response="00000010000011000000" foes="00000010000011000000" cont="1"/>
+    </junction>
+    <junction id="kotikawatta" type="priority" x="1200.00" y="600.00" incLanes="kotikawatta_out_0 kotikawatta_out_1" intLanes=":kotikawatta_0_0" shape="1200.00,600.00 1200.00,593.60 1200.00,600.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="malabe" type="priority" x="600.00" y="1200.00" incLanes="malabe_out_0 malabe_out_1" intLanes=":malabe_0_0" shape="600.00,1200.00 606.40,1200.00 600.00,1200.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="ranala" type="priority" x="0.00" y="600.00" incLanes="ranala_out_0 ranala_out_1" intLanes=":ranala_0_0" shape="0.00,600.00 0.00,606.40 0.00,600.00">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+
+    <junction id=":kaduwela_center_20_0" type="internal" x="599.11" y="605.44" incLanes=":kaduwela_center_3_0 biyagama_in_0 biyagama_in_1" intLanes=":kaduwela_center_6_0 :kaduwela_center_6_1 :kaduwela_center_8_0 :kaduwela_center_9_0 :kaduwela_center_10_0 :kaduwela_center_11_0 :kaduwela_center_11_1 :kaduwela_center_16_0 :kaduwela_center_16_1 :kaduwela_center_18_0"/>
+    <junction id=":kaduwela_center_21_0" type="internal" x="599.20" y="609.20" incLanes=":kaduwela_center_4_0 biyagama_in_0 biyagama_in_1 kotikawatta_in_0 ranala_in_1" intLanes=":kaduwela_center_5_0 :kaduwela_center_11_0 :kaduwela_center_11_1 :kaduwela_center_18_0"/>
+    <junction id=":kaduwela_center_22_0" type="internal" x="605.44" y="600.89" incLanes=":kaduwela_center_8_0 ranala_in_0 ranala_in_1" intLanes=":kaduwela_center_1_0 :kaduwela_center_1_1 :kaduwela_center_3_0 :kaduwela_center_11_0 :kaduwela_center_11_1 :kaduwela_center_13_0 :kaduwela_center_14_0 :kaduwela_center_15_0 :kaduwela_center_16_0 :kaduwela_center_16_1"/>
+    <junction id=":kaduwela_center_23_0" type="internal" x="609.20" y="600.80" incLanes=":kaduwela_center_9_0 biyagama_in_0 malabe_in_1 ranala_in_0 ranala_in_1" intLanes=":kaduwela_center_3_0 :kaduwela_center_10_0 :kaduwela_center_16_0 :kaduwela_center_16_1"/>
+    <junction id=":kaduwela_center_24_0" type="internal" x="600.89" y="594.56" incLanes=":kaduwela_center_13_0 malabe_in_0 malabe_in_1" intLanes=":kaduwela_center_0_0 :kaduwela_center_1_0 :kaduwela_center_1_1 :kaduwela_center_6_0 :kaduwela_center_6_1 :kaduwela_center_8_0 :kaduwela_center_16_0 :kaduwela_center_16_1 :kaduwela_center_18_0 :kaduwela_center_19_0"/>
+    <junction id=":kaduwela_center_25_0" type="internal" x="600.80" y="590.80" incLanes=":kaduwela_center_14_0 kotikawatta_in_1 malabe_in_0 malabe_in_1 ranala_in_0" intLanes=":kaduwela_center_1_0 :kaduwela_center_1_1 :kaduwela_center_8_0 :kaduwela_center_15_0"/>
+    <junction id=":kaduwela_center_26_0" type="internal" x="594.56" y="599.11" incLanes=":kaduwela_center_18_0 kotikawatta_in_0 kotikawatta_in_1" intLanes=":kaduwela_center_1_0 :kaduwela_center_1_1 :kaduwela_center_3_0 :kaduwela_center_4_0 :kaduwela_center_5_0 :kaduwela_center_6_0 :kaduwela_center_6_1 :kaduwela_center_11_0 :kaduwela_center_11_1 :kaduwela_center_13_0"/>
+    <junction id=":kaduwela_center_27_0" type="internal" x="590.80" y="599.20" incLanes=":kaduwela_center_19_0 biyagama_in_1 kotikawatta_in_0 kotikawatta_in_1 malabe_in_0" intLanes=":kaduwela_center_0_0 :kaduwela_center_6_0 :kaduwela_center_6_1 :kaduwela_center_13_0"/>
+
+    <connection from="biyagama_in" to="kotikawatta_out" fromLane="0" toLane="0" via=":kaduwela_center_10_0" tl="kaduwela_center" linkIndex="10" dir="r" state="O"/>
+    <connection from="biyagama_in" to="malabe_out" fromLane="0" toLane="0" via=":kaduwela_center_11_0" tl="kaduwela_center" linkIndex="11" dir="s" state="O"/>
+    <connection from="biyagama_in" to="malabe_out" fromLane="1" toLane="1" via=":kaduwela_center_11_1" tl="kaduwela_center" linkIndex="12" dir="s" state="O"/>
+    <connection from="biyagama_in" to="ranala_out" fromLane="1" toLane="1" via=":kaduwela_center_13_0" tl="kaduwela_center" linkIndex="13" dir="l" state="o"/>
+    <connection from="biyagama_in" to="biyagama_out" fromLane="1" toLane="1" via=":kaduwela_center_14_0" tl="kaduwela_center" linkIndex="14" dir="t" state="o"/>
+    <connection from="biyagama_out" to="biyagama_in" fromLane="1" toLane="1" via=":biyagama_0_0" dir="t" state="M"/>
+    <connection from="kotikawatta_in" to="malabe_out" fromLane="0" toLane="0" via=":kaduwela_center_5_0" tl="kaduwela_center" linkIndex="5" dir="r" state="o"/>
+    <connection from="kotikawatta_in" to="ranala_out" fromLane="0" toLane="0" via=":kaduwela_center_6_0" tl="kaduwela_center" linkIndex="6" dir="s" state="o"/>
+    <connection from="kotikawatta_in" to="ranala_out" fromLane="1" toLane="1" via=":kaduwela_center_6_1" tl="kaduwela_center" linkIndex="7" dir="s" state="o"/>
+    <connection from="kotikawatta_in" to="biyagama_out" fromLane="1" toLane="1" via=":kaduwela_center_8_0" tl="kaduwela_center" linkIndex="8" dir="l" state="o"/>
+    <connection from="kotikawatta_in" to="kotikawatta_out" fromLane="1" toLane="1" via=":kaduwela_center_9_0" tl="kaduwela_center" linkIndex="9" dir="t" state="o"/>
+    <connection from="kotikawatta_out" to="kotikawatta_in" fromLane="1" toLane="1" via=":kotikawatta_0_0" dir="t" state="M"/>
+    <connection from="malabe_in" to="ranala_out" fromLane="0" toLane="0" via=":kaduwela_center_0_0" tl="kaduwela_center" linkIndex="0" dir="r" state="O"/>
+    <connection from="malabe_in" to="biyagama_out" fromLane="0" toLane="0" via=":kaduwela_center_1_0" tl="kaduwela_center" linkIndex="1" dir="s" state="O"/>
+    <connection from="malabe_in" to="biyagama_out" fromLane="1" toLane="1" via=":kaduwela_center_1_1" tl="kaduwela_center" linkIndex="2" dir="s" state="O"/>
+    <connection from="malabe_in" to="kotikawatta_out" fromLane="1" toLane="1" via=":kaduwela_center_3_0" tl="kaduwela_center" linkIndex="3" dir="l" state="o"/>
+    <connection from="malabe_in" to="malabe_out" fromLane="1" toLane="1" via=":kaduwela_center_4_0" tl="kaduwela_center" linkIndex="4" dir="t" state="o"/>
+    <connection from="malabe_out" to="malabe_in" fromLane="1" toLane="1" via=":malabe_0_0" dir="t" state="M"/>
+    <connection from="ranala_in" to="biyagama_out" fromLane="0" toLane="0" via=":kaduwela_center_15_0" tl="kaduwela_center" linkIndex="15" dir="r" state="o"/>
+    <connection from="ranala_in" to="kotikawatta_out" fromLane="0" toLane="0" via=":kaduwela_center_16_0" tl="kaduwela_center" linkIndex="16" dir="s" state="o"/>
+    <connection from="ranala_in" to="kotikawatta_out" fromLane="1" toLane="1" via=":kaduwela_center_16_1" tl="kaduwela_center" linkIndex="17" dir="s" state="o"/>
+    <connection from="ranala_in" to="malabe_out" fromLane="1" toLane="1" via=":kaduwela_center_18_0" tl="kaduwela_center" linkIndex="18" dir="l" state="o"/>
+    <connection from="ranala_in" to="ranala_out" fromLane="1" toLane="1" via=":kaduwela_center_19_0" tl="kaduwela_center" linkIndex="19" dir="t" state="o"/>
+    <connection from="ranala_out" to="ranala_in" fromLane="1" toLane="1" via=":ranala_0_0" dir="t" state="M"/>
+
+    <connection from=":biyagama_0" to="biyagama_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kaduwela_center_0" to="ranala_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":kaduwela_center_1" to="biyagama_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":kaduwela_center_1" to="biyagama_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":kaduwela_center_3" to="kotikawatta_out" fromLane="0" toLane="1" via=":kaduwela_center_20_0" dir="l" state="m"/>
+    <connection from=":kaduwela_center_20" to="kotikawatta_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":kaduwela_center_4" to="malabe_out" fromLane="0" toLane="1" via=":kaduwela_center_21_0" dir="t" state="m"/>
+    <connection from=":kaduwela_center_21" to="malabe_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kaduwela_center_5" to="malabe_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":kaduwela_center_6" to="ranala_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":kaduwela_center_6" to="ranala_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":kaduwela_center_8" to="biyagama_out" fromLane="0" toLane="1" via=":kaduwela_center_22_0" dir="l" state="m"/>
+    <connection from=":kaduwela_center_22" to="biyagama_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":kaduwela_center_9" to="kotikawatta_out" fromLane="0" toLane="1" via=":kaduwela_center_23_0" dir="t" state="m"/>
+    <connection from=":kaduwela_center_23" to="kotikawatta_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kaduwela_center_10" to="kotikawatta_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":kaduwela_center_11" to="malabe_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":kaduwela_center_11" to="malabe_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":kaduwela_center_13" to="ranala_out" fromLane="0" toLane="1" via=":kaduwela_center_24_0" dir="l" state="m"/>
+    <connection from=":kaduwela_center_24" to="ranala_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":kaduwela_center_14" to="biyagama_out" fromLane="0" toLane="1" via=":kaduwela_center_25_0" dir="t" state="m"/>
+    <connection from=":kaduwela_center_25" to="biyagama_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kaduwela_center_15" to="biyagama_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from=":kaduwela_center_16" to="kotikawatta_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":kaduwela_center_16" to="kotikawatta_out" fromLane="1" toLane="1" dir="s" state="M"/>
+    <connection from=":kaduwela_center_18" to="malabe_out" fromLane="0" toLane="1" via=":kaduwela_center_26_0" dir="l" state="m"/>
+    <connection from=":kaduwela_center_26" to="malabe_out" fromLane="0" toLane="1" dir="l" state="M"/>
+    <connection from=":kaduwela_center_19" to="ranala_out" fromLane="0" toLane="1" via=":kaduwela_center_27_0" dir="t" state="m"/>
+    <connection from=":kaduwela_center_27" to="ranala_out" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":kotikawatta_0" to="kotikawatta_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":malabe_0" to="malabe_in" fromLane="0" toLane="1" dir="t" state="M"/>
+    <connection from=":ranala_0" to="ranala_in" fromLane="0" toLane="1" dir="t" state="M"/>
+
+</net>
