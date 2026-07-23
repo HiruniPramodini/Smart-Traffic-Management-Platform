@@ -183,3 +183,55 @@ def main():
                 "weather":     weather,
                 "junction":    jname.capitalize(),
             }
+
+            # Initialise all arm columns to 0
+            for col in header:
+                if col not in row:
+                    row[col] = 0
+
+            total_junction = 0
+            for arm, edge_id in arms.items():
+                counts   = count_vehicles_by_type(edge_id)
+                total    = sum(counts.values())
+                total_junction += total
+
+                vehicles = traci.edge.getLastStepVehicleIDs(edge_id)
+                queue    = sum(1 for v in vehicles if traci.vehicle.getSpeed(v) < 0.5)
+
+                avg_speed_ms  = traci.edge.getLastStepMeanSpeed(edge_id)
+                avg_speed_kmh = round(avg_speed_ms * 3.6, 1)
+
+                waits    = [traci.vehicle.getAccumulatedWaitingTime(v) for v in vehicles]
+                avg_wait = round(sum(waits) / len(waits), 1) if waits else 0.0
+
+                row[f"{arm}_cars"]        = counts.get("car", 0)
+                row[f"{arm}_buses"]       = counts.get("bus", 0)
+                row[f"{arm}_motorcycles"] = counts.get("motorcycle", 0)
+                row[f"{arm}_tuk_tuks"]    = counts.get("tuk_tuk", 0)
+                row[f"{arm}_trucks"]      = counts.get("truck", 0)
+                row[f"{arm}_total"]       = total
+                row[f"{arm}_queue"]       = queue
+                row[f"{arm}_speed_kmh"]   = avg_speed_kmh
+                row[f"{arm}_wait_sec"]    = avg_wait
+
+            row["junction_total_vehicles"] = total_junction
+            records.append(row)
+
+            if step % 3600 == 0:
+                print(f"  {time_str}  junction_total={total_junction:4d}  weather={weather}")
+
+        step += 1
+
+    traci.close()
+    print(f"\nSimulation complete. {len(records):,} records collected.")
+
+    with open(output_csv, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=header)
+        writer.writeheader()
+        writer.writerows(records)
+
+    print(f"Saved → {output_csv}")
+
+
+if __name__ == "__main__":
+    main()
