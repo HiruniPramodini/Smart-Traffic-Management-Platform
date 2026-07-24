@@ -48,3 +48,49 @@ CFG = """<?xml version="1.0" encoding="UTF-8"?>
     </time>
 </configuration>
 """
+
+
+
+def main():
+    d = tempfile.mkdtemp(prefix="sumo_sanity_")
+    print(f"Working in {d}")
+
+    with open(os.path.join(d, "test.nod.xml"), "w", encoding="utf-8") as f:
+        f.write(NOD)
+    with open(os.path.join(d, "test.edg.xml"), "w", encoding="utf-8") as f:
+        f.write(EDG)
+    with open(os.path.join(d, "test.rou.xml"), "w", encoding="utf-8") as f:
+        f.write(ROU)
+    with open(os.path.join(d, "test.sumocfg"), "w", encoding="utf-8") as f:
+        f.write(CFG)
+
+    print("\n--- running netconvert ---")
+    r = subprocess.run(
+        ["netconvert", "--node-files", "test.nod.xml", "--edge-files", "test.edg.xml",
+         "--output-file", "test.net.xml"],
+        cwd=d, capture_output=True, text=True
+    )
+    print(r.stdout)
+    print(r.stderr)
+    if r.returncode != 0:
+        sys.exit("netconvert failed -- SUMO install itself has a problem.")
+
+    print("\n--- running sumo ---")
+    r = subprocess.run(
+        ["sumo", "-c", "test.sumocfg", "--no-step-log", "true"],
+        cwd=d, capture_output=True, text=True
+    )
+    print(r.stdout)
+    print(r.stderr)
+
+    if "Inserted: 0" in r.stdout:
+        print("\n>>> RESULT: 0 vehicles inserted even in this minimal test.")
+        print(">>> This means the problem is your SUMO install/version, not your project files.")
+    else:
+        print("\n>>> RESULT: vehicles WERE inserted in this minimal test.")
+        print(">>> This means SUMO itself works fine -- the problem is specific to")
+        print(">>> something in your Kaduwela project's .rou.xml or .tll.xml files.")
+
+
+if __name__ == "__main__":
+    main()
