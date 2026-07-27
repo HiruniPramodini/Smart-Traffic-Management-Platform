@@ -1,0 +1,1 @@
+Warning: Unsafe green phase 0 in tlLogic 'kaduwela_center', program 'green_wave'. Lane 'kotikawatta_out_1' is targeted by 2 'G'-links. (use 'g' instead) Overall 4 lanes in 2 phases are unsafe.
