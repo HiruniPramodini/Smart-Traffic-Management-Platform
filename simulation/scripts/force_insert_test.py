@@ -57,4 +57,8 @@ def main():
         print(f"\n!!! TraCIException: {e}")
         print("This is the real reason -- paste this exact message back.")
 
- 
+        traci.close()
+    
+    
+    if __name__ == "__main__":
+        main()
