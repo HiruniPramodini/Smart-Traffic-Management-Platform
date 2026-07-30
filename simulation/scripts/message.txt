@@ -1,0 +1,15 @@
+Loading net-file from '..\kaduwela\kaduwela.net.xml' ... done (4ms).
+Loading additional-files from '..\kaduwela\kaduwela.tll.xml' ... done (2ms).
+Loading route-files incrementally from '..\kaduwela\kaduwela.rou.xml'
+Loading done.
+Simulation version 1.27.0 started with time: 0.00.
+Simulation ended at time: 1800.00.
+Reason: The final simulation step has been reached.
+Performance:
+ Duration: 0.06s
+ Real time factor: 31034.5
+ UPS: 0.000000
+Vehicles:
+ Inserted: 0
+ Running: 0
+ Waiting: 0
