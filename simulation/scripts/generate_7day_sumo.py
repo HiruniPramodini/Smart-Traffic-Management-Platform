@@ -229,3 +229,6 @@ def main():
 
     print(f"\nDone. Wrote → {args.out}")
 
+
+if __name__ == "__main__":
+    main()
