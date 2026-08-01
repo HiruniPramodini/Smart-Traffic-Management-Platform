@@ -49,3 +49,17 @@ WEEKLY_WEATHER = {
     6: [("overcast", 0, 8), ("clear", 8, 24)],
 }
 
+# speedFactor multiplies each vehicle's desired speed; sigma = driver
+# imperfection (0=perfect,1=very imperfect); minGap in metres.
+WEATHER_VTYPE_IMPACT = {
+    "clear":      {"speedFactor": 1.00, "sigma_add": 0.00, "minGap_mult": 1.00},
+    "overcast":   {"speedFactor": 0.95, "sigma_add": 0.03, "minGap_mult": 1.05},
+    "foggy":      {"speedFactor": 0.78, "sigma_add": 0.15, "minGap_mult": 1.40},
+    "light_rain": {"speedFactor": 0.85, "sigma_add": 0.10, "minGap_mult": 1.25},
+    "heavy_rain": {"speedFactor": 0.65, "sigma_add": 0.20, "minGap_mult": 1.60},
+}
+
+BASE_SIGMA = {"car": 0.5, "bus": 0.4, "motorcycle": 0.6, "tuk_tuk": 0.7, "truck": 0.3}
+BASE_MINGAP = {"car": 2.5, "bus": 3.0, "motorcycle": 1.5, "tuk_tuk": 1.8, "truck": 3.5}
+VTYPES = ["car", "bus", "motorcycle", "tuk_tuk", "truck"]
+
