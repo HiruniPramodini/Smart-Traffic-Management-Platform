@@ -63,3 +63,46 @@ BASE_SIGMA = {"car": 0.5, "bus": 0.4, "motorcycle": 0.6, "tuk_tuk": 0.7, "truck"
 BASE_MINGAP = {"car": 2.5, "bus": 3.0, "motorcycle": 1.5, "tuk_tuk": 1.8, "truck": 3.5}
 VTYPES = ["car", "bus", "motorcycle", "tuk_tuk", "truck"]
 
+# Fallback arm map, matching generate_7day_csv.py's JUNCTIONS dict and the
+# "<arm>_in" / "<arm>_out" edge naming convention confirmed in
+# kaduwela.edg.xml. If your other junctions use different edge id
+# conventions, adjust the arm lists below to match.
+ARM_MAP = {
+    "kaduwela":    ["malabe", "biyagama", "kotikawatta", "ranala"],
+    "malabe":      ["kaduwela", "athurugiriya", "battaramulla"],
+    "biyagama":    ["kaduwela", "industrial", "kelaniya"],
+    "kotikawatta": ["kaduwela", "kolonnawa", "mulleriyawa"],
+    "ranala":      ["kaduwela", "hanwella", "avissawella"],
+}
+ALL_ARMS = sorted({a for arms in ARM_MAP.values() for a in arms})
+ARM_SUFFIXES = ["cars", "buses", "motorcycles", "tuk_tuks", "trucks",
+                 "total", "queue", "speed_kmh", "wait_sec"]
+
+
+def get_weather(dow, hour):
+    for (wtype, h0, h1) in WEEKLY_WEATHER.get(dow, []):
+        if h0 <= hour < h1:
+            return wtype
+    return "clear"
+
+
+def hhmm(sec):
+    return f"{(sec // 3600) % 24:02d}:{(sec % 3600) // 60:02d}"
+
+
+def apply_weather(traci, weather):
+    impact = WEATHER_VTYPE_IMPACT[weather]
+    for vt in VTYPES:
+        if vt not in traci.vehicletype.getIDList():
+            continue
+        traci.vehicletype.setSpeedFactor(vt, impact["speedFactor"])
+        traci.vehicletype.setImperfection(vt, min(0.95, BASE_SIGMA[vt] + impact["sigma_add"]))
+        traci.vehicletype.setMinGap(vt, BASE_MINGAP[vt] * impact["minGap_mult"])
+
+
+def run_junction_day(traci, sumo_binary, sumocfg, junction, dow, dstr, seed, writer):
+    tls_ids = None
+    cmd = [sumo_binary, "-c", sumocfg, "--seed", str(seed), "--no-warnings", "true",
+           "--no-step-log", "true", "--duration-log.disable", "true"]
+    traci.start(cmd)
+
