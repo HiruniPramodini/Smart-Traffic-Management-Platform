@@ -106,3 +106,71 @@ def run_junction_day(traci, sumo_binary, sumocfg, junction, dow, dstr, seed, wri
            "--no-step-log", "true", "--duration-log.disable", "true"]
     traci.start(cmd)
 
+    try:
+        tls_ids = traci.trafficlight.getIDList()
+        if tls_ids:
+            programs = traci.trafficlight.getAllProgramLogics(tls_ids[0])
+            custom = [p for p in programs if p.programID != "0"]
+            if custom:
+                traci.trafficlight.setProgram(tls_ids[0], custom[0].programID)
+
+        in_edges = {arm: f"{arm}_in" for arm in ARM_MAP[junction]}
+        known_edges = set(traci.edge.getIDList())
+        in_edges = {arm: eid for arm, eid in in_edges.items() if eid in known_edges}
+        missing = set(ARM_MAP[junction]) - set(in_edges)
+        if missing:
+            print(f"  [warn] {junction}: no edge found for arms {missing} "
+                  f"(expected '<arm>_in' — check edge ids)")
+
+        last_hour = -1
+        for step in range(86400):
+            traci.simulationStep()
+
+            hour = step // 3600
+            if hour != last_hour:
+                weather = get_weather(dow, hour)
+                apply_weather(traci, weather)
+                last_hour = hour
+                n_veh = traci.vehicle.getIDCount()
+                print(f"    hour {hour:>2}/24  weather={weather:<10}  vehicles_running={n_veh}", flush=True)
+
+            if step % 60 != 0:
+                continue
+
+            weather = get_weather(dow, hour)
+            row = {"date": dstr, "day_of_week": DAY_NAMES[dow], "time_seconds": step,
+                   "time": hhmm(step), "hour": hour, "weather": weather, "junction": junction.capitalize()}
+            for arm in ALL_ARMS:
+                for suf in ARM_SUFFIXES:
+                    row[f"{arm}_{suf}"] = 0
+
+            total_j = 0
+            for arm, eid in in_edges.items():
+                veh_ids = traci.edge.getLastStepVehicleIDs(eid)
+                counts = {vt: 0 for vt in VTYPES}
+                for vid in veh_ids:
+                    vt = traci.vehicle.getTypeID(vid)
+                    if vt in counts:
+                        counts[vt] += 1
+                total = len(veh_ids)
+                speed_ms = traci.edge.getLastStepMeanSpeed(eid)
+                speed_kmh = round(speed_ms * 3.6, 1)
+                queue = traci.edge.getLastStepHaltingNumber(eid)
+                wait = round(traci.edge.getWaitingTime(eid), 1)
+
+                row[f"{arm}_cars"] = counts["car"]
+                row[f"{arm}_buses"] = counts["bus"]
+                row[f"{arm}_motorcycles"] = counts["motorcycle"]
+                row[f"{arm}_tuk_tuks"] = counts["tuk_tuk"]
+                row[f"{arm}_trucks"] = counts["truck"]
+                row[f"{arm}_total"] = total
+                row[f"{arm}_queue"] = queue
+                row[f"{arm}_speed_kmh"] = speed_kmh
+                row[f"{arm}_wait_sec"] = wait
+                total_j += total
+
+            row["junction_total_vehicles"] = total_j
+            writer.writerow(row)
+    finally:
+        traci.close()
+
