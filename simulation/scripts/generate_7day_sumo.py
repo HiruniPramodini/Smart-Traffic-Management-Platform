@@ -174,3 +174,58 @@ def run_junction_day(traci, sumo_binary, sumocfg, junction, dow, dstr, seed, wri
     finally:
         traci.close()
 
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--sumo-home", default=os.environ.get("SUMO_HOME", ""))
+    ap.add_argument("--sim-dir", default=os.path.join(os.path.dirname(__file__), ".."))
+    ap.add_argument("--out", default=os.path.join(
+        os.path.dirname(__file__), "..", "..", "data", "processed",
+        "kaduwela_corridor_7day_sumo.csv"))
+    ap.add_argument("--junctions", default="kaduwela,malabe,biyagama,ranala,kotikawatta")
+    ap.add_argument("--gui", action="store_true", help="use sumo-gui instead of headless sumo")
+    args = ap.parse_args()
+
+    if args.sumo_home:
+        tools = os.path.join(args.sumo_home, "tools")
+        if tools not in sys.path:
+            sys.path.append(tools)
+    try:
+        import traci
+    except ImportError:
+        sys.exit("Cannot import traci. Set --sumo-home to your SUMO install "
+                  "(the folder containing tools/traci), or pip install traci.")
+
+    sumo_binary = "sumo-gui" if args.gui else "sumo"
+
+    header = (["date", "day_of_week", "time_seconds", "time", "hour", "weather", "junction"]
+               + [f"{arm}_{suf}" for arm in ALL_ARMS for suf in ARM_SUFFIXES]
+               + ["junction_total_vehicles"])
+
+    os.makedirs(os.path.dirname(args.out), exist_ok=True)
+    junctions = args.junctions.split(",")
+    start = date(2025, 7, 7)  # Monday
+
+    with open(args.out, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=header)
+        writer.writeheader()
+
+        for junction in junctions:
+            sumocfg = os.path.join(args.sim_dir, junction, f"{junction}.sumocfg")
+            net_file = os.path.join(args.sim_dir, junction, f"{junction}.net.xml")
+            if not os.path.exists(net_file):
+                print(f"[skip] {junction}: no compiled net.xml — run build_networks.sh first")
+                continue
+            if not os.path.exists(sumocfg):
+                print(f"[skip] {junction}: {sumocfg} not found")
+                continue
+
+            for day_off in range(7):
+                dow = day_off
+                dstr = (start + timedelta(days=day_off)).isoformat()
+                seed = 1000 * (hash(junction) % 97) + day_off
+                print(f"[run] {junction} - {DAY_NAMES[dow]} ({dstr}), seed={seed}", flush=True)
+                run_junction_day(traci, sumo_binary, sumocfg, junction, dow, dstr, seed, writer)
+
+    print(f"\nDone. Wrote → {args.out}")
+
