@@ -65,3 +65,56 @@ def main():
 
     arm_group = dict(pair.split(":") for pair in args.axis)
 
+  
+    tree = ET.parse(args.net_file)
+    root = tree.getroot()
+
+    # Real connections governed by this traffic light, keyed by linkIndex.
+    link_arm = {}
+    max_index = -1
+    for conn in root.findall("connection"):
+        if conn.get("tl") != args.tls_id:
+            continue
+        idx = int(conn.get("linkIndex"))
+        from_edge = conn.get("from")
+        arm = arm_from_edge(from_edge)
+        link_arm[idx] = arm
+        max_index = max(max_index, idx)
+
+    if max_index < 0:
+        raise SystemExit(
+            f"No connections found with tl=\"{args.tls_id}\" in {args.net_file}. "
+            f"Check --tls-id matches the traffic_light node id netconvert used "
+            f"(inspect <tlLogic id=...> in the net file)."
+        )
+
+    n_links = max_index + 1
+    unmapped = [i for i in range(n_links) if i not in link_arm]
+    if unmapped:
+        print(f"[warn] link indices with no arm mapping (left red always): {unmapped}")
+
+    groups = sorted(set(arm_group.values()))
+    if len(groups) not in (2, 3):
+        print(f"[warn] expected 2-3 phase groups, got {len(groups)}: {groups}")
+
+    print(f"{args.tls_id}: {n_links} real links")
+    for i in range(n_links):
+        arm = link_arm.get(i, "UNMAPPED")
+        grp = arm_group.get(arm, "?")
+        print(f"  link {i}: from arm '{arm}' -> group {grp}")
+
+    def state_for_group(active_group, char):
+        s = []
+        for i in range(n_links):
+            arm = link_arm.get(i)
+            grp = arm_group.get(arm)
+            s.append(char if grp == active_group else ("y" if False else "r"))
+        return "".join(s)
+
+    def yellow_for_group(active_group):
+        s = []
+        for i in range(n_links):
+            arm = link_arm.get(i)
+            grp = arm_group.get(arm)
+            s.append("y" if grp == active_group else "r")
+        return "".join(s)
