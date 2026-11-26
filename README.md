@@ -1,7 +1,7 @@
 ## Smart-Traffic-Management-Platform ##
 
 
-# Agents — Junction AI System (Phase 3)
+# Agents - Junction AI System (Phase 3)
 
 ## Overview
 
